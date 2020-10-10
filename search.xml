@@ -48,6 +48,40 @@
 <p><a href="https://zhuanlan.zhihu.com/p/26625249">GitHub+Hexo 搭建个人网站详细教程</a></p>
 <p><a href="https://blog.csdn.net/weixin_43971764/article/details/96478950">【Next7.2.0版权声明大改动】仅需一步！开启内置版权声明(跟繁琐的自定义版权声明说拜拜~)</a></p>
 <p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
+<p><a href="https://fanandjiu.com/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEnext%E4%B8%BB%E9%A2%98/">Hexo问题-Hexo博客配置NexT主题</a></p>
+<h2 id="增加tags、categories-以及-about-页面"><a href="#增加tags、categories-以及-about-页面" class="headerlink" title="增加tags、categories 以及 about 页面"></a>增加tags、categories 以及 about 页面</h2><p>主题配置文件 next.yml 修改 menu，将 about、tags、categories 的注释去除。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || fa fa-home</span><br><span class="line">  about: /about/ || fa fa-user</span><br><span class="line">  tags: /tags/ || fa fa-tags</span><br><span class="line">  categories: /categories/ || fa fa-th</span><br><span class="line">  archives: /archives/ || fa fa-archive</span><br></pre></td></tr></table></figure>
+
+<p>执行下面命令新建相关文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page <span class="string">&quot;about&quot;</span></span><br><span class="line">hexo new page <span class="string">&quot;tags&quot;</span></span><br><span class="line">hexo new page <span class="string">&quot;categories&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改生成页面所在位置和相关配置。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source\about\index.md</span><br><span class="line">---</span><br><span class="line">title: 关于</span><br><span class="line">type: &quot;about&quot;</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">source\tags\index.md</span><br><span class="line">---</span><br><span class="line">title: 标签</span><br><span class="line">type: &quot;tags&quot;</span><br><span class="line">---</span><br><span class="line"></span><br><span class="line">source\categories\index.md</span><br><span class="line">---</span><br><span class="line">title: 分类</span><br><span class="line">type: &quot;categories&quot;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>一篇文章只能写一个分类，但是可以写多个标签。可以在post模板中写好模板。blog/scaffolds目录下，编辑post.md</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">titile: &#123;&#123; title &#125;&#125;</span><br><span class="line">date: &#123;&#123; date &#125;&#125;</span><br><span class="line">tags:           # 新加</span><br><span class="line">categories:     # 新加</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="添加搜索功能"><a href="#添加搜索功能" class="headerlink" title="添加搜索功能"></a>添加搜索功能</h2><h2 id="回到顶部按钮"><a href="#回到顶部按钮" class="headerlink" title="回到顶部按钮"></a>回到顶部按钮</h2><h2 id="设置字数统计和预计阅读时间"><a href="#设置字数统计和预计阅读时间" class="headerlink" title="设置字数统计和预计阅读时间"></a>设置字数统计和预计阅读时间</h2><p>安装 hexo-symbols-count-time 插件。<br><code>npm install hexo-symbols-count-time --save</code></p>
+<p>编辑站点配置文件 hexo/_config.yml，添加如下内容： </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">  symbols: true </span><br><span class="line">  time: true </span><br><span class="line">  total_symbols: true </span><br><span class="line">  total_time: true </span><br></pre></td></tr></table></figure>
+<p>这部分内容，站点配置文件没有，自己添加的<br/><br/></p>
+<p>修改主题配置文件 next.yml 中 symbols_count_time 选项。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">  separated_meta: true </span><br><span class="line">  item_text_post: true </span><br><span class="line">  item_text_total: true </span><br></pre></td></tr></table></figure>
+
+<h2 id="标签云特效"><a href="#标签云特效" class="headerlink" title="标签云特效"></a>标签云特效</h2><p>安装 hexo-tag-cloud 插件。<br><code>npm install hexo-tag-cloud@^2.0.* --save</code></p>
+<p>在 hexo/source/_data 目录下新建 sidebar.swig 文件，输入下面内容。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;% if site.tags.length &gt; 1 %&#125;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; charset&#x3D;&quot;utf-8&quot; src&#x3D;&quot;&#x2F;js&#x2F;tagcloud.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script type&#x3D;&quot;text&#x2F;javascript&quot; charset&#x3D;&quot;utf-8&quot; src&#x3D;&quot;&#x2F;js&#x2F;tagcanvas.js&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;div class&#x3D;&quot;widget-wrap&quot;&gt;</span><br><span class="line">    &lt;h3 class&#x3D;&quot;widget-title&quot;&gt;标签云&lt;&#x2F;h3&gt;</span><br><span class="line">    &lt;div id&#x3D;&quot;myCanvasContainer&quot; class&#x3D;&quot;widget tagcloud&quot;&gt;</span><br><span class="line">        &lt;canvas width&#x3D;&quot;250&quot; height&#x3D;&quot;250&quot; id&#x3D;&quot;resCanvas&quot; style&#x3D;&quot;width&#x3D;100%&quot;&gt;</span><br><span class="line">            &#123;&#123; list_tags() &#125;&#125;</span><br><span class="line">        &lt;&#x2F;canvas&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p>主题配置文件 next.yml 去除 sidebar.swig 的注释。<br><code>sidebar: source/_data/sidebar.swig</code></p>
+<p>主题配置文件 next.yml 添加下面内容。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 标签云</span><br><span class="line">tag_cloud:</span><br><span class="line">    textFont: Trebuchet MS, Helvetica</span><br><span class="line">    textColor: &#39;#333&#39;</span><br><span class="line">    textHeight: 25</span><br><span class="line">    outlineColor: &#39;#E2E1D1&#39;</span><br><span class="line">    maxSpeed: 0.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置代码块复制和代码高亮"><a href="#设置代码块复制和代码高亮" class="headerlink" title="设置代码块复制和代码高亮"></a>设置代码块复制和代码高亮</h2><p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
+<h2 id="在文章底部增阿基版权信息"><a href="#在文章底部增阿基版权信息" class="headerlink" title="在文章底部增阿基版权信息"></a>在文章底部增阿基版权信息</h2><p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
+<h2 id="目录设置"><a href="#目录设置" class="headerlink" title="目录设置"></a>目录设置</h2><p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
+<h2 id="隐藏底部的强力驱动"><a href="#隐藏底部的强力驱动" class="headerlink" title="隐藏底部的强力驱动"></a>隐藏底部的强力驱动</h2><p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
+<h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="markdown博客渲染失败，只显示空白页问题"><a href="#markdown博客渲染失败，只显示空白页问题" class="headerlink" title="markdown博客渲染失败，只显示空白页问题"></a>markdown博客渲染失败，只显示空白页问题</h2><p>因为当时卸载了默认的markdown解析器，安装了一个新的解析器，可能是新的解析器配置问题，导致markdown博客无法解析，只显示空白页，所以我后来重装原有的解析器问题解决了。<br><code>npm i hexo-renderer-marked --save</code></p>
+<h2 id="hexo-本地调试"><a href="#hexo-本地调试" class="headerlink" title="hexo 本地调试"></a>hexo 本地调试</h2><p><code>hexo s --debug</code> 该命令可以帮助在发布之前调试，debug模式会输出一些可能的错误信息日志，帮助定位问题所在。</p>
+<h2 id="新建博客页面"><a href="#新建博客页面" class="headerlink" title="新建博客页面"></a>新建博客页面</h2><p>使用<code>hexo new blog-name</code>可以自动生成标题头部信息，比自己创建要好</p>
 ]]></content>
       <categories>
         <category>前端</category>
