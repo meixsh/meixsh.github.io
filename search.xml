@@ -4,6 +4,8 @@
     <title>Hello World</title>
     <url>/2020/10/10/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
 <p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
@@ -85,6 +87,7 @@
 <h2 id="在文章底部增阿基版权信息"><a href="#在文章底部增阿基版权信息" class="headerlink" title="在文章底部增阿基版权信息"></a>在文章底部增阿基版权信息</h2><p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
 <h2 id="目录设置"><a href="#目录设置" class="headerlink" title="目录设置"></a>目录设置</h2><p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
 <h2 id="隐藏底部的强力驱动"><a href="#隐藏底部的强力驱动" class="headerlink" title="隐藏底部的强力驱动"></a>隐藏底部的强力驱动</h2><p><a href="https://blog.csdn.net/tuckEnough/article/details/107383201">hexo theme next7.8 主题美化</a></p>
+<h2 id="分页显示-amp-评论功能-amp-访客数统计"><a href="#分页显示-amp-评论功能-amp-访客数统计" class="headerlink" title="分页显示 &amp; 评论功能 &amp; 访客数统计"></a>分页显示 &amp; 评论功能 &amp; 访客数统计</h2><p><a href="https://fanandjiu.com/Hexo%E5%8D%9A%E5%AE%A2%E9%85%8D%E7%BD%AEnext%E4%B8%BB%E9%A2%98/">参考资料</a></p>
 <h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="markdown博客渲染失败，只显示空白页问题"><a href="#markdown博客渲染失败，只显示空白页问题" class="headerlink" title="markdown博客渲染失败，只显示空白页问题"></a>markdown博客渲染失败，只显示空白页问题</h2><p>因为当时卸载了默认的markdown解析器，安装了一个新的解析器，可能是新的解析器配置问题，导致markdown博客无法解析，只显示空白页，所以我后来重装原有的解析器问题解决了。<br><code>npm i hexo-renderer-marked --save</code></p>
 <h2 id="hexo-本地调试"><a href="#hexo-本地调试" class="headerlink" title="hexo 本地调试"></a>hexo 本地调试</h2><p><code>hexo s --debug</code> 该命令可以帮助在发布之前调试，debug模式会输出一些可能的错误信息日志，帮助定位问题所在。</p>
 <h2 id="新建博客页面"><a href="#新建博客页面" class="headerlink" title="新建博客页面"></a>新建博客页面</h2><p>使用<code>hexo new blog-name</code>可以自动生成标题头部信息，比自己创建要好</p>
