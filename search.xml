@@ -22,10 +22,12 @@
     <title>hexo + github 搭建个人博客</title>
     <url>/2020/10/10/hexo%20+%20github%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>说实话，我几年前就想搭建一个属于自己的博客，但是那时候比较懒，没有动手干起来，总觉得会是一件比较复杂的事情，有点害怕自己干得不够好，说白了就是不自信加惰性。就在几年前一次偶然的机会，从同学那里了解到了github可以帮助建立个人博客，但是那时候没有深入研究下，遂一直搁置。最近我打算认真记点学习笔记，但是之前使用的有道云笔记和印象笔记都被我弄得很杂乱，而且他们对于md的支持不够好，所以我下定决心一定要搭建一个属于自己的博客，用来保存及展示自己的学习笔记，一方面精心写一篇博客特别锤炼人的耐心有助于养成好习惯，另一方也会给自己带来成就感。我相信通过日积月累自己一定会有所收获。实际上，我从调研到动手搭建好自己的初代博客，也不过花了一上午的时间，所以，一个看似比较复杂的问题，一旦开始动手干起来了，碰到问题时，只要耐心搜索思考，问题都可以解决的。一定要动手实践，做起来！</p>
+<a id="more"></a>
+
 <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>github提供博客公开访问的服务器，个人用户在自己电脑上编辑博客文件，再通过hexo框架提供的命令完成博客的测试和发布，最终上传至github上实现最终的博客部署。</p>
 <p>如上文，这套逻辑很简单，但是需要依赖几个工具，而且还会有一些细节需要注意。不过hexo真的很强大，通过几个工具打造的环境，用户就可以只专注于博客内容的编写而不用费心部署的复杂过程，只需要熟练掌握几个命令即可，真可谓是极大地减少了用户的负担呐。</p>
 <h1 id="依赖工具集及安装步骤"><a href="#依赖工具集及安装步骤" class="headerlink" title="依赖工具集及安装步骤"></a>依赖工具集及安装步骤</h1><ul>
-<li><p>github：GitHub是一个面向开源及私有软件项目的托管平台，因为只支持git 作为唯一的版本库格式进行托管，故名GitHub。GitHub于2008年4月10日正式上线，除了Git代码仓库托管及基本的 Web管理界面以外，还提供了订阅、讨论组、文本渲染、在线文件编辑器、协作图谱（报表）、代码片段分享（Gist）等功能。目前，其注册用户已经超过350万，托管版本数量也是非常之多，其中不乏知名开源项目 Ruby on Rails、jQuery、python 等。<br>2018年6月4日，微软宣布，通过75亿美元的股票交易收购代码托管平台GitHub。<br/><br/><br>需要注册一个账号。然后创建博客仓库，仓库名有要求,要创建一个和你用户名相同的仓库，后面加github.io，只有这样，将来要部署到GitHub page的时候，才会被识别，也就是<a href="http://xxxx.github.io,其中xxx就是你注册github的用户名.勾选创建readme./">http://xxxx.github.io，其中xxx就是你注册GitHub的用户名。勾选创建README。</a></p>
+<li><p>github：GitHub是一个面向开源及私有软件项目的托管平台，因为只支持git 作为唯一的版本库格式进行托管，故名GitHub。GitHub于2008年4月10日正式上线，除了Git代码仓库托管及基本的 Web管理界面以外，还提供了订阅、讨论组、文本渲染、在线文件编辑器、协作图谱（报表）、代码片段分享（Gist）等功能。目前，其注册用户已经超过350万，托管版本数量也是非常之多，其中不乏知名开源项目 Ruby on Rails、jQuery、python 等。<br>2018年6月4日，微软宣布，通过75亿美元的股票交易收购代码托管平台GitHub。<br>需要注册一个账号。然后创建博客仓库，仓库名有要求,要创建一个和你用户名相同的仓库，后面加github.io，只有这样，将来要部署到GitHub page的时候，才会被识别，也就是<code>http://xxxx.github.io</code>，其中xxx就是你注册GitHub的用户名。勾选创建README。</p>
 </li>
 <li><p>git: 开源分布式版本控制系统。推荐<a href="https://www.liaoxuefeng.com/wiki/896043488029600">廖雪峰老师Git教程</a>。<br><a href="https://git-scm.com/download/win">Git下载地址</a>。我是windows系统<br>64位机，所以选择64位安装包，基本上就是默认安装。安装完成后，需要将git与自己的github账号绑定，桌面鼠标右键打开Git Bash Here，设置user.name和user。email配置信息<br><code>git config --global user.name &quot;你的GitHub用户名&quot;</code><br><code>git config --global user.email &quot;你的GitHub注册邮箱&quot;</code><br>生成ssh秘钥文件，命令执行之后，直接三个回车即可，默认不需要设置密码<br><code>ssh-keygen -t rsa -C &quot;你的GitHub注册邮箱&quot;</code><br>使用cat命令查看生成的id_rsa.pub秘钥，并复制秘钥内容<br><code>cat ~/.ssh/id_rsa.pub</code><br>点击github右上角自己的小人图像，依次点击settings&rarr;SSH and GPG keys，新建new SSH Key。Titile随意填，将刚才复制的id_rsa.pub内容粘贴到下面的Key方框中，最后点击Add SSH key。检测公钥是否设置成功<br><code>ssh git@github.com</code><br>之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
 </li>
@@ -61,7 +63,11 @@
 <p>一篇文章只能写一个分类，但是可以写多个标签。可以在post模板中写好模板。blog/scaffolds目录下，编辑post.md</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">titile: &#123;&#123; title &#125;&#125;</span><br><span class="line">date: &#123;&#123; date &#125;&#125;</span><br><span class="line">tags:           # 新加</span><br><span class="line">categories:     # 新加</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
-<h2 id="添加搜索功能"><a href="#添加搜索功能" class="headerlink" title="添加搜索功能"></a>添加搜索功能</h2><h2 id="回到顶部按钮"><a href="#回到顶部按钮" class="headerlink" title="回到顶部按钮"></a>回到顶部按钮</h2><h2 id="设置字数统计和预计阅读时间"><a href="#设置字数统计和预计阅读时间" class="headerlink" title="设置字数统计和预计阅读时间"></a>设置字数统计和预计阅读时间</h2><p>安装 hexo-symbols-count-time 插件。<br><code>npm install hexo-symbols-count-time --save</code></p>
+<h2 id="添加搜索功能"><a href="#添加搜索功能" class="headerlink" title="添加搜索功能"></a>添加搜索功能</h2><p>安装 exo-generator-searchdb 插件。<br><code>npm install hexo-generator-searchdb --save</code></p>
+<p>主题配置文件 next.yml 添加 search 选项，修改 local_search 选项。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br></pre></td></tr></table></figure>
+
+<h2 id="回到顶部按钮"><a href="#回到顶部按钮" class="headerlink" title="回到顶部按钮"></a>回到顶部按钮</h2><h2 id="设置字数统计和预计阅读时间"><a href="#设置字数统计和预计阅读时间" class="headerlink" title="设置字数统计和预计阅读时间"></a>设置字数统计和预计阅读时间</h2><p>安装 hexo-symbols-count-time 插件。<br><code>npm install hexo-symbols-count-time --save</code></p>
 <p>编辑站点配置文件 hexo/_config.yml，添加如下内容： </p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">symbols_count_time:</span><br><span class="line">  symbols: true </span><br><span class="line">  time: true </span><br><span class="line">  total_symbols: true </span><br><span class="line">  total_time: true </span><br></pre></td></tr></table></figure>
 <p>这部分内容，站点配置文件没有，自己添加的<br/><br/></p>
@@ -82,7 +88,7 @@
 <h1 id="问题记录"><a href="#问题记录" class="headerlink" title="问题记录"></a>问题记录</h1><h2 id="markdown博客渲染失败，只显示空白页问题"><a href="#markdown博客渲染失败，只显示空白页问题" class="headerlink" title="markdown博客渲染失败，只显示空白页问题"></a>markdown博客渲染失败，只显示空白页问题</h2><p>因为当时卸载了默认的markdown解析器，安装了一个新的解析器，可能是新的解析器配置问题，导致markdown博客无法解析，只显示空白页，所以我后来重装原有的解析器问题解决了。<br><code>npm i hexo-renderer-marked --save</code></p>
 <h2 id="hexo-本地调试"><a href="#hexo-本地调试" class="headerlink" title="hexo 本地调试"></a>hexo 本地调试</h2><p><code>hexo s --debug</code> 该命令可以帮助在发布之前调试，debug模式会输出一些可能的错误信息日志，帮助定位问题所在。</p>
 <h2 id="新建博客页面"><a href="#新建博客页面" class="headerlink" title="新建博客页面"></a>新建博客页面</h2><p>使用<code>hexo new blog-name</code>可以自动生成标题头部信息，比自己创建要好</p>
-<h2 id="中文博客目录不跳转问题"><a href="#中文博客目录不跳转问题" class="headerlink" title="中文博客目录不跳转问题"></a>中文博客目录不跳转问题</h2><p><a href="https://github.com/theme-next/hexo-theme-next/issues/380">解决方案链接</a><br>hexo-toc 这个插件导致的，这应该是其它主题需要的依赖吧，NexT 不需要，所以删除它！<br><code>npm remove hexo-toc --save</code></p>
+<h2 id="中文博客目录不跳转问题"><a href="#中文博客目录不跳转问题" class="headerlink" title="中文博客目录不跳转问题"></a>中文博客目录不跳转问题</h2><p><a href="https://github.com/theme-next/hexo-theme-next/issues/380">解决方案链接</a><br>hexo-toc 这个插件导致的，这应该是其它主题需要的依赖吧，NexT 不需要，所以删除它！<br><code>npm remove hexo-toc --save</code><br>经过多次调试，我发现不是这个原因，最后通过升级next主题至8.0版本解决了问题。</p>
 ]]></content>
       <categories>
         <category>前端</category>
