@@ -4,9 +4,9 @@
     <title></title>
     <url>/2020/10/10/hexo%20+%20github%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%B5%81%E7%A8%8B/</url>
     <content><![CDATA[<hr>
-<h2 id="title：hexo-github搭建个人博客流程data：2020年10月10日14-43-16tags：hexo-github-博客搭建"><a class="header-anchor" href="#title：hexo-github搭建个人博客流程data：2020年10月10日14-43-16tags：hexo-github-博客搭建">¶</a>title：hexo + github搭建个人博客流程<br>
-data：2020年10月10日14:43:16<br>
-tags：hexo, github, 博客搭建</h2>
+<h2 id="title：hexo-github-搭建个人博客流程date：2020年10月10日14-43-16tags：-hexo-github-博客搭建"><a class="header-anchor" href="#title：hexo-github-搭建个人博客流程date：2020年10月10日14-43-16tags：-hexo-github-博客搭建">¶</a>title：hexo + github 搭建个人博客流程<br>
+date：2020年10月10日14:43:16<br>
+tags：[hexo, github, 博客搭建]</h2>
 <h1>序</h1>
 <p>说实话，我几年前就想搭建一个属于自己的博客，但是那时候比较懒，没有动手干起来，总觉得会是一件比较复杂的事情，有点害怕自己干得不够好，说白了就是不自信加惰性。就在几年前一次偶然的机会，从同学那里了解到了github可以帮助建立个人博客，但是那时候没有深入研究下，遂一直搁置。最近我打算认真记点学习笔记，但是之前使用的有道云笔记和印象笔记都被我弄得很杂乱，而且他们对于md的支持不够好，所以我下定决心一定要搭建一个属于自己的博客，用来保存及展示自己的学习笔记，一方面精心写一篇博客特别锤炼人的耐心有助于养成好习惯，另一方也会给自己带来成就感。我相信通过日积月累自己一定会有所收获。实际上，我从调研到动手搭建好自己的初代博客，也不过花了一上午的时间，所以，一个看似比较复杂的问题，一旦开始动手干起来了，碰到问题时，只要耐心搜索思考，问题都可以解决的。一定要动手实践，做起来！</p>
 <h1>简介</h1>
