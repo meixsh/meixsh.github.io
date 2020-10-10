@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title></title>
+    <url>/2020/10/10/hexo%20+%20github%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<h1>序</h1>
+<p>说实话，我几年前就想搭建一个属于自己的博客，但是那时候比较懒，没有动手干起来，总觉得会是一件比较复杂的事情，有点害怕自己干得不够好，说白了就是不自信加惰性。就在几年前一次偶然的机会，从同学那里了解到了github可以帮助建立个人博客，但是那时候没有深入研究下，遂一直搁置。最近我打算认真记点学习笔记，但是之前使用的有道云笔记和印象笔记都被我弄得很杂乱，而且他们对于md的支持不够好，所以我下定决心一定要搭建一个属于自己的博客，用来保存及展示自己的学习笔记，一方面精心写一篇博客特别锤炼人的耐心有助于养成好习惯，另一方也会给自己带来成就感。我相信通过日积月累自己一定会有所收获。实际上，我从调研到动手搭建好自己的初代博客，也不过花了一上午的时间，所以，一个看似比较复杂的问题，一旦开始动手干起来了，碰到问题时，只要耐心搜索思考，问题都可以解决的。一定要动手实践，做起来！</p>
+<h1>简介</h1>
+<p>github提供博客公开访问的服务器，个人用户在自己电脑上编辑博客文件，再通过hexo框架提供的命令完成博客的测试和发布，最终上传至github上实现最终的博客部署。</p>
+<p>如上文，这套逻辑很简单，但是需要依赖几个工具，而且还会有一些细节需要注意。不过hexo真的很强大，通过几个工具打造的环境，用户就可以只专注于博客内容的编写而不用费心部署的复杂过程，只需要熟练掌握几个命令即可，真可谓是极大地减少了用户的负担呐。</p>
+<h1>依赖工具集及安装步骤</h1>
+<ul>
+<li>
+<p>github：GitHub是一个面向开源及私有软件项目的托管平台，因为只支持git 作为唯一的版本库格式进行托管，故名GitHub。GitHub于2008年4月10日正式上线，除了Git代码仓库托管及基本的 Web管理界面以外，还提供了订阅、讨论组、文本渲染、在线文件编辑器、协作图谱（报表）、代码片段分享（Gist）等功能。目前，其注册用户已经超过350万，托管版本数量也是非常之多，其中不乏知名开源项目 Ruby on Rails、jQuery、python 等。<br>
+2018年6月4日，微软宣布，通过75亿美元的股票交易收购代码托管平台GitHub。<br/><br/><br>
+需要注册一个账号。然后创建博客仓库，仓库名有要求,要创建一个和你用户名相同的仓库，<a href="http://xn--github-2e4jn8gey6u.io">后面加github.io</a>，只有这样，将来要部署到GitHub page的时候，才会被识别，也就是http://xxxx.github.io，其中xxx就是你注册GitHub的用户名。勾选创建README。</p>
+</li>
+<li>
+<p>git: 开源分布式版本控制系统。推荐<a href="https://www.liaoxuefeng.com/wiki/896043488029600">廖雪峰老师Git教程</a>。<br>
+<a href="https://git-scm.com/download/win">Git下载地址</a>。我是windows系统<br>
+64位机，所以选择64位安装包，基本上就是默认安装。安装完成后，需要将git与自己的github账号绑定，桌面鼠标右键打开Git Bash Here，设置user.name和user。email配置信息<br>
+<code>git config --global user.name &quot;你的GitHub用户名&quot;</code><br>
+<code>git config --global user.email &quot;你的GitHub注册邮箱&quot;</code><br>
+生成ssh秘钥文件，命令执行之后，直接三个回车即可，默认不需要设置密码<br>
+<code>ssh-keygen -t rsa -C &quot;你的GitHub注册邮箱&quot;</code><br>
+使用cat命令查看生成的id_rsa.pub秘钥，并复制秘钥内容<br>
+<code>cat ~/.ssh/id_rsa.pub</code><br>
+点击github右上角自己的小人图像，依次点击settings→SSH and GPG keys，新建new SSH Key。Titile随意填，将刚才复制的id_rsa.pub内容粘贴到下面的Key方框中，最后点击Add SSH key。检测公钥是否设置成功<br>
+<code>ssh git@github.com</code><br>
+之所以设置GitHub密钥原因是，通过非对称加密的公钥与私钥来完成加密，公钥放置在GitHub上，私钥放置在自己的电脑里。GitHub要求每次推送代码都是合法用户，所以每次推送都需要输入账号密码验证推送用户是否是合法用户，为了省去每次输入密码的步骤，采用了ssh，当你推送的时候，git就会匹配你的私钥跟GitHub上面的公钥是否是配对的，若是匹配就认为你是合法用户，则允许推送。这样可以保证每次的推送都是正确合法的。</p>
+</li>
+<li>
+<p>node.js: 是能够在服务器端运行JavaScript的开放源代码、跨平台JavaScript运行环境。Node.js采用Google开发的V8运行代码，使用事件驱动、非阻塞和异步输入输出模型等技术来提高性能，可优化应用程序的传输量和规模。这些技术通常用于资料密集的即时应用程序。Node.js大部分基本模块都用JavaScript语言编写。在Node.js出现之前，JavaScript通常作为客户端程序设计语言使用，以JavaScript写出的程序常在用户的浏览器上运行。Node.js的出现使JavaScript也能用于服务端编程。Node.js含有一系列内置模块，使得程序可以脱离Apache HTTP Server或IIS，作为独立服务器运行。<br>
+<a href="https://nodejs.org/en/download/">Node.js下载地址</a>。安装node.js会包含环境变量以及npm的安装，安装后，检测Node.js是否安装成功输入：<br>
+<code>node -v</code><br>
+检测npm是否安装成功，输入：<br>
+<code>npm -v</code><br>
+至此，完成了hexo框架所依赖的Node.js环境，下一步就可以安装hexo框架了。</p>
+</li>
+<li>
+<p>hexo：读作“嗨克搜”，它就是基于Node.js开发的个人博客网站搭建的框架程序，我们需要在电脑里创建一个日后用于存储博客的目录，命名为blog，以后hexo框架和自己编写的博客都位于该目录及其子目录下。创建好后，进入blog目录，仍旧是右键打开git bash。<br>
+使用npm包管理器安装hexo<br>
+<code>npm install -g hexo-cli</code><br>
+初始化博客<br>
+<code>hexo init</code><br>
+测试博客网站雏形：<br>
+<code>hexo new test_blog</code> // 默认会有个hello world，可以不创建博客<br>
+<code>hexo g</code>        // 生成静态页面<br>
+<code>hexo s</code>        // 启动本地服务器<br>
+浏览器输入地址localhost:4000查看博客网页</p>
+</li>
+</ul>
+<h1>常用hexo命令</h1>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-cli -g <span class="comment">#安装Hexo</span></span><br><span class="line">npm update hexo -g <span class="comment">#升级</span></span><br><span class="line">hexo init <span class="comment">#初始化博客</span></span><br><span class="line"></span><br><span class="line">命令简写</span><br><span class="line">hexo n <span class="string">&quot;我的博客&quot;</span> == hexo new <span class="string">&quot;我的博客&quot;</span> <span class="comment">#新建文章</span></span><br><span class="line">hexo g == hexo generate <span class="comment">#生成</span></span><br><span class="line">hexo s == hexo server <span class="comment">#启动服务预览</span></span><br><span class="line">hexo d == hexo deploy <span class="comment">#部署</span></span><br><span class="line"></span><br><span class="line">hexo server <span class="comment">#Hexo会监视文件变动并自动更新，无须重启服务器</span></span><br><span class="line">hexo server -s <span class="comment">#静态模式</span></span><br><span class="line">hexo server -p 5000 <span class="comment">#更改端口</span></span><br><span class="line">hexo server -i 192.168.1.1 <span class="comment">#自定义 IP</span></span><br><span class="line">hexo clean <span class="comment">#清除缓存，若是网页正常情况下可以忽略这条命令</span></span><br></pre></td></tr></table></figure>
+<h1>推送网站</h1>
+<p>上面只是在本地预览，接下来要做的就是就是推送网站，也就是发布网站，让我们的网站可以被更多的人访问。在设置之前，需要解释一个概念，在blog根目录里的_config.yml文件称为站点配置文件。进入根目录里的themes文件夹，里面也有个_config.yml文件，这个称为主题配置文件。</p>
+<h2 id="关联hexo与github"><a class="header-anchor" href="#关联hexo与github">¶</a>关联hexo与github</h2>
+<p>打开站点的配置文件_config.yml，翻到最后修改为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: 这里填入你之前在GitHub上创建仓库的完整路径，复制https的那个地址</span><br><span class="line">  branch: master # 测试时github默认分支名叫main，手动改名master，与大部分参考资料保持一致，不改应该也可以</span><br></pre></td></tr></table></figure>
+<p>其实就是给hexo d 这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。最后安装Git部署插件，输入命令：<br>
+<code>npm install hexo-deployer-git --save</code></p>
+<h2 id="博客网页测试"><a class="header-anchor" href="#博客网页测试">¶</a>博客网页测试</h2>
+<p>我们分别输入三条命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean </span><br><span class="line">hexo g </span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
+<p>其实第三条的 <code>hexo d</code> 就是部署网站命令，d是deploy的缩写。完成后，打开浏览器，在地址栏输入你的放置个人网站的仓库路径，即 <a href="https://xxxx.github.io">https://xxxx.github.io</a> 你就会发现你的博客已经上线了，可以在网络上被访问了。</p>
+<h1>主题设置</h1>
+<p>这部分内容比较多，先列举参考资料，我基本按照这些资料设置了一部分，还有一些没有设置，待日后尝鲜，今天更新到这，以后有时间再更新，基本够入门设置了：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/85037898">Hexo系列 | Hexo+next主题搭建炫酷的个人博客网站</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/26625249">GitHub+Hexo 搭建个人网站详细教程</a></p>
+<p><a href="https://blog.csdn.net/weixin_43971764/article/details/96478950">【Next7.2.0版权声明大改动】仅需一步！开启内置版权声明(跟繁琐的自定义版权声明说拜拜~)</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>test article</title>
+    <url>/2020/10/10/test-article/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2020/10/10/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -18,10 +93,5 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>test article</title>
-    <url>/2020/10/10/test-article/</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>
