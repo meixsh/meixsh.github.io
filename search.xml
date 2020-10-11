@@ -988,6 +988,9 @@
       <categories>
         <category>c++</category>
       </categories>
+      <tags>
+        <tag>基础语法</tag>
+      </tags>
   </entry>
   <entry>
     <title>ch08 链表与程序抽象</title>
