@@ -745,6 +745,8 @@
 <li>一系列遵守一定规则并能正确完成特定功能的代码或指令序列</li>
 <li>通常包括数据结构和算法两部分</li>
 </ul>
+<a id="more"></a>
+
 <p>程序设计与程序设计语言</p>
 <ul>
 <li><p>程序设计：按照任务需要，设计数据结构与算法，编写代码并测试其正确性，得到正确运行结果的过程</p>
@@ -782,8 +784,8 @@
 <ul>
 <li>标准模板库：迭代器、容器、抽象算法</li>
 </ul>
-<h1 id="简单c-c-程序介绍"><a href="#简单c-c-程序介绍" class="headerlink" title="简单c/c++程序介绍"></a>简单c/c++程序介绍</h1><p>编写程序，显示字符串 “Hello World!“<br><img src="./ch01-c-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%85%83%E7%B4%A0/c_basic_prog.png" alt="简单c程序"></p>
-<p><img src="./ch01-c-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%85%83%E7%B4%A0/cpp_basic_prog.png" alt="简单c++程序"></p>
+<h1 id="简单c-c-程序介绍"><a href="#简单c-c-程序介绍" class="headerlink" title="简单c/c++程序介绍"></a>简单c/c++程序介绍</h1><p>编写程序，显示字符串 “Hello World!“<br><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/c_basic_prog.png" alt="简单c程序"></p>
+<p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/cpp_basic_prog.png" alt="简单c++程序"></p>
 <h2 id="c-c-程序结构特点"><a href="#c-c-程序结构特点" class="headerlink" title="c/c++程序结构特点"></a>c/c++程序结构特点</h2><ul>
 <li>由一个或多个函数组成</li>
 <li>具有惟一一个主函数 main</li>
@@ -793,7 +795,7 @@
 <li>C/C++ 包含大量库函数和算法，可直接使用</li>
 <li>库函数原型位于相应头文件中，使用函数前必须包含该头文件</li>
 </ul>
-<h1 id="程序设计流程与常用命令"><a href="#程序设计流程与常用命令" class="headerlink" title="程序设计流程与常用命令"></a>程序设计流程与常用命令</h1><h2 id="程序设计的基本流程"><a href="#程序设计的基本流程" class="headerlink" title="程序设计的基本流程"></a>程序设计的基本流程</h2><p><img src="./ch01-c-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%85%83%E7%B4%A0/prog_flow_diag.png" alt="程序设计的基本流程"></p>
+<h1 id="程序设计流程与常用命令"><a href="#程序设计流程与常用命令" class="headerlink" title="程序设计流程与常用命令"></a>程序设计流程与常用命令</h1><h2 id="程序设计的基本流程"><a href="#程序设计的基本流程" class="headerlink" title="程序设计的基本流程"></a>程序设计的基本流程</h2><p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/prog_flow_diag.png" alt="程序设计的基本流程"></p>
 <h2 id="编辑与编译"><a href="#编辑与编译" class="headerlink" title="编辑与编译"></a>编辑与编译</h2><p>编辑</p>
 <ul>
 <li>行文本编辑器：vi 编辑器或其他编辑器</li>
@@ -901,7 +903,7 @@
 <li>例：<code>&quot;\n&quot;、&quot;\\&quot;</code></li>
 </ul>
 </li>
-<li>预定义的转义序列<br>  <img src="./ch01-c-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%85%83%E7%B4%A0/special_char.png" alt="预定义的转义序列"></li>
+<li>预定义的转义序列<br>  <img src="http://qi0lr8tiy.hn-bkt.clouddn.com/special_char.png" alt="预定义的转义序列"></li>
 </ul>
 <h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><ul>
 <li>常量的定义：程序执行期间其值不可改变的量<ul>
@@ -995,7 +997,69 @@
   <entry>
     <title>ch08 链表与程序抽象</title>
     <url>/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h1><h2 id="数据抽象的目的与意义"><a href="#数据抽象的目的与意义" class="headerlink" title="数据抽象的目的与意义"></a>数据抽象的目的与意义</h2><p>数据对象</p>
+<ul>
+<li>信息缺失：程序中的数据对象只有地址和值，没有数据类型、数据解释及数据意义等信息</li>
+</ul>
+<p>解决手段：抽象</p>
+<ul>
+<li>数据的表示：注释、有意义的数据对象名称</li>
+<li>数据的功能：描述可以在数据上工作的操作集</li>
+<li>数据的功能比表示更重要<ul>
+<li>例：程序员更关心整数的运算而不是计算机如何存储整数</li>
+</ul>
+</li>
+</ul>
+<h2 id="结构化数据类型的性质"><a href="#结构化数据类型的性质" class="headerlink" title="结构化数据类型的性质"></a>结构化数据类型的性质</h2><ul>
+<li>类型<ul>
+<li>细节由用户自定义，语言仅提供定义手段</li>
+</ul>
+</li>
+<li>成员<ul>
+<li>结构化数据类型的子数据对象</li>
+</ul>
+</li>
+<li>成员类型<ul>
+<li>每个成员具有确切的类型</li>
+</ul>
+</li>
+<li>成员数目<ul>
+<li>部分结构化数据类型可变，部分固定</li>
+</ul>
+</li>
+<li>成员组织<ul>
+<li>成员组织结构（线性结构或非线性结构）必须显式定义</li>
+</ul>
+</li>
+<li>操作集<ul>
+<li>可以在数据上进行的操作集合</li>
+</ul>
+</li>
+</ul>
+<h2 id="数据封装"><a href="#数据封装" class="headerlink" title="数据封装"></a>数据封装</h2><ul>
+<li>数据封装：将数据结构的细节隐藏起来</li>
+<li>实现方式：分别实现访问数据成员的存取函数</li>
+<li>数据封装示例<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> capacity;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="keyword">int</span> *items;</span><br><span class="line">    <span class="keyword">bool</span> modified;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">DiGetCount</span><span class="params">(DYNINTS *a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!a) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;DiGetCount: Parameter illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> a-&gt;count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h2><ul>
+<li><p>数据封装的问题</p>
+<ul>
+<li>只要将结构体类型定义在头文件中，库的使用者就可以看到该定义，并按照成员格式直接访问，而不调用存取函数</li>
+</ul>
+</li>
+<li><p>解决方法</p>
+<ul>
+<li>将结构体类型的具体细节定义在源文件中，所有针对该类型量的操作都只能通过函数接口来进行，从而隐藏实现细节</li>
+</ul>
+</li>
+<li><p>信息隐藏示例</p>
+  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*头文件“dynarray.h”*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span>;</span>  <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span> * <span class="title">PDYNINTS</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*源文件“dynarray.cpp”*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span>&#123;</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> capacity;  <span class="keyword">unsigned</span> <span class="keyword">int</span> count;  <span class="keyword">int</span> * items;  <span class="keyword">bool</span> modified;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="抽象数据类型"><a href="#抽象数据类型" class="headerlink" title="抽象数据类型"></a>抽象数据类型</h2><h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><h1 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h1><h1 id="抽象链表"><a href="#抽象链表" class="headerlink" title="抽象链表"></a>抽象链表</h1>]]></content>
       <categories>
         <category>c++</category>
       </categories>
@@ -1004,6 +1068,444 @@
         <tag>链表</tag>
         <tag>函数指针</tag>
         <tag>抽象链表</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>学习计划</title>
+    <url>/2020/10/12/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<p>编程类</p>
+<ul>
+<li>c++</li>
+<li>linux系统命令</li>
+<li>linux系统编程</li>
+<li>操作系统</li>
+<li>软件工程</li>
+<li>多媒体</li>
+<li>算法设计与分析</li>
+<li>数据结构</li>
+<li>大数据</li>
+<li>分布式</li>
+<li>编译原理</li>
+</ul>
+<p>数学类</p>
+<ul>
+<li>微积分</li>
+<li>线性代数</li>
+<li>概率论与数理统计</li>
+<li>离散数学</li>
+</ul>
+<a id="more"></a>
+]]></content>
+      <categories>
+        <category>学习计划</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Linux系统管理之管理文件</title>
+    <url>/2020/10/12/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h1 id="安装Linux系统"><a href="#安装Linux系统" class="headerlink" title="安装Linux系统"></a>安装Linux系统</h1><h2 id="选择安装镜像"><a href="#选择安装镜像" class="headerlink" title="选择安装镜像"></a>选择安装镜像</h2><ul>
+<li>32位机 i386, 64位机 x86_64</li>
+<li><a href="https://www.igorware.com/64bit-checker">64bit Checker</a> 工具确定windows主机是否是64位机</li>
+<li><a href="https://mirrors.163.com/centos/6.6/isos">镜像地址</a> 选择对应的镜像文件以及MD5校验码文件<ul>
+<li><a href="https://www.winmd5.com/">MD5校验工具</a> 确认文件完整性</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="VMware安装虚拟机"><a href="#VMware安装虚拟机" class="headerlink" title="VMware安装虚拟机"></a>VMware安装虚拟机</h2><ul>
+<li><p>指定磁盘容量时，选择单个文件存储虚拟硬盘</p>
+</li>
+<li><p>不要勾选UTC时间，会造成时间显示与本地显示不一致的问题</p>
+</li>
+<li><p>自定义硬盘分区</p>
+<ul>
+<li>分区表：一个硬盘仅拥有64字节的分区表，用来记录硬盘分区信息，但是每个分区信息大小是16字节，因此每个硬盘最多可以分成4个主分区</li>
+<li>4个主分区中可以有一个被替换为扩展分区，扩展分区内部可以继续划分逻辑分区，其数量理论上无限制</li>
+<li>机器第1块硬盘被称为sda，第2块硬盘被称为sdb… 其中，sd(SCSI Device) <ul>
+<li>sda进行分区之后，主分区依次命名为sda1、sda2、sda3、sda4；逻辑分区起始号码总是为sda5，与前面主分区数量无关</li>
+</ul>
+</li>
+<li>格式化分区，规定数组组织方式，创建文件系统<ul>
+<li>windows：fat32，ntfs</li>
+<li>centos: ext4, swap</li>
+</ul>
+</li>
+<li>swap分区：与虚拟内存有关，使用SWAP文件系统<ul>
+<li>swap分区不能挂载到目录树上，所以目录树上看不见swap分区 </li>
+<li>redhat公司关于swap分区内存大小划分建议，根据实际内存大小划分 </li>
+</ul>
+</li>
+<li>创建两个分区，根分区以及swap分区<ul>
+<li>创建swap分区，选择标准分区，文件系统类型选择swap，虚拟机内存分配4g，swap分区大小设置为4096MB</li>
+<li>创建根分区，选择标准分区，挂载点选择/, 文件系统选择ext4，选择使用全部可用空间，其他默认</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>grub引导转载程序安装，默认安装</p>
+<ul>
+<li>grub负责从硬盘分区找到内核，然后将内核装载进内存，grub可以同时帮助引导多种操作系统，windows以及BSD系列unix系统，多系统安装时有用，需要配置</li>
+</ul>
+</li>
+<li><p>系统软件包安装选择</p>
+<ul>
+<li>选择basic server选项，然后点击现在定制按钮</li>
+<li>初学者左栏建议勾选桌面，右边勾选除KDE桌面之外的所有选项</li>
+<li>根据需要勾选web服务器以及数据库等</li>
+</ul>
+</li>
+<li><p>进入系统后，开始一些系统基本配置，建议不选择kdump，作为一个使用者而言而非核心开发人员，会浪费空间</p>
+</li>
+</ul>
+<h1 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h1><p>bash shell (The GNU’s Bourne Again Shell)</p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><ul>
+<li>一个二进制可执行文件</li>
+<li>一个shell脚本文件</li>
+<li>一个shell内建函数</li>
+</ul>
+<p>命令选项 </p>
+<ul>
+<li>控制命令行为的开关</li>
+<li>选项一般前面有一个 ‘-‘ 或者 ‘–’符号加上一个或多个字母的代码</li>
+</ul>
+<p>命令参数</p>
+<ul>
+<li>参数一般用来向命令传递一些运行时所需的信息，一般来说是一个字符串</li>
+</ul>
+<h3 id="三个简单命令"><a href="#三个简单命令" class="headerlink" title="三个简单命令"></a>三个简单命令</h3><ul>
+<li><p>whoami</p>
+<ul>
+<li>显示当前登录用户的用户名</li>
+<li>最简单的命令，不接受参数，只有两个基本选项</li>
+<li>–help选项</li>
+<li>–vesion选项</li>
+</ul>
+</li>
+<li><p>echo</p>
+<ul>
+<li><code>echo &quot;hello world&quot;</code> 屏幕回显</li>
+<li><code>echo -n &quot;hello world&quot;</code> 回显不换行</li>
+<li><code>echo -e &quot;hello world\n\n&quot;</code> 输出包括反斜杠定义的转义字符</li>
+</ul>
+</li>
+<li><p>nano</p>
+<ul>
+<li><code>ctrl + o</code> 填入文件名回车保存</li>
+<li><code>ctrl + g</code> 帮助文档</li>
+<li><code>ctrl + x</code> 退出帮助文档</li>
+</ul>
+</li>
+<li><p>命令历史</p>
+<ul>
+<li>键盘上下箭头</li>
+</ul>
+</li>
+<li><p>命令补全</p>
+<ul>
+<li>tab</li>
+</ul>
+</li>
+</ul>
+<h1 id="帮助文档man"><a href="#帮助文档man" class="headerlink" title="帮助文档man"></a>帮助文档man</h1><ul>
+<li><code>man who</code></li>
+<li>COMMANDS 命令中的内部指令</li>
+<li>FILES 与命令相关的文件</li>
+<li>上下箭头移动一行，page up/down 上下翻页</li>
+<li><code>/字符串</code> 光标处向下查找<ul>
+<li><code>n</code> 下一个匹配处</li>
+<li><code>N</code> 上一个匹配处</li>
+</ul>
+</li>
+<li><code>q</code> 退出</li>
+<li>man文档的9大类<ul>
+<li>1 可运行的指令或可执行文件的帮助文档</li>
+<li>2 系统核心可使用的函数与工具等的帮助文档</li>
+<li>3 一些常用函数与库的帮助文档</li>
+<li>4 设备文件的说明</li>
+<li>5 配置文件或者是某些文件的格式说明</li>
+<li>6 游戏程序的帮助文档</li>
+<li>7 惯例与协议，如文件系统、网络协议等的说明</li>
+<li>8 系统管理员可用的管理命令的帮助文档</li>
+<li>9 跟系统核心有关的文件的帮助文档</li>
+</ul>
+</li>
+<li><code>man 1 read</code> 和 <code>man 2 read</code>, 不加数字默认从较小数字中寻找相关内容</li>
+</ul>
+<h1 id="关闭和重启linux"><a href="#关闭和重启linux" class="headerlink" title="关闭和重启linux"></a>关闭和重启linux</h1><p>正确步骤</p>
+<ul>
+<li>查看在线用户和在线服务</li>
+<li>通知用户关机/重启原因和时间安排</li>
+<li>下达关机或重启命令<ul>
+<li>需要root权限</li>
+<li><code>su - root</code></li>
+<li><code>shutdown -h 10 # 10min后关机</code></li>
+<li><code>shutdown -h HH:MM</code></li>
+<li><code>shutdown -h now # 立即关机</code></li>
+<li><code>shutdown -h 时间 字符串</code>字符串参数可以解释关机原因</li>
+<li><code>-r</code> 选项重启</li>
+<li><code>shutdown -c</code> 取消关机或重启</li>
+</ul>
+</li>
+<li>不安全的关机重启命令<ul>
+<li>reboot = shutdown -r now</li>
+<li>halt = shutdown -h now</li>
+<li>poweroff = halt + 切断电源指令 （不支持ACPI的机器此指令相当于halt）</li>
+<li>这三个命令在关闭系统时，删除所有进程，而非平稳终止这些进程，此时若还有其他用户在工作时，会造成数据丢失，不建议使用</li>
+</ul>
+</li>
+</ul>
+<h1 id="管理文件"><a href="#管理文件" class="headerlink" title="管理文件"></a>管理文件</h1><p>标准文件系统架构（Filesystem Hierarchy Standard/FHS）</p>
+<ul>
+<li>规定linux倒树形根目录下有哪些目录，这些目录存放什么数据</li>
+<li>根目录下至少有如下十二个目录<br><code>/bin /boot /dev /etc /home /lib /root /sbin /srv /tmp /opt /media</code><ul>
+<li>/sbin 放置root用户才能执行的命令文件</li>
+<li>/srv 服务启动之后需要访问的数据，如web服务启动之后所需要访问的网页数据默认放置在/srv/www目录下</li>
+<li>/tmp 临时存放文件目录，任何人都可以访问，重要数据不可放置在此目录下</li>
+<li>/opt 第三方软件建议安装目录，非本发行版本所提供的软件</li>
+<li>/media 移动设备相关文件，如光驱、u盘</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/linux-file-system-hierarchy.png" alt="FHS"></p>
+<ul>
+<li>工作目录<ul>
+<li>pwd命令</li>
+</ul>
+</li>
+</ul>
+<h2 id="切换创建和删除目录"><a href="#切换创建和删除目录" class="headerlink" title="切换创建和删除目录"></a>切换创建和删除目录</h2><ul>
+<li><p>特殊目录符号</p>
+<ul>
+<li><code>.</code> 当前工作目录</li>
+<li><code>..</code> 工作目录的上层目录</li>
+<li><code>-</code> 前一个工作目录</li>
+<li><code>~</code> 用户家目录<ul>
+<li>如有两个用户a和b，当前位于a的家目录，若要切换到b的家目录，可以 <code>cd ~b</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>cd命令</p>
+</li>
+<li><p>mkdir</p>
+<ul>
+<li><code>-p</code> 选项创建嵌套目录<br><code>mkdir -p /tmp/dirlevel01/dirlevel02</code></li>
+</ul>
+</li>
+<li><p>rmdir</p>
+<ul>
+<li>只能删除空目录</li>
+</ul>
+</li>
+</ul>
+<h2 id="列出文件和文件属性"><a href="#列出文件和文件属性" class="headerlink" title="列出文件和文件属性"></a>列出文件和文件属性</h2><ul>
+<li><p>列出文件</p>
+<ul>
+<li>ls [文件名|目录名|NONE]</li>
+<li>-a 列出全部文件，包括隐藏文件</li>
+<li>-l 以长格式列出文件，不仅列出文件名，还要列出文件的详细属性信息<br>包括七个字段<br>第二个字段文件<strong>硬链接</strong>数目<br>第五个字段文件大小单位<strong>字节</strong></li>
+</ul>
+<p>  -h选项可以人性化显示文件大小，当文件很大的时候有用<br>  第1,3,4字段一起决定了文件访问权限，第三个字段文件拥有者，第四字段文件从属用户组<br>  第一个字段十个字符的第一个字符表示文件类型</p>
+<pre><code>  + `-` 普通文件
+  + `d` 目录文件
+  + `c` 字符设备文件
+  + `b` 块设备文件
+  + `l` 符号链接文件</code></pre>
+</li>
+<li><p>chmod 修改文件访问属性  </p>
+<ul>
+<li><code>chmod 700 hello.sh</code></li>
+</ul>
+</li>
+<li><p>chown 修改文件拥有者和从属用户组  </p>
+<ul>
+<li><code>chown nbcc:stu hello.sh</code> 修改hello.sh的文件拥有者为nbcc，从属组为stu</li>
+<li><code>chown stu hello.sh</code> 单单修改拥有者</li>
+<li><code>chown :nbcc hello.sh</code> 单单修改从属组</li>
+</ul>
+</li>
+</ul>
+<h2 id="拷贝、剪切、删除和创建文件"><a href="#拷贝、剪切、删除和创建文件" class="headerlink" title="拷贝、剪切、删除和创建文件"></a>拷贝、剪切、删除和创建文件</h2><ul>
+<li><p>cp </p>
+<ul>
+<li><code>cp [要拷贝的文件|文件列表] [目的文件名|目的目录]</code></li>
+<li>拷贝单个文件</li>
+<li>拷贝单个文件并重命名</li>
+<li>拷贝多个文件（第一个参数填多个文件名并用空格隔开即可）</li>
+<li>拷贝目录 <code>cp -r /tmp/dir01 ~</code></li>
+<li>注意：<ul>
+<li>目标目录存在同名文件时，cp命令执行后会询问是否覆盖</li>
+<li>若有批量同名文件存在，则一次次确认很麻烦，使用下面的命令强制覆盖<br><code>\cp -f /tmp/file01 /tmp/file02 ~</code></li>
+<li>cp文件拷贝时文件属性包括文件拥有者以及文件从属组和访问权限位都有可能会发生变化，若要原原本本的拷贝，则使用-p选项, 不过需要登录用户对这个文件有写权限才可以<br><code>cp -p /tmp/sample.sh ~nbcc</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>mv</p>
+<ul>
+<li><code>mv [要移动的文件|文件列表|目录] [目的文件名|目的目录]</code></li>
+<li>移动目录时，不同于cp命令，他不需要加-r选项</li>
+<li>注意：<ul>
+<li>同名问题，类似cp命令，建议-f选项，不过命令前面不用<code>\</code></li>
+<li>可以重命名文件</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>rm</p>
+<ul>
+<li><code>rm [要删除的文件|文件列表|目录]</code> </li>
+<li>删除目录时 <code>rm -R ./dir01</code></li>
+<li><code>-f</code> 不询问，直接删除</li>
+</ul>
+</li>
+<li><p>touch </p>
+<ul>
+<li><code>touch [要创建的文件名]</code></li>
+<li>注意：<ul>
+<li><font color="red">文件已存在会修改文件的时间戳属性（最后修改时间）</font></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="文件链接"><a href="#文件链接" class="headerlink" title="文件链接"></a>文件链接</h2><ul>
+<li><p>符号链接 </p>
+<ul>
+<li>类似windows快捷方式</li>
+<li><code>ln -s [链接指向的文件] [链接名]</code> # symbolic<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$ln</span> -s ./hello.sh hello_slink</span><br><span class="line"><span class="variable">$rm</span> hello.sh <span class="comment"># 导致符号链接断裂，ls -l 查看符号链接信息，显示红色</span></span><br></pre></td></tr></table></figure></li>
+<li>数据块存放源文件的绝对路径信息，删除源文件，链接文件无法打开</li>
+</ul>
+</li>
+<li><p>硬链接</p>
+<ul>
+<li>在linux中，当划分磁盘分区并格式化的时候，整个分区会被划分为两个部分，即 <code>Inode区</code> 和 <code>Data Block区</code>。linux中随后创建的所有文件都分成两个部分存放，一部分是文件的唯一标识，位于Inode区的一个inode中，包含Inode-number以及属性信息，inode-number与inode是一一对应的。Data Block区中存放文件实际数据。linux中需要通过文件的inode来找到存放文件数据的data block。不可能有两个文件共用同一个inode，自然不会存在有两个文件的inode-number是一样的。将硬盘分区比作一本书，Inode区就是书的目录，data block区就是其内容，通过目录检索内容。  </li>
+</ul>
+<p>  <strong><code>ls -il</code> -i选项帮助列出文件inode-number</strong>，此时第一字段就是inode-number<br>  简单来说，linux中的倒树形目录就是一张表，有多少文件，就有多少表项，每个表项有两个内容，文件名和inode-number。因此linux中存取文件的过程就是通过目录中文件名找到对应inode-number，进而找到分区中文件的inode接点，最后通过inode找到文件data block区中存放的数据。<br>  有了这些知识，就可以解释硬链接了，硬链接就是目录中存在两个表项的文件名虽然不一样，但是其inode-number都是一样的，即这两个文件指向同一个分区中的inode，自然也对应分区中同一个数据块，文件inode和数据还是同一份，没有变，只不过文件多了一个名字，这个名字就被称为硬链接。</p>
+<ul>
+<li><p>ln [链接指向的文件] [链接名]</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -il /tmp/sample.txt</span><br><span class="line">ln /tmp/sample.txt ./sample_hl01</span><br><span class="line">ls -il /tmp/sample.txt ./sample_hl01</span><br><span class="line">ln /tmp/sample.txt ./sample_hl02</span><br><span class="line">ls -il /tmp/sample.txt ./sample_hl02</span><br></pre></td></tr></table></figure>
+
+<p>  <img src="http://qi0lr8tiy.hn-bkt.clouddn.com/link_understand.png" alt="软硬链接原理"></p>
+</li>
+<li><p>注意：<br>由于文件系统的限制，硬链接不如符号链接灵活<br><a href="http://c2.com/cgi/wiki?HardLink">强烈不推荐为目录创建硬链接，容易造成目录遍历死循环</a><br><a href="http://t.cn/RLXkhpc">不能跨硬盘分区创建硬链接，不同分区中文件的inode-number不再是唯一的</a></p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="归档压缩文件"><a href="#归档压缩文件" class="headerlink" title="归档压缩文件"></a>归档压缩文件</h2><p>tar命令</p>
+<ul>
+<li>古老的命令，tape archive缩写，最初是指将文件备份到磁带上</li>
+<li>多个文件前后连在一起构成一个大文件，不进行亚索</li>
+<li><code>tar -cf [打包文件名] [要打包的文件/列表]</code> -c 表示创建打包文件，-f 指定打包文件名，因为要打包的文件可能只有一个，所以打包文件名参数必须紧跟选项-f，强烈推荐打包文件名后缀为<code>.tar</code>，最终生成的打包文件会比所有被打包文件之后还要大，这是因为打包时tar命名会添加一些额外信息，再次证明tar命令不进行压缩。</li>
+<li>可以打包目录</li>
+<li><code>tar -tf ./samplefile.tar</code> 列出打包文件中的所有文件名</li>
+<li><code>tar -f ./samplefile.tar --delete tmp/file05</code> 使用delete选项删除打包文件中的指定文件</li>
+<li><code>tar -f ./samplefile01.tar -A ./samplefile.tar</code> 合并两个打包文件</li>
+<li><code>tar -f ./sampledir01.tar -r ~/fileA.txt</code> 向打包文件中添加新文件</li>
+<li><code>tar -xf ./sampledir01.tar -C ./sampledir</code> 解包，默认解包目录时当前目录，可以使用<code>-C</code>选项指定目录</li>
+</ul>
+<p>gzip解压缩文件</p>
+<ul>
+<li><code>gzip [要压缩的文件|列表]</code></li>
+<li><code>gzip ./sampledir01.tar</code></li>
+<li><code>gzip -d ./sampledir01.tar.gz</code> -d选项解压</li>
+<li>gzip还可以通过1-9的压缩比数字调节压缩时的压缩比，1是压缩后的文件最大，压缩比(压缩后文件大小/原文件)也是最大的，但是压缩过程最快。默认压缩比为6<br><code>gzip -1 samplefile01</code></li>
+</ul>
+<p>gzip只能单个地压缩文件，而不能将多个文件或者整个目录压缩到一个文件中，所以gzip需要结合tar命令一起使用，为了方便使用，tar命令提供选项方便调用gzip命令</p>
+<ul>
+<li>打包压缩<br><code>tar -czf sample.tar.gz /tmp/samplefile01 /tmp/samplefile02</code></li>
+<li>解压缩解包<br><code>tar -xzf sample.tar.gz</code> </li>
+</ul>
+<h2 id="查找文件"><a href="#查找文件" class="headerlink" title="查找文件"></a>查找文件</h2><p>locate查找较快，但功能较弱。<br>find功能强大，但查找稍慢。</p>
+<p>locate命令</p>
+<ul>
+<li><code>locate [文件名的关键字]</code></li>
+<li>查找系统中.tar文件<br><code>locate .tar</code><br>执行后发现查找非常快，你会怀疑是否真的去硬盘找了，实际上locate命令还真的没有去硬盘找，这是因为linux系统会将系统内的所有文件名都记录在一个名为<code>/var/lib/mlocate</code>数据库中，所以查找时locate会通过数据库来查，而不是遍历硬盘查。这样导致locate眼中的世界和真实世界有时候存在偏差，有时会查找到已经删除的数据，有时刚建立的文件无法查找到。这是因为数据库未实时更新造成的。这个数据库默认每天更新一次</li>
+<li>通过命令手动更新mlocate数据库<br><code>updatedb</code></li>
+</ul>
+<p>find命令</p>
+<ul>
+<li><p><code>find [查找范围] [查找条件] [动作]</code><br>查找范围缺省当前工作目录</p>
+</li>
+<li><p>根据文件名查找，未使用通配符则指代精确查找<br><code>find / -name passwd</code> </p>
+</li>
+<li><p>根据文件类型查找, d目录，f普通文件，c字符设备，b块设备，l符号链接<br><code>find /bin -type l</code></p>
+</li>
+<li><p>根据文件时间属性查找，选项共分为三组，共六个  </p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-mtime -mmin    <span class="comment"># 文件修改时间</span></span><br><span class="line">-ctime -cmin    <span class="comment"># 文件属性修改时间</span></span><br><span class="line">-atime -amin    <span class="comment"># 文件被读取/执行时间</span></span><br></pre></td></tr></table></figure>
+<p>  <code>date</code><br>  <code>find /tmp -mtime -3 -ls</code><br>  查找/tmp目录下三天内文件内容发生改变的文件<br>  <code>find /tmp -mtime +7 -ls</code><br>  查找/tmp目录下七天之前前文件内容发生改变的文件<br>  <code>find /tmp -mtime 4 -ls</code><br>  查找/tmp目录下4天前的那天文件内容发生改变的文件<br>  -mmin 选项原理类似，只不过时间单位由天改为了分钟</p>
+</li>
+<li><p>根据文件大小进行查找 </p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /tmp -size -3k -ls <span class="comment"># 查找比3k字节小的文件</span></span><br><span class="line">find /tmp -size +100c -ls <span class="comment"># 大于100字节的文件</span></span><br><span class="line">find /tmp -size 10M -ls <span class="comment"># 大小正好是10M字节的文件</span></span><br><span class="line"><span class="comment"># c 字节，k 1024字节，M 1024k，G 1024M</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据文件拥有者、所属组进行查找 </p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /tmp -user root -ls</span><br><span class="line">find /tmp -uid 500 -ls</span><br><span class="line">find /tmp -group stu -ls</span><br><span class="line">find /tmp -gid 0 -ls</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据文件权限进行查找<br>  <code>find /tmp -perm 754 -ls</code></p>
+</li>
+<li><p>联合查找<br>上面的示例都是单个条件查找，也可以联合这些条件进行查找<br><code>与 -a 或 -o 非 !</code><br><code>find /tmp \( -size +1k -a -size -10M -a -mmin -30 -a -type f \) -ls</code><br>这些查找条件需要被圆括号括起来，且括号左右都有空格，且需要转义</p>
+</li>
+<li><p><code>-exec</code></p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find /tmp \( -size +1k -a -size -10M -a -mmin -30 -a -<span class="built_in">type</span> f \) -<span class="built_in">exec</span> rm -rf &#123;&#125; \; <span class="comment"># 删除查找到的文件</span></span><br><span class="line">find ~ \( -mmin -10 -a -<span class="built_in">type</span> d \) -ls</span><br><span class="line">find ~ \( -mmin -10 -a -<span class="built_in">type</span> d \) -<span class="built_in">exec</span> tar -cf &#123;&#125;.tar &#123;&#125; \; <span class="comment"># 查找当前用户家目录下，10min内被创建或修改过的目录文件，并且将他们打包成目录同名后缀为.tar的打包文件</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>-OK</code><br>  可以使用-OK替换-exec，两者用处基本相同，但是前者以一种更为安全的模式来执行动作命令，再执行每一个命令之前都会给出提示，让用户来决定是否执行，删除文件时可以考虑使用它</p>
+</li>
+</ul>
+<h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><p>删除/tmp目录下所有后缀为.txt的文件<br><code>rm -rf *.txt</code></p>
+<ul>
+<li>* * 代表任意长度字符串</li>
+<li>？代表任意单个字符</li>
+<li>[] <ul>
+<li>[c1-c2] 匹配c1-c2字符序列中的任意单一字符，一般来说是数字或英文字符序列<br><code>cp /tmp/file[0-9].txt ~</code></li>
+<li>[c1,c2,…,cN] 匹配中括号之间字符列表中的任意单一字符<br><code>chmod 700 /tmp/script[a,1,x].sh</code></li>
+</ul>
+</li>
+<li>{}<ul>
+<li>{string1,string2,…,stringN} 匹配string1,string2直至stringN中的某个字符串<br><code>rm -rf &#123;jiaoben,script&#125;*.sh</code></li>
+</ul>
+</li>
+<li>!<ul>
+<li>一般与[]或{}连用表示取反<br><code>tar -cf file.tar /tmp/file[!0-9].txt</code></li>
+</ul>
+</li>
+</ul>
+<p><a href="http://t.cn/apYT4g">参考链接</a></p>
+<h2 id="查看文本文件"><a href="#查看文本文件" class="headerlink" title="查看文本文件"></a>查看文本文件</h2><p>linux中配置文件以及日志文件通常都采用纯文本格式存储，所以高效查看这些文本文件很有学习价值。</p>
+<p>cat （concatenate）</p>
+<ul>
+<li>连接几个文件</li>
+<li>从键盘创建文件</li>
+<li>查看文件<ul>
+<li><code>cat /etc/passwd</code></li>
+<li>一次输出文件全部内容到命令行，如果文件内容较多，超过命令行输出缓冲区，则看不到文件前面内容，其也不提供翻页和查找功能，只适合查看较小的文本文件</li>
+</ul>
+</li>
+</ul>
+<p>less/more</p>
+<ul>
+<li><code>less /var/log/messages</code></li>
+<li>上下箭头翻行，page up/down上下翻页</li>
+<li>/关键字 查找文本<ul>
+<li>n 跳转至下一处</li>
+<li>N 跳转至上一处</li>
+</ul>
+</li>
+<li>q 退出回到命令行</li>
+</ul>
+<p>head/tail</p>
+<ul>
+<li><code>head -n 20 /var/log/messages</code><br>查看文件messages文件头20行，不足20行全部显示<br>缺省-n参数，默认头10行</li>
+<li><code>tail -f notes.log</code><br>此命令显示 notes.log 文件的最后 10 行。当将某些行添加至 notes.log 文件时，tail 命令会继续显示这些行。 显示一直继续，直到您按下（Ctrl-C）组合键停止显示</li>
+<li>经常用来查看日志文件，因为日志文件都是在头尾不断输出的</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux命令</tag>
       </tags>
   </entry>
 </search>

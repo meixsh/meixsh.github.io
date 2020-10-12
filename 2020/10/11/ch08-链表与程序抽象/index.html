@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"meixsh.github.io","root":"/","scheme":"Mist","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="Life is fantastic!">
+  <meta name="description" content="数据抽象数据抽象的目的与意义数据对象  信息缺失：程序中的数据对象只有地址和值，没有数据类型、数据解释及数据意义等信息  解决手段：抽象  数据的表示：注释、有意义的数据对象名称 数据的功能：描述可以在数据上工作的操作集 数据的功能比表示更重要 例：程序员更关心整数的运算而不是计算机如何存储整数    结构化数据类型的性质 类型 细节由用户自定义，语言仅提供定义手段   成员 结构化数据类型的子数">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ch08 链表与程序抽象">
 <meta property="og:url" content="https://meixsh.github.io/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/index.html">
 <meta property="og:site_name" content="melvin&#39;s blog">
-<meta property="og:description" content="Life is fantastic!">
+<meta property="og:description" content="数据抽象数据抽象的目的与意义数据对象  信息缺失：程序中的数据对象只有地址和值，没有数据类型、数据解释及数据意义等信息  解决手段：抽象  数据的表示：注释、有意义的数据对象名称 数据的功能：描述可以在数据上工作的操作集 数据的功能比表示更重要 例：程序员更关心整数的运算而不是计算机如何存储整数    结构化数据类型的性质 类型 细节由用户自定义，语言仅提供定义手段   成员 结构化数据类型的子数">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-11T15:42:06.000Z">
-<meta property="article:modified_time" content="2020-10-11T15:44:16.411Z">
+<meta property="article:modified_time" content="2020-10-12T07:26:28.371Z">
 <meta property="article:author" content="melvin">
 <meta property="article:tag" content="数据抽象">
 <meta property="article:tag" content="链表">
@@ -201,7 +201,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -213,6 +213,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%BD%E8%B1%A1"><span class="nav-number">1.</span> <span class="nav-text">数据抽象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8A%BD%E8%B1%A1%E7%9A%84%E7%9B%AE%E7%9A%84%E4%B8%8E%E6%84%8F%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">数据抽象的目的与意义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E6%9E%84%E5%8C%96%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">1.2.</span> <span class="nav-text">结构化数据类型的性质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%B0%81%E8%A3%85"><span class="nav-number">1.3.</span> <span class="nav-text">数据封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F"><span class="nav-number">1.4.</span> <span class="nav-text">信息隐藏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.5.</span> <span class="nav-text">抽象数据类型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">链表</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88"><span class="nav-number">3.</span> <span class="nav-text">函数指针</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E9%93%BE%E8%A1%A8"><span class="nav-number">4.</span> <span class="nav-text">抽象链表</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -228,20 +229,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -315,10 +316,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-10-11 23:42:06 / 修改时间：23:44:16" itemprop="dateCreated datePublished" datetime="2020-10-11T23:42:06+08:00">2020-10-11</time>
+      <time title="创建时间：2020-10-11 23:42:06" itemprop="dateCreated datePublished" datetime="2020-10-11T23:42:06+08:00">2020-10-11</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-10-12 15:26:28" itemprop="dateModified" datetime="2020-10-12T15:26:28+08:00">2020-10-12</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -344,7 +351,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>0</span>
+      <span>891</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -362,7 +369,69 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h1 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h1><h2 id="数据抽象的目的与意义"><a href="#数据抽象的目的与意义" class="headerlink" title="数据抽象的目的与意义"></a>数据抽象的目的与意义</h2><p>数据对象</p>
+<ul>
+<li>信息缺失：程序中的数据对象只有地址和值，没有数据类型、数据解释及数据意义等信息</li>
+</ul>
+<p>解决手段：抽象</p>
+<ul>
+<li>数据的表示：注释、有意义的数据对象名称</li>
+<li>数据的功能：描述可以在数据上工作的操作集</li>
+<li>数据的功能比表示更重要<ul>
+<li>例：程序员更关心整数的运算而不是计算机如何存储整数</li>
+</ul>
+</li>
+</ul>
+<h2 id="结构化数据类型的性质"><a href="#结构化数据类型的性质" class="headerlink" title="结构化数据类型的性质"></a>结构化数据类型的性质</h2><ul>
+<li>类型<ul>
+<li>细节由用户自定义，语言仅提供定义手段</li>
+</ul>
+</li>
+<li>成员<ul>
+<li>结构化数据类型的子数据对象</li>
+</ul>
+</li>
+<li>成员类型<ul>
+<li>每个成员具有确切的类型</li>
+</ul>
+</li>
+<li>成员数目<ul>
+<li>部分结构化数据类型可变，部分固定</li>
+</ul>
+</li>
+<li>成员组织<ul>
+<li>成员组织结构（线性结构或非线性结构）必须显式定义</li>
+</ul>
+</li>
+<li>操作集<ul>
+<li>可以在数据上进行的操作集合</li>
+</ul>
+</li>
+</ul>
+<h2 id="数据封装"><a href="#数据封装" class="headerlink" title="数据封装"></a>数据封装</h2><ul>
+<li>数据封装：将数据结构的细节隐藏起来</li>
+<li>实现方式：分别实现访问数据成员的存取函数</li>
+<li>数据封装示例<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> capacity;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> count;</span><br><span class="line">    <span class="keyword">int</span> *items;</span><br><span class="line">    <span class="keyword">bool</span> modified;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">DiGetCount</span><span class="params">(DYNINTS *a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!a) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;DiGetCount: Parameter illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> a-&gt;count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h2><ul>
+<li><p>数据封装的问题</p>
+<ul>
+<li>只要将结构体类型定义在头文件中，库的使用者就可以看到该定义，并按照成员格式直接访问，而不调用存取函数</li>
+</ul>
+</li>
+<li><p>解决方法</p>
+<ul>
+<li>将结构体类型的具体细节定义在源文件中，所有针对该类型量的操作都只能通过函数接口来进行，从而隐藏实现细节</li>
+</ul>
+</li>
+<li><p>信息隐藏示例</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*头文件“dynarray.h”*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span>;</span>  <span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span> * <span class="title">PDYNINTS</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*源文件“dynarray.cpp”*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DYNINTS</span>&#123;</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> capacity;  <span class="keyword">unsigned</span> <span class="keyword">int</span> count;  <span class="keyword">int</span> * items;  <span class="keyword">bool</span> modified;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="抽象数据类型"><a href="#抽象数据类型" class="headerlink" title="抽象数据类型"></a>抽象数据类型</h2><h1 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h1><h1 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h1><h1 id="抽象链表"><a href="#抽象链表" class="headerlink" title="抽象链表"></a>抽象链表</h1>
     </div>
 
     
@@ -479,14 +548,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">29k</span>
+    <span title="站点总字数">37k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">26 分钟</span>
+    <span title="站点阅读时长">34 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
