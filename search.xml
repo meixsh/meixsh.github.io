@@ -1010,6 +1010,8 @@
 </ul>
 </li>
 </ul>
+<a id="more"></a>
+
 <h2 id="结构化数据类型的性质"><a href="#结构化数据类型的性质" class="headerlink" title="结构化数据类型的性质"></a>结构化数据类型的性质</h2><ul>
 <li>类型<ul>
 <li>细节由用户自定义，语言仅提供定义手段</li>
@@ -1101,8 +1103,88 @@
       </categories>
   </entry>
   <entry>
-    <title>Linux系统管理之管理文件</title>
-    <url>/2020/10/12/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/</url>
+    <title>Linux系统管理-重定向 &amp; 管道</title>
+    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E9%87%8D%E5%AE%9A%E5%90%91-%E7%AE%A1%E9%81%93/</url>
+    <content><![CDATA[<h1 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h1><blockquote>
+<p>Do one thing and do it well. 一次只做一件事，并做到最好<br>Unix创建者，图灵奖获得者，ken Thompson</p>
+</blockquote>
+<blockquote>
+<p>Unix 3 准则<br>一次只做一件事，并做到最好<br>能够与其他程序协同工作<br>能够处理文本流<br>美国工程院院士 计算机大师 Doug Mcllroy 扩充</p>
+</blockquote>
+<a id="more"></a>
+
+<p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/redirect.png" alt="输入输出重定向"><br>一般来说，终端用户通过键盘输入所期待执行的命令，这些命令可能包含选项<br>和参数，linux中的标准输入流从键盘读取用户输入的命令信息，根据用户所输入的命令要求，调用命令，命令执行成功，则结果通过标准输出流输出到显示器，命令执行失败，则通过错误输出流输出到显示器。<br>输入输出重定向就是改变标准输入流，标准输出流以及错误输出流所默认关联的输入输出文件。</p>
+<ul>
+<li><p>标准输出重定向<br><code>ls -l /tmp/example 1&gt; ./stdout.txt</code><br><code>cat ./stdout.txt</code><br>注意：如果./stdout.txt本来不在，文件将被创建，原本存在，内容将被覆盖！<br><code>ls -l /tmp/example 1&gt;&gt; ./stdout.txt</code><br>使用 <code>&gt;&gt;</code> 命令输出追加至文件原来内容的后面，不覆盖<br><code>ls -l /tmp/example/file01 /tmp/example/file02 1&gt; ./stdout.txt 2&gt; ./stderr.txt</code><br>分别指定标准输出以及错误输出重定向文件<br><code>ls -l /tmp/example/file01 /tmp/example/file02 &amp;&gt; std.txt</code><br>使用 <code>&amp;&gt;</code> 将标准输出与错误输出重定向至一个文件</p>
+</li>
+<li><p>利用输出重定向结合touch命令创建文件<br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot;</code><br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot; &gt; fruit.txt</code><br><code>cat ./fruit.txt</code></p>
+</li>
+<li><p>忽略命令错误输出<br><code>ls -l /tmp/example/file01 /tmp/example/file04 2&gt;&gt;/dev/null</code></p>
+</li>
+<li><p>标准输入重定向 <code>&lt; &lt;&lt;</code></p>
+<ul>
+<li>结合tr命令  <strong>transform</strong><br>tr命令从标准输入中替换特定字符，并将结果写到标准输出<br><code>tr [准备要替换的字符] [要替换成的字符]</code><br><code>tr &#39; &#39; &#39;\t&#39; &lt;./fruit.txt</code></li>
+<li>结合sort命令<br>here doucument<br><code>sort -k [关键字字段序号] [要排序的文本文件]</code><br>sort命令本来要接受一个文本文件作为参数，这里使用标准输入重定向here document的用法，通过指定一对相同的文件界定符，将从键盘输入的内容作为文件传递给sort命令，这里使用EOF作为界定符，但是也可以自定义，注意结尾EOF界定符一定要顶格写，前面不能有任何字符，前后无空格。    <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ <span class="built_in">echo</span> -e <span class="string">&#x27;1 apple\n2 pear\n3 banana&#x27;</span> &gt; fruit.txt</span><br><span class="line">mgl@mgl:~/workspace/shell$ cat fruit.txt </span><br><span class="line">1 apple</span><br><span class="line">2 pear</span><br><span class="line">3 banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ tr <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;\t&#x27;</span> &lt; ./fruit.txt </span><br><span class="line">1	apple</span><br><span class="line">2	pear</span><br><span class="line">3	banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ sort -k2 &lt;&lt;EOF</span><br><span class="line">&gt; 1 apple</span><br><span class="line">&gt; 2 pear</span><br><span class="line">&gt; 3 banana</span><br><span class="line">&gt; EOF</span><br><span class="line">1 apple</span><br><span class="line">3 banana</span><br><span class="line">2 pear</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>管道本质上就是一种特殊的输入输出重定向，将一个命令的标准输出重定向为另一个命令的标准输入，在Linux环境中，完成复杂的任务，往往需要构造命令管道。</p>
+<p>管道操作符 <code>|</code></p>
+<p>使用管道操作符连接命令执行序列时，管道操作符右边的命令必须可以接收标准输入才可以，能接收标准输入的命令不多，大多数是一些文本处理命令，包括 <code>grep, cut, head, tail, less, more, wc, tr, sort</code> 等</p>
+<ul>
+<li><p>命令输出分页查看<br><code>ls -al /etc | less</code></p>
+</li>
+<li><p>grep 命令  </p>
+<ul>
+<li>一个非常强大的文本搜索工具，可以使用正则表达式来匹配文本</li>
+<li>grep 正则表达式  </li>
+<li><a href="http://t.cn/RLs31YV">正则表达式学习资料</a></li>
+<li><code>grep [关键字] [目标文件]</code></li>
+<li><code>ls -al /etc | grep &#39;ssh&#39;</code></li>
+</ul>
+</li>
+</ul>
+<p>文本提取和统计处理</p>
+<ul>
+<li><p>cut 文本切割命令</p>
+<ul>
+<li>用于切割文本文件或者标准输出中的指定列并输出</li>
+<li>可以用 -c 选项按字符列切割文本，其后的数字表示要切割的字符列序号，支持切割多列，数字之间用逗号隔开即可</li>
+<li><code>cat ~/install.log | cut -c1,2</code></li>
+<li>联合 -d -f 选项按指定分隔符切割文本，-d指定分隔符，-f指定切割后的字段序列号</li>
+<li><code>cat /etc/passwd | cut -f1 -d&quot;:&quot;</code></li>
+</ul>
+</li>
+<li><p>wc 文本统计命令</p>
+<ul>
+<li>统计文本文件或者标准输出中的，<code>文本行数，单词数以及字节数</code></li>
+<li>-l 选项 仅仅统计文本行数</li>
+<li><code>wc -l /etc/passwd</code></li>
+</ul>
+</li>
+<li><p>统计当前用户家目录下所有目录文件的数目<br><code>ls -al ~ | cut -c1 | grep &quot;d&quot; | wc -l</code>  </p>
+</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li>管道不会传递错误输出  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni | wc -l</span><br><span class="line">ls: cannot access <span class="string">&#x27;/sbni&#x27;</span>: No such file or directory</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni 2&gt;/dev/null | wc -l</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
+  如上，错误输出会直接输出到终端，而不进入管道进行下一步处理，如果不想看到错误输出，直接重定向错误输出至/dev/null文件即可</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>重定向</tag>
+        <tag>管道</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-安装 &amp; 管理文件</title>
+    <url>/2020/10/12/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E5%AE%89%E8%A3%85-%E7%AE%A1%E7%90%86%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h1 id="安装Linux系统"><a href="#安装Linux系统" class="headerlink" title="安装Linux系统"></a>安装Linux系统</h1><h2 id="选择安装镜像"><a href="#选择安装镜像" class="headerlink" title="选择安装镜像"></a>选择安装镜像</h2><ul>
 <li>32位机 i386, 64位机 x86_64</li>
 <li><a href="https://www.igorware.com/64bit-checker">64bit Checker</a> 工具确定windows主机是否是64位机</li>
