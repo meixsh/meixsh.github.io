@@ -1590,4 +1590,180 @@
         <tag>linux命令</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Linux系统管理-vi使用方法</title>
+    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-vi%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="vi-入门"><a href="#vi-入门" class="headerlink" title="vi 入门"></a>vi 入门</h1><ul>
+<li>vi几乎是所有linux发行版的标准配置，功能丰富，效率极高，久经考验  </li>
+<li>vi的改进版本vim (Vi IMproved), vim向前完美兼容vi</li>
+<li>vim存在多个版本<ul>
+<li><code>vim --version</code></li>
+<li>微型，小型，普通，大型，巨型</li>
+<li>越大版本包括的功能越多</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<p>vim是一种模式编辑器，包括三种基本模式</p>
+<h2 id="一般模式-普通模式"><a href="#一般模式-普通模式" class="headerlink" title="一般模式/普通模式"></a>一般模式/普通模式</h2><ul>
+<li>该模式下无法输入字符只能输入动作指令，如移动光标，删除，复制，粘贴等，进入vi一开始的模式</li>
+<li>屏幕左下方显示文件名或者空白</li>
+</ul>
+<h2 id="插入模式"><a href="#插入模式" class="headerlink" title="插入模式"></a>插入模式</h2><ul>
+<li>该模式下可以输入字符</li>
+<li>由一般模式按下i键，进入，屏幕左下方显示当前为插入模式</li>
+<li>编辑一首程序员打油诗  <figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">A very intelligent turtle.</span><br><span class="line">Found programming Linux hurdle.</span><br><span class="line">The system, you see.</span><br><span class="line">Ran as slow as did he.</span><br><span class="line">And that&#x27;s not saying much for the turtle.</span><br></pre></td></tr></table></figure></li>
+<li>ESC退出编辑模式，回到一般模式</li>
+<li>移动光标，h 左，j 下，k上，l 右，也可通过方向键移动，但不建议</li>
+<li>删除一个字符，光标移动到要删除的字符，按x键即可删除</li>
+<li>删除一行，dd命令</li>
+<li>删除换行符，J，大写的j, shift + j</li>
+<li>撤销最后一个编辑，u</li>
+<li>反撤销，ctrl + r</li>
+<li>退出vim，:wq [保存的文件名]</li>
+</ul>
+<h2 id="命令行模式"><a href="#命令行模式" class="headerlink" title="命令行模式"></a>命令行模式</h2><ul>
+<li>该模式下可以执行一些命令，如打开，保存，查找，替换等</li>
+<li>一般模式下键入 : 进入命令模式</li>
+<li>:wq详解<ul>
+<li>: 进入命令模式</li>
+<li>w 保存文件</li>
+<li>q 退出编辑器程序</li>
+</ul>
+</li>
+<li>:q!<ul>
+<li>放弃所有修改</li>
+<li>! 强制修饰符，告诉编辑器无需保存</li>
+</ul>
+</li>
+</ul>
+<h1 id="vi-初探"><a href="#vi-初探" class="headerlink" title="vi 初探"></a>vi 初探</h1><h2 id="vi高级操作"><a href="#vi高级操作" class="headerlink" title="vi高级操作"></a>vi高级操作</h2><p>使用vi稍微高级一点的操作完成一个12步骤的稍微复杂的任务</p>
+<h3 id="预备工作"><a href="#预备工作" class="headerlink" title="预备工作"></a>预备工作</h3><ul>
+<li><code>mkdir /tmp/vimtest</code></li>
+<li><code>cd /tmp/vimtest</code></li>
+<li><code>cp /etc/man.config .</code></li>
+<li><code>vim ./man.config</code></li>
+</ul>
+<h3 id="开始任务"><a href="#开始任务" class="headerlink" title="开始任务"></a>开始任务</h3><ol>
+<li><p>设定行号</p>
+<ul>
+<li>属于vi编辑环境参数设置</li>
+<li>进入命令行模式</li>
+<li>设置，<code>:set 环境参数</code></li>
+<li>取消设置，<code>:set no环境参数</code></li>
+<li>设置行号，<code>:set nu</code></li>
+<li>取消设置行号，<code>:set nonu</code></li>
+<li>查看vi支持的所有环境参数，<code>:set all</code>，上百个</li>
+</ul>
+</li>
+<li><p>移动到第58行行首，再向右移动30个字符，移动到第8行行尾，再向左移动3列，最后移动到文件末行</p>
+<ul>
+<li>使用数字加移动命令键快速精确移动光标</li>
+<li><code>n + 移动命令键</code></li>
+<li>向右移动8个字符, <code>8l</code></li>
+<li>向下移动3行, <code>3j</code> </li>
+<li>移动到文件首行，<code>gg</code></li>
+<li>移动到文件末行，<code>G</code></li>
+<li>移动到当前行首，<code>0</code></li>
+<li>移动到当前行尾，<code>$</code></li>
+<li>G和$结合可以数字使用</li>
+<li>移动到第3行行首，<code>3G</code></li>
+<li>下移10行，并定位到行尾，<code>10$</code></li>
+<li>下面是第2步操作  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gg</span><br><span class="line">57j <span class="comment"># 这两步可以替换为58G</span></span><br><span class="line">30l</span><br><span class="line">8G</span><br><span class="line">$</span><br><span class="line">3l</span><br><span class="line">G</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>移动到第1行行首，并且向下搜寻一下”man”这个字符串</p>
+<ul>
+<li>gg</li>
+<li>一般模式下键入 <code>/</code> 进入命令行模式</li>
+<li>输入man从光标处向下搜寻man</li>
+<li>用n/N遍历所有的man字符串</li>
+</ul>
+</li>
+<li><p>将50到100行之间的man替换为MAN，并且一个一个挑选是否需要替换</p>
+<ul>
+<li>替换基本模式, <code>n1,n2s/word1/word2/gc</code></li>
+<li>n1, n2是数字表示行号</li>
+<li>使用word2替换word1</li>
+<li>c表示要询问用户是否替换</li>
+<li>下面是第4步操作  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">:50,100s/man/MAN/gc</span><br></pre></td></tr></table></figure></li>
+<li>可以使用<code>$</code>表示文件末行</li>
+<li>全文查找替换，<code>1,$s/man/MAN/g</code></li>
+</ul>
+</li>
+<li><p>复制51到60行这十行的内容，并且粘贴到最后一行之后</p>
+<ul>
+<li>复制光标所在行，<code>yy</code></li>
+<li>复制从光标行开始的向下n行，<code>nyy</code></li>
+<li>在光标的下一行粘贴，<code>p</code></li>
+<li>下面是第5步操作  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">51G</span><br><span class="line">10yy</span><br><span class="line">G</span><br><span class="line">p</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除11到30行之间的20行，去第29行首，并且删除15个字符</p>
+<ul>
+<li>删除光标所在行, <code>dd</code></li>
+<li>删除光标行开始的向下n行，<code>ndd</code></li>
+<li>删除字符，<code>x</code></li>
+<li>删除光标处开始的n个字符，<code>nx</code></li>
+<li>下面是第6步操作  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">11G</span><br><span class="line">20dd</span><br><span class="line">29G</span><br><span class="line">15x</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>撤销前面所有的修改</p>
+<ul>
+<li>撤销一次修改，<code>u</code></li>
+<li>撤销全部操作，<code>:e!</code></li>
+</ul>
+</li>
+<li><p>将这个文件另存成一个名为man.config.bak的文件</p>
+<ul>
+<li><code>:w man.config.bak</code></li>
+</ul>
+</li>
+<li><p>在最后一行后插入当前目录下turtle.txt文件内容并保存</p>
+<ul>
+<li><code>G</code></li>
+<li><code>:r ./turtle.txt</code> &nbsp; &nbsp; # r是读文件命令</li>
+<li><code>:w</code></li>
+</ul>
+</li>
+<li><p>同时打开man.config.bak和man.config</p>
+<ul>
+<li>打开多个文件，<code>vim 文件1 文件2 ... 文件n</code></li>
+<li>多个文件切换，<code>:n :N</code> &nbsp; &nbsp; # n 打开的下一个文件，N上一个</li>
+</ul>
+</li>
+<li><p>将man.config.bak中插入的turtle.txt文件内容的第1列到第10列拷贝粘贴到man.config中</p>
+<ul>
+<li>需要进入特殊模式，可视模式</li>
+<li>进入可视模式，一般模式按<code>ctr + v</code>进入，屏幕左下方会显示当前处于可视模式</li>
+<li>控制光标(hjkl)选取，y复制，进入下一个文件，G最后一行，p粘贴</li>
+</ul>
+</li>
+<li><p>存储两个文件后退出vim</p>
+<ul>
+<li><code>:wq</code></li>
+</ul>
+</li>
+</ol>
+<p>参考资料：  </p>
+<ul>
+<li><a href="http://www.vim.org/docs.php">vim官方文档</a></li>
+<li>《vim实用技巧》</li>
+<li>《学习vi和vim编辑器》</li>
+</ul>
+<p>复制一个字符，几个字符</p>
+<ul>
+<li>进入可视模式选择好之后，按y复制</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>vi</tag>
+      </tags>
+  </entry>
 </search>
