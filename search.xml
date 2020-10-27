@@ -350,150 +350,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux系统管理-重定向 &amp; 管道</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E9%87%8D%E5%AE%9A%E5%90%91-%E7%AE%A1%E9%81%93/</url>
-    <content><![CDATA[<h1 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h1><blockquote>
-<p>Do one thing and do it well. 一次只做一件事，并做到最好<br>Unix创建者，图灵奖获得者，ken Thompson</p>
-</blockquote>
-<blockquote>
-<p>Unix 3 准则<br>一次只做一件事，并做到最好<br>能够与其他程序协同工作<br>能够处理文本流<br>美国工程院院士 计算机大师 Doug Mcllroy 扩充</p>
-</blockquote>
-<a id="more"></a>
-
-<p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/redirect.png" alt="输入输出重定向"><br>一般来说，终端用户通过键盘输入所期待执行的命令，这些命令可能包含选项<br>和参数，linux中的标准输入流从键盘读取用户输入的命令信息，根据用户所输入的命令要求，调用命令，命令执行成功，则结果通过标准输出流输出到显示器，命令执行失败，则通过错误输出流输出到显示器。<br>输入输出重定向就是改变标准输入流，标准输出流以及错误输出流所默认关联的输入输出文件。</p>
-<ul>
-<li><p>标准输出重定向<br><code>ls -l /tmp/example 1&gt; ./stdout.txt</code><br><code>cat ./stdout.txt</code><br>注意：如果./stdout.txt本来不在，文件将被创建，原本存在，内容将被覆盖！<br><code>ls -l /tmp/example 1&gt;&gt; ./stdout.txt</code><br>使用 <code>&gt;&gt;</code> 命令输出追加至文件原来内容的后面，不覆盖<br><code>ls -l /tmp/example/file01 /tmp/example/file02 1&gt; ./stdout.txt 2&gt; ./stderr.txt</code><br>分别指定标准输出以及错误输出重定向文件<br><code>ls -l /tmp/example/file01 /tmp/example/file02 &amp;&gt; std.txt</code><br>使用 <code>&amp;&gt;</code> 将标准输出与错误输出重定向至一个文件</p>
-</li>
-<li><p>利用输出重定向结合touch命令创建文件<br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot;</code><br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot; &gt; fruit.txt</code><br><code>cat ./fruit.txt</code></p>
-</li>
-<li><p>忽略命令错误输出<br><code>ls -l /tmp/example/file01 /tmp/example/file04 2&gt;&gt;/dev/null</code></p>
-</li>
-<li><p>标准输入重定向 <code>&lt; &lt;&lt;</code></p>
-<ul>
-<li>结合tr命令  <strong>transform</strong><br>tr命令从标准输入中替换特定字符，并将结果写到标准输出<br><code>tr [准备要替换的字符] [要替换成的字符]</code><br><code>tr &#39; &#39; &#39;\t&#39; &lt;./fruit.txt</code></li>
-<li>结合sort命令<br>here doucument<br><code>sort -k [关键字字段序号] [要排序的文本文件]</code><br>sort命令本来要接受一个文本文件作为参数，这里使用标准输入重定向here document的用法，通过指定一对相同的文件界定符，将从键盘输入的内容作为文件传递给sort命令，这里使用EOF作为界定符，但是也可以自定义，注意结尾EOF界定符一定要顶格写，前面不能有任何字符，前后无空格。    <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ <span class="built_in">echo</span> -e <span class="string">&#x27;1 apple\n2 pear\n3 banana&#x27;</span> &gt; fruit.txt</span><br><span class="line">mgl@mgl:~/workspace/shell$ cat fruit.txt </span><br><span class="line">1 apple</span><br><span class="line">2 pear</span><br><span class="line">3 banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ tr <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;\t&#x27;</span> &lt; ./fruit.txt </span><br><span class="line">1	apple</span><br><span class="line">2	pear</span><br><span class="line">3	banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ sort -k2 &lt;&lt;EOF</span><br><span class="line">&gt; 1 apple</span><br><span class="line">&gt; 2 pear</span><br><span class="line">&gt; 3 banana</span><br><span class="line">&gt; EOF</span><br><span class="line">1 apple</span><br><span class="line">3 banana</span><br><span class="line">2 pear</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>管道本质上就是一种特殊的输入输出重定向，将一个命令的标准输出重定向为另一个命令的标准输入，在Linux环境中，完成复杂的任务，往往需要构造命令管道。</p>
-<p>管道操作符 <code>|</code></p>
-<p>使用管道操作符连接命令执行序列时，管道操作符右边的命令必须可以接收标准输入才可以，能接收标准输入的命令不多，大多数是一些文本处理命令，包括 <code>grep, cut, head, tail, less, more, wc, tr, sort</code> 等</p>
-<ul>
-<li><p>命令输出分页查看<br><code>ls -al /etc | less</code></p>
-</li>
-<li><p>grep 命令  </p>
-<ul>
-<li>一个非常强大的文本搜索工具，可以使用正则表达式来匹配文本</li>
-<li>grep 正则表达式  </li>
-<li><a href="http://t.cn/RLs31YV">正则表达式学习资料</a></li>
-<li><code>grep [关键字] [目标文件]</code></li>
-<li><code>ls -al /etc | grep &#39;ssh&#39;</code></li>
-</ul>
-</li>
-</ul>
-<p>文本提取和统计处理</p>
-<ul>
-<li><p>cut 文本切割命令</p>
-<ul>
-<li>用于切割文本文件或者标准输出中的指定列并输出</li>
-<li>可以用 -c 选项按字符列切割文本，其后的数字表示要切割的字符列序号，支持切割多列，数字之间用逗号隔开即可</li>
-<li><code>cat ~/install.log | cut -c1,2</code></li>
-<li>联合 -d -f 选项按指定分隔符切割文本，-d指定分隔符，-f指定切割后的字段序列号</li>
-<li><code>cat /etc/passwd | cut -f1 -d&quot;:&quot;</code></li>
-</ul>
-</li>
-<li><p>wc 文本统计命令</p>
-<ul>
-<li>统计文本文件或者标准输出中的，<code>文本行数，单词数以及字节数</code></li>
-<li>-l 选项 仅仅统计文本行数</li>
-<li><code>wc -l /etc/passwd</code></li>
-</ul>
-</li>
-<li><p>统计当前用户家目录下所有目录文件的数目<br><code>ls -al ~ | cut -c1 | grep &quot;d&quot; | wc -l</code>  </p>
-</li>
-</ul>
-<p><strong>注意：</strong></p>
-<ul>
-<li>管道不会传递错误输出  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni | wc -l</span><br><span class="line">ls: cannot access <span class="string">&#x27;/sbni&#x27;</span>: No such file or directory</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni 2&gt;/dev/null | wc -l</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
-  如上，错误输出会直接输出到终端，而不进入管道进行下一步处理，如果不想看到错误输出，直接重定向错误输出至/dev/null文件即可</li>
-</ul>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>重定向</tag>
-        <tag>管道</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux系统管理-管理网络</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
-    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
-<ul>
-<li>查看网络接口<ul>
-<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
-<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
-<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
-</ul>
-</li>
-<li>操纵网络接口<ul>
-<li>启动<br><code>ifconfig eth1 up</code>    </li>
-<li>关闭<br><code>ifconfig eth1 down</code></li>
-<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
-</ul>
-</li>
-</ul>
-<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
-<ul>
-<li>重启网络服务<ul>
-<li>service network restart</li>
-</ul>
-</li>
-</ul>
-<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
-<p>编辑网络配置文件</p>
-<ul>
-<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
-<li>ifcfg-ethN 网卡配置文件</li>
-</ul>
-</li>
-<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>重启网络服务</p>
-<ul>
-<li>service network restart</li>
-</ul>
-<p>测试网络连通性</p>
-<ul>
-<li>ping -c 主机名/IP地址<ul>
-<li>线路是否连接好</li>
-<li>交换机或路由器是否打开，路由表</li>
-<li>防火墙设置</li>
-</ul>
-</li>
-</ul>
-<p>测试dns配置</p>
-<ul>
-<li>dig命令</li>
-<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
-<li>dig 域名</li>
-<li><code>dig www.baidu.com</code></li>
-</ul>
-<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>linux网络配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux系统管理-管理硬盘</title>
     <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%A1%AC%E7%9B%98/</url>
     <content><![CDATA[<h1 id="查看硬盘"><a href="#查看硬盘" class="headerlink" title="查看硬盘"></a>查看硬盘</h1><p>硬盘命名规则</p>
@@ -633,6 +489,150 @@
         <tag>硬盘分区</tag>
         <tag>硬盘格式化</tag>
         <tag>硬盘挂载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-管理网络</title>
+    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
+    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
+<ul>
+<li>查看网络接口<ul>
+<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
+<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
+<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
+</ul>
+</li>
+<li>操纵网络接口<ul>
+<li>启动<br><code>ifconfig eth1 up</code>    </li>
+<li>关闭<br><code>ifconfig eth1 down</code></li>
+<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
+</ul>
+</li>
+</ul>
+<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
+<ul>
+<li>重启网络服务<ul>
+<li>service network restart</li>
+</ul>
+</li>
+</ul>
+<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
+<p>编辑网络配置文件</p>
+<ul>
+<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
+<li>ifcfg-ethN 网卡配置文件</li>
+</ul>
+</li>
+<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>重启网络服务</p>
+<ul>
+<li>service network restart</li>
+</ul>
+<p>测试网络连通性</p>
+<ul>
+<li>ping -c 主机名/IP地址<ul>
+<li>线路是否连接好</li>
+<li>交换机或路由器是否打开，路由表</li>
+<li>防火墙设置</li>
+</ul>
+</li>
+</ul>
+<p>测试dns配置</p>
+<ul>
+<li>dig命令</li>
+<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
+<li>dig 域名</li>
+<li><code>dig www.baidu.com</code></li>
+</ul>
+<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>linux网络配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-重定向 &amp; 管道</title>
+    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E9%87%8D%E5%AE%9A%E5%90%91-%E7%AE%A1%E9%81%93/</url>
+    <content><![CDATA[<h1 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h1><blockquote>
+<p>Do one thing and do it well. 一次只做一件事，并做到最好<br>Unix创建者，图灵奖获得者，ken Thompson</p>
+</blockquote>
+<blockquote>
+<p>Unix 3 准则<br>一次只做一件事，并做到最好<br>能够与其他程序协同工作<br>能够处理文本流<br>美国工程院院士 计算机大师 Doug Mcllroy 扩充</p>
+</blockquote>
+<a id="more"></a>
+
+<p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/redirect.png" alt="输入输出重定向"><br>一般来说，终端用户通过键盘输入所期待执行的命令，这些命令可能包含选项<br>和参数，linux中的标准输入流从键盘读取用户输入的命令信息，根据用户所输入的命令要求，调用命令，命令执行成功，则结果通过标准输出流输出到显示器，命令执行失败，则通过错误输出流输出到显示器。<br>输入输出重定向就是改变标准输入流，标准输出流以及错误输出流所默认关联的输入输出文件。</p>
+<ul>
+<li><p>标准输出重定向<br><code>ls -l /tmp/example 1&gt; ./stdout.txt</code><br><code>cat ./stdout.txt</code><br>注意：如果./stdout.txt本来不在，文件将被创建，原本存在，内容将被覆盖！<br><code>ls -l /tmp/example 1&gt;&gt; ./stdout.txt</code><br>使用 <code>&gt;&gt;</code> 命令输出追加至文件原来内容的后面，不覆盖<br><code>ls -l /tmp/example/file01 /tmp/example/file02 1&gt; ./stdout.txt 2&gt; ./stderr.txt</code><br>分别指定标准输出以及错误输出重定向文件<br><code>ls -l /tmp/example/file01 /tmp/example/file02 &amp;&gt; std.txt</code><br>使用 <code>&amp;&gt;</code> 将标准输出与错误输出重定向至一个文件</p>
+</li>
+<li><p>利用输出重定向结合touch命令创建文件<br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot;</code><br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot; &gt; fruit.txt</code><br><code>cat ./fruit.txt</code></p>
+</li>
+<li><p>忽略命令错误输出<br><code>ls -l /tmp/example/file01 /tmp/example/file04 2&gt;&gt;/dev/null</code></p>
+</li>
+<li><p>标准输入重定向 <code>&lt; &lt;&lt;</code></p>
+<ul>
+<li>结合tr命令  <strong>transform</strong><br>tr命令从标准输入中替换特定字符，并将结果写到标准输出<br><code>tr [准备要替换的字符] [要替换成的字符]</code><br><code>tr &#39; &#39; &#39;\t&#39; &lt;./fruit.txt</code></li>
+<li>结合sort命令<br>here doucument<br><code>sort -k [关键字字段序号] [要排序的文本文件]</code><br>sort命令本来要接受一个文本文件作为参数，这里使用标准输入重定向here document的用法，通过指定一对相同的文件界定符，将从键盘输入的内容作为文件传递给sort命令，这里使用EOF作为界定符，但是也可以自定义，注意结尾EOF界定符一定要顶格写，前面不能有任何字符，前后无空格。    <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ <span class="built_in">echo</span> -e <span class="string">&#x27;1 apple\n2 pear\n3 banana&#x27;</span> &gt; fruit.txt</span><br><span class="line">mgl@mgl:~/workspace/shell$ cat fruit.txt </span><br><span class="line">1 apple</span><br><span class="line">2 pear</span><br><span class="line">3 banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ tr <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;\t&#x27;</span> &lt; ./fruit.txt </span><br><span class="line">1	apple</span><br><span class="line">2	pear</span><br><span class="line">3	banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ sort -k2 &lt;&lt;EOF</span><br><span class="line">&gt; 1 apple</span><br><span class="line">&gt; 2 pear</span><br><span class="line">&gt; 3 banana</span><br><span class="line">&gt; EOF</span><br><span class="line">1 apple</span><br><span class="line">3 banana</span><br><span class="line">2 pear</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>管道本质上就是一种特殊的输入输出重定向，将一个命令的标准输出重定向为另一个命令的标准输入，在Linux环境中，完成复杂的任务，往往需要构造命令管道。</p>
+<p>管道操作符 <code>|</code></p>
+<p>使用管道操作符连接命令执行序列时，管道操作符右边的命令必须可以接收标准输入才可以，能接收标准输入的命令不多，大多数是一些文本处理命令，包括 <code>grep, cut, head, tail, less, more, wc, tr, sort</code> 等</p>
+<ul>
+<li><p>命令输出分页查看<br><code>ls -al /etc | less</code></p>
+</li>
+<li><p>grep 命令  </p>
+<ul>
+<li>一个非常强大的文本搜索工具，可以使用正则表达式来匹配文本</li>
+<li>grep 正则表达式  </li>
+<li><a href="http://t.cn/RLs31YV">正则表达式学习资料</a></li>
+<li><code>grep [关键字] [目标文件]</code></li>
+<li><code>ls -al /etc | grep &#39;ssh&#39;</code></li>
+</ul>
+</li>
+</ul>
+<p>文本提取和统计处理</p>
+<ul>
+<li><p>cut 文本切割命令</p>
+<ul>
+<li>用于切割文本文件或者标准输出中的指定列并输出</li>
+<li>可以用 -c 选项按字符列切割文本，其后的数字表示要切割的字符列序号，支持切割多列，数字之间用逗号隔开即可</li>
+<li><code>cat ~/install.log | cut -c1,2</code></li>
+<li>联合 -d -f 选项按指定分隔符切割文本，-d指定分隔符，-f指定切割后的字段序列号</li>
+<li><code>cat /etc/passwd | cut -f1 -d&quot;:&quot;</code></li>
+</ul>
+</li>
+<li><p>wc 文本统计命令</p>
+<ul>
+<li>统计文本文件或者标准输出中的，<code>文本行数，单词数以及字节数</code></li>
+<li>-l 选项 仅仅统计文本行数</li>
+<li><code>wc -l /etc/passwd</code></li>
+</ul>
+</li>
+<li><p>统计当前用户家目录下所有目录文件的数目<br><code>ls -al ~ | cut -c1 | grep &quot;d&quot; | wc -l</code>  </p>
+</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li>管道不会传递错误输出  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni | wc -l</span><br><span class="line">ls: cannot access <span class="string">&#x27;/sbni&#x27;</span>: No such file or directory</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni 2&gt;/dev/null | wc -l</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
+  如上，错误输出会直接输出到终端，而不进入管道进行下一步处理，如果不想看到错误输出，直接重定向错误输出至/dev/null文件即可</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>重定向</tag>
+        <tag>管道</tag>
       </tags>
   </entry>
   <entry>
@@ -893,57 +893,6 @@
       </tags>
   </entry>
   <entry>
-    <title>学习计划</title>
-    <url>/2020/10/12/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</url>
-    <content><![CDATA[<a id="more"></a>
-
-<p>编程类</p>
-<ul>
-<li>c++</li>
-<li>linux系统管理</li>
-<li>linux系统编程</li>
-<li>汇编语言 AT&amp;T</li>
-<li>操作系统</li>
-<li>Android应用开发</li>
-<li>软件工程</li>
-<li>多媒体</li>
-<li>算法设计与分析</li>
-<li>数据结构</li>
-<li>大数据</li>
-<li>分布式</li>
-<li>编译原理</li>
-</ul>
-<p>数学类</p>
-<ul>
-<li>微积分</li>
-<li>线性代数</li>
-<li>概率论与数理统计</li>
-<li>离散数学</li>
-</ul>
-<p>最近想的很多，看的很杂，越发感觉时间过得太快了，之前荒废了好多大好时光，学习不成系统，导致各个方面看起来都懂一点，但是停留在表层，对于核心概念和原理理解模糊，就好比是一栋破烂的危楼。</p>
-<p>近期想尽快调整下状态，完成基础知识的重新系统学习，搭建较为完整牢固的知识脉络，计划先完成</p>
-<ul>
-<li>c++</li>
-<li>汇编</li>
-<li>操作系统</li>
-</ul>
-<p>第一阶段，上面的三门课程并行学习，做好学习笔记，同步更新博客，每门课程安排10天的学习时间，总共30天。这期间需要保持自律，睡眠时间控制在一天7小时，剩余时间尽量不要玩。</p>
-<ul>
-<li>linux内核源码分析</li>
-<li>数据结构</li>
-</ul>
-<p>第二阶段，上面的两门课程并行学习，做好学习笔记，同步更新博客，linux内核源码分析，预计至少需要15天学习，数据结构至少需要14天学习。</p>
-<ul>
-<li>Android应用开发</li>
-<li>多媒体</li>
-<li>软件工程</li>
-</ul>
-]]></content>
-      <categories>
-        <category>学习计划</category>
-      </categories>
-  </entry>
-  <entry>
     <title>ch06 复合数据类型</title>
     <url>/2020/10/10/ch06-%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<h1 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h1><h2 id="字符类型、字符文字与量"><a href="#字符类型、字符文字与量" class="headerlink" title="字符类型、字符文字与量"></a>字符类型、字符文字与量</h2><ul>
@@ -1122,26 +1071,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/10/10/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>ch08 链表与程序抽象</title>
     <url>/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/</url>
     <content><![CDATA[<h1 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h1><h2 id="数据抽象的目的与意义"><a href="#数据抽象的目的与意义" class="headerlink" title="数据抽象的目的与意义"></a>数据抽象的目的与意义</h2><p>数据对象</p>
@@ -1304,7 +1233,7 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIInsert</span><span class="params">(PLIST <span class="built_in">list</span>, PPOINT point, <span class="keyword">unsigned</span> <span class="keyword">int</span> pos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">list</span> || !point)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;LIInsert: Parameter illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pos &lt; <span class="built_in">list</span>-&gt;count)</span><br><span class="line">    &#123;</span><br><span class="line">        PNODE t = <span class="keyword">new</span> NODE;</span><br><span class="line">        t-&gt;data = point;</span><br><span class="line">        t-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">if</span> (pos == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            t-&gt;next = <span class="built_in">list</span>-&gt;head;</span><br><span class="line">            <span class="built_in">list</span>-&gt;head = t;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">            PNODE u = <span class="built_in">list</span>-&gt;head;</span><br><span class="line">            <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; pos - <span class="number">1</span>; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                u = u-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            t-&gt;next = u-&gt;next;</span><br><span class="line">            u-&gt;next = t;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">list</span>-&gt;count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        LIAppend(<span class="built_in">list</span>, point);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h4 id="结点的删除"><a href="#结点的删除" class="headerlink" title="结点的删除"></a>结点的删除</h4><p><img src="/.io//node-del.png"></p>
-
+<img src="/.io//10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-del.jpg" class title="图片描述">
 
 <p>表中或表尾删除的操作步骤</p>
 <ul>
@@ -1346,6 +1275,77 @@
         <tag>函数指针</tag>
         <tag>抽象链表</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/10/10/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<a id="more"></a>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>学习计划</title>
+    <url>/2020/10/12/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</url>
+    <content><![CDATA[<a id="more"></a>
+
+<p>编程类</p>
+<ul>
+<li>c++</li>
+<li>linux系统管理</li>
+<li>linux系统编程</li>
+<li>汇编语言 AT&amp;T</li>
+<li>操作系统</li>
+<li>Android应用开发</li>
+<li>软件工程</li>
+<li>多媒体</li>
+<li>算法设计与分析</li>
+<li>数据结构</li>
+<li>大数据</li>
+<li>分布式</li>
+<li>编译原理</li>
+</ul>
+<p>数学类</p>
+<ul>
+<li>微积分</li>
+<li>线性代数</li>
+<li>概率论与数理统计</li>
+<li>离散数学</li>
+</ul>
+<p>最近想的很多，看的很杂，越发感觉时间过得太快了，之前荒废了好多大好时光，学习不成系统，导致各个方面看起来都懂一点，但是停留在表层，对于核心概念和原理理解模糊，就好比是一栋破烂的危楼。</p>
+<p>近期想尽快调整下状态，完成基础知识的重新系统学习，搭建较为完整牢固的知识脉络，计划先完成</p>
+<ul>
+<li>c++</li>
+<li>汇编</li>
+<li>操作系统</li>
+</ul>
+<p>第一阶段，上面的三门课程并行学习，做好学习笔记，同步更新博客，每门课程安排10天的学习时间，总共30天。这期间需要保持自律，睡眠时间控制在一天7小时，剩余时间尽量不要玩。</p>
+<ul>
+<li>linux内核源码分析</li>
+<li>数据结构</li>
+</ul>
+<p>第二阶段，上面的两门课程并行学习，做好学习笔记，同步更新博客，linux内核源码分析，预计至少需要15天学习，数据结构至少需要14天学习。</p>
+<ul>
+<li>Android应用开发</li>
+<li>多媒体</li>
+<li>软件工程</li>
+</ul>
+]]></content>
+      <categories>
+        <category>学习计划</category>
+      </categories>
   </entry>
   <entry>
     <title>hexo + github 搭建个人博客</title>
@@ -1439,6 +1439,20 @@
       </tags>
   </entry>
   <entry>
+    <title>立足当下，未来可期</title>
+    <url>/2020/10/20/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
+    <content><![CDATA[<p>科研、论文 &amp; PPT，想到这些，总是会有意或无意的走神，一天下来，没多少产出，这是为啥呢？因为不热爱啊，我不是很适合走科研这条路，没啥成就感。但是，在deadline以及白纸黑字的要求面前，还是要坚持做下去，已然没有多大兴趣了，此时更不能乱了章法，需要自己为自己设立阶段性的小目标，这个目标需要清晰明确以及可行，垫垫脚再伸伸手就能够到，而不是去靠自己想象中的谜一般的自律，因为人性这个东西作为人你很难与之抗争，贪玩和懒惰是人的本性。在面对一个复杂且较为陌生的问题面前，大多数人都是会后退的，这是很自然的，所以，在面对此类问题时，首先战术上需要保持自信乐观的心态，其次在战略上对其进行分而治之，从逻辑上思考如何将问题进行拆分，然后针对每一个小点，有针对性的学习处理的方式，此过程中需要按照前面说的，制定清晰明确的小目标，如此一来，即使是复杂的问题，也会变得有迹可循。我相信水滴石穿。希望自己通过日积月累地实践可以渐渐培养起自己这方面的能力，这种能力会受益终身，无论是工作还是生活。</p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>操作系统实验0</title>
+    <url>/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C0/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>操作系统-系统启动、中断、异常和系统调用</title>
     <url>/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<h1 id="启动前的准备"><a href="#启动前的准备" class="headerlink" title="启动前的准备"></a>启动前的准备</h1><h2 id="启动时计算机内存和磁盘布局"><a href="#启动时计算机内存和磁盘布局" class="headerlink" title="启动时计算机内存和磁盘布局"></a>启动时计算机内存和磁盘布局</h2><p><img src="/.io//%E5%90%AF%E5%8A%A8%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="启动内存布局"></p>
@@ -1464,20 +1478,6 @@
         <tag>异常</tag>
         <tag>系统调用</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>操作系统实验0</title>
-    <url>/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C0/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>立足当下，未来可期</title>
-    <url>/2020/10/20/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
-    <content><![CDATA[<p>科研、论文 &amp; PPT，想到这些，总是会有意或无意的走神，一天下来，没多少产出，这是为啥呢？因为不热爱啊，我不是很适合走科研这条路，没啥成就感。但是，在deadline以及白纸黑字的要求面前，还是要坚持做下去，已然没有多大兴趣了，此时更不能乱了章法，需要自己为自己设立阶段性的小目标，这个目标需要清晰明确以及可行，垫垫脚再伸伸手就能够到，而不是去靠自己想象中的谜一般的自律，因为人性这个东西作为人你很难与之抗争，贪玩和懒惰是人的本性。在面对一个复杂且较为陌生的问题面前，大多数人都是会后退的，这是很自然的，所以，在面对此类问题时，首先战术上需要保持自信乐观的心态，其次在战略上对其进行分而治之，从逻辑上思考如何将问题进行拆分，然后针对每一个小点，有针对性的学习处理的方式，此过程中需要按照前面说的，制定清晰明确的小目标，如此一来，即使是复杂的问题，也会变得有迹可循。我相信水滴石穿。希望自己通过日积月累地实践可以渐渐培养起自己这方面的能力，这种能力会受益终身，无论是工作还是生活。</p>
-]]></content>
-      <categories>
-        <category>生活</category>
-      </categories>
   </entry>
   <entry>
     <title>Linux系统管理-安装 &amp; 管理文件</title>
