@@ -350,6 +350,213 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux系统管理-管理硬盘</title>
+    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%A1%AC%E7%9B%98/</url>
+    <content><![CDATA[<h1 id="查看硬盘"><a href="#查看硬盘" class="headerlink" title="查看硬盘"></a>查看硬盘</h1><p>硬盘命名规则</p>
+<ul>
+<li>linux一切皆文件</li>
+<li>/dev/xxy</li>
+<li>xx：<ul>
+<li>sd: scsi,sata,usb</li>
+<li>hd: ide</li>
+</ul>
+</li>
+<li>y:<ul>
+<li>a-z，表示使用此类接口的第几个硬盘</li>
+</ul>
+</li>
+<li>示例：/dev/hdd<ul>
+<li>表示第4个使用IDE接口的磁盘</li>
+</ul>
+</li>
+<li>示例：/dev/sdb<ul>
+<li>表示第2个使用scsi，sata或usb接口的磁盘</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>    
+
+<p>分区命名规则</p>
+<ul>
+<li>文件形式出现</li>
+<li>/dev/xxyn</li>
+<li>比硬盘名字多了一个n，n表示分区</li>
+<li>主分区或者扩展分区用数字1-4表示，逻辑分区5以后</li>
+<li>示例：/dev/hda3<ul>
+<li>表示第1个IDE硬盘上的第3个主分区或扩展分区</li>
+</ul>
+</li>
+<li>示例：/dev/sdb6<ul>
+<li>表示第2个scsi，sata或usb硬盘上的第2个逻辑分区</li>
+</ul>
+</li>
+</ul>
+<p><a href="http://t.cn/RLrffqN">参考资料</a></p>
+<p>fdisk命令</p>
+<ul>
+<li>该命令功能很多，查看硬盘和分区只是他的功能之一</li>
+<li><code>fdisk -l 硬盘名/分区名</code></li>
+<li><code>fdisk -l /dev/sda</code><ul>
+<li>硬盘基本参数：硬盘容量，磁头数，每磁道扇区数，总柱面数，每个柱面的容量，每个扇区的容量，硬盘标识符。显示的柱面、磁头、扇区等参数是逻辑值，并不是实际硬盘物理参数，就比如固态ssd，物理上就没有盘片磁头扇区这些物理零件，但ssd的接口规范和定义、功能及使用方法与普机械式硬盘完全相同，因此，逻辑上ssd也有柱面、磁头、扇区等参数</li>
+<li>磁盘分区情况：未分区的磁盘此部分信息时空白，分好区的磁盘，每行代表一个分区。分区名；标准DOS PC主引导记录标识，对于grup引导程序无意义；start和end标识分区起始和结束柱面；blocks标识大小为1k块的数量，块数量后面有加号，表示分区中的扇区没有全部被使用，Id表示分区的预期用途，不代表真实用途，类型82表示linux交换分区，83表示linux数据分区</li>
+</ul>
+</li>
+<li>扇区是磁盘的最小逻辑和物理单元</li>
+</ul>
+<h1 id="分区和格式化硬盘"><a href="#分区和格式化硬盘" class="headerlink" title="分区和格式化硬盘"></a>分区和格式化硬盘</h1><p>500G硬盘，划分为5个分区，分区1主分区采用ext4文件系统100G，分区2 ext4 64G, 分区3 windows兼容的vfat 64G, 分区4 ext4 120G, 分区5 余下剩余空间 ext4</p>
+<p>采用fdisk工具完成分区格式硬盘</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fdisk -l /dev/sdb</span><br><span class="line">fdisk /dev/sdb <span class="comment"># 进入fdisk分区界面</span></span><br><span class="line"><span class="comment"># 忽略提示和警告信息，最后一行是fdisk的快捷键提示行，在其后的冒号后面可以输入fdisk的快捷键进行分区操作</span></span><br><span class="line"><span class="comment"># 建立第一个主分区</span></span><br><span class="line">n <span class="comment"># 新建分区</span></span><br><span class="line">p <span class="comment"># 主分区</span></span><br><span class="line">1 <span class="comment"># 分区号</span></span><br><span class="line">+100G <span class="comment"># 设定分区大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个扩展分区</span></span><br><span class="line">n</span><br><span class="line">e</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个逻辑分区</span></span><br><span class="line">n</span><br><span class="line">l   <span class="comment"># 建立好了扩展分区之后，分区类型中就不提示再建立扩展分区e了，而替代为逻辑分区 l</span></span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第二个逻辑分区 </span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立最后一个分区</span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"><span class="comment"># 结束柱面号选择默认值，表示剩下所有空间都划到此分区</span></span><br><span class="line"></span><br><span class="line">w <span class="comment"># 保存分区信息进入分区表</span></span><br><span class="line">q <span class="comment"># 退出，若发现分区时配置分区大小分区号有误，可以输入q退出，不保存</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改分区System Id信息使之与真正的文件系统类型一致</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">l <span class="comment"># 列出linux默认支持的文件系统类型 255种</span></span><br><span class="line">t <span class="comment"># 修改分区system id</span></span><br><span class="line">6 <span class="comment"># 修改第二个逻辑分区</span></span><br><span class="line">c <span class="comment"># 修改分区类型序号为c，表示fat32</span></span><br><span class="line">w <span class="comment"># 修改写入分区表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除分区, 并重新按要求划分为两个分区sdb7 120G 和 sdb8使用剩余所有空间</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">d</span><br><span class="line">7</span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+120G</span><br><span class="line"></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"></span><br><span class="line">w</span><br></pre></td></tr></table></figure>
+
+<p>划分好了分区之后，就可以格式化分区了，只需记住两个命令</p>
+<p>mkfs命令</p>
+<ul>
+<li><code>mkfs -t ext4 /dev/sdb1</code></li>
+</ul>
+<p>mkswap命令</p>
+<ul>
+<li>为linux 交换分区创建文件系统</li>
+<li>交换分区一般在安装系统的时候就创建好了</li>
+<li><code>mkswap /dev/sdb7</code></li>
+</ul>
+<h1 id="手动挂载和卸载分区"><a href="#手动挂载和卸载分区" class="headerlink" title="手动挂载和卸载分区"></a>手动挂载和卸载分区</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /project_mooc</span><br><span class="line"><span class="built_in">cd</span> /project_mooc</span><br><span class="line">mkdir finished material shared audio video</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+
+<p>mount命令挂载分区</p>
+<ul>
+<li><code>mount -t 分区类型 分区名 挂载点</code>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ext4 /dev/sdb1 /project_mooc/finished/</span><br><span class="line">mount</span><br></pre></td></tr></table></figure></li>
+<li><code>mount -o 挂载后行为 分区名 挂载点</code><ul>
+<li>分区挂载后的一些行为属性，是否可以写入文件，是否允许在此分区上运行可执行文件，是否允许普通用户挂载、卸载此分区等</li>
+<li>以只读属性挂载分区5<br><code>mount -t ext4 -o ro /dev/sdb5 /project_mooc/material/</code></li>
+<li>9个挂载属性</li>
+</ul>
+</li>
+</ul>
+<p>umount命令卸载分区</p>
+<ul>
+<li>umount 分区名或挂载点</li>
+<li>umount /dev/sdb8</li>
+<li>分区中文件正在被访问时，是无法被卸载的</li>
+<li>退出分区目录，再执行卸载</li>
+</ul>
+<p>如果挂载点本来就存在文件，挂载分区后，那些文件暂时无法访问，只有分区被卸载之后，才可以访问</p>
+<p>注意：</p>
+<ol>
+<li>请尽量将分区挂载在空目录上</li>
+<li>不要将同一个分区多次挂载到不同目录上</li>
+</ol>
+<h1 id="开机自动挂载分区"><a href="#开机自动挂载分区" class="headerlink" title="开机自动挂载分区"></a>开机自动挂载分区</h1><p>一般通过上面命令挂载的分区，在机器重启后就不见了，需要重新挂载，很麻烦，但是可以通过/etc/fstab文件实现开机自动挂载分区</p>
+<p>/etc/fstab文件详解</p>
+<ul>
+<li>起作用的配置行，每行对应于1个在开机时被挂载的分区，每行6个字段</li>
+<li>字段1，指定挂载的设备文件，可以是/dev目录下的设备文件，如/dev/sdb1, 或者是通过设备标签或UUID指定要挂载的设备，如<code>LABEL=某个设备标签</code> 或 <code>UUID=某个设备UUID</code>, 用设备标签或UUID来指定要挂载的设备更加安全和稳定</li>
+<li>字段2，挂载点，指定挂在设备的目录，对于swap实际上是没有挂载点的，该处就显示swap</li>
+<li>字段3，挂载分区文件系统类型</li>
+<li>字段4，挂载参数，指定文件系统挂载后的一些行为属性，可以有多个参数，用逗号分隔</li>
+<li>字段5，dump参数，该参数被dump命令用来检查一个文件系统是否应该进行dump备份，若不需要就设置为0，如果需要每天备份的，该字段设置为1，如果需要不定期备份的，设置为2</li>
+<li>字段6，开机检查分区的次序，该字段被fsck命令用来确定系统开机进行文件系统检查时的顺序，对于根分区，该值应设置为1，表示优先，其他文件系统可以设置为2，表示次优，如果最后一个字段值为0或没有设置，开机将跳过此文件系统的检查</li>
+</ul>
+<p>添加/etc/fstab文件配置行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;dev&#x2F;sdb1   &#x2F;project_mooc&#x2F;finished  ext4 defaults 0 0</span><br></pre></td></tr></table></figure>
+
+<p>上面的自动挂载做法有时会有点问题，假设主机上有若干块可以热插拔的硬盘，在主机运行过程中，这些硬盘会被经常性的插拔，因此硬盘的次序包括硬盘的设备名会经常性的发生改变，如sdb下次会变成sdc，显然如果遇到这样的问题，我们的自动挂载就会出问题了，那么如何保证/etc/fstab中配置的设备能正确地挂载到挂载点上呢？  </p>
+<p>标签</p>
+<ul>
+<li>标签：分区别名</li>
+<li>为分区加上标签的命令e2label<ul>
+<li>e2label 分区设备名称 标签名</li>
+<li><code>e2label /dev/sdb5 material_disk</code></li>
+</ul>
+</li>
+<li>/etc/fstab配置行  <ul>
+<li>LABEL=material_disk /project_mooc/…<br>#LABEL大写 等号左右无空格</li>
+</ul>
+</li>
+<li>标签的问题是不具备唯一性，有时会有标签重名的情况，此时系统挂载时就不知道挂载哪个分区了，最保险的做法是UUID</li>
+</ul>
+<p>UUID</p>
+<ul>
+<li>universally unique identifier</li>
+<li>与设备名和标签对比，存在如下优点<ul>
+<li>真正的唯一标志符，UUID为系统中的存储设备提供了一个唯一的标识字符串，与分区标签不同，系统中不会出现两个设备UUID相同的情况</li>
+</ul>
+</li>
+<li>列出系统中所有存储设备的uuid，<code>blkid命令</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>硬盘分区</tag>
+        <tag>硬盘格式化</tag>
+        <tag>硬盘挂载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-管理网络</title>
+    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
+    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
+<ul>
+<li>查看网络接口<ul>
+<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
+<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
+<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
+</ul>
+</li>
+<li>操纵网络接口<ul>
+<li>启动<br><code>ifconfig eth1 up</code>    </li>
+<li>关闭<br><code>ifconfig eth1 down</code></li>
+<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
+</ul>
+</li>
+</ul>
+<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
+<ul>
+<li>重启网络服务<ul>
+<li>service network restart</li>
+</ul>
+</li>
+</ul>
+<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
+<p>编辑网络配置文件</p>
+<ul>
+<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
+<li>ifcfg-ethN 网卡配置文件</li>
+</ul>
+</li>
+<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>重启网络服务</p>
+<ul>
+<li>service network restart</li>
+</ul>
+<p>测试网络连通性</p>
+<ul>
+<li>ping -c 主机名/IP地址<ul>
+<li>线路是否连接好</li>
+<li>交换机或路由器是否打开，路由表</li>
+<li>防火墙设置</li>
+</ul>
+</li>
+</ul>
+<p>测试dns配置</p>
+<ul>
+<li>dig命令</li>
+<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
+<li>dig 域名</li>
+<li><code>dig www.baidu.com</code></li>
+</ul>
+<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>linux网络配置</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux系统管理-重定向 &amp; 管道</title>
     <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E9%87%8D%E5%AE%9A%E5%90%91-%E7%AE%A1%E9%81%93/</url>
     <content><![CDATA[<h1 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h1><blockquote>
@@ -426,6 +633,184 @@
       <tags>
         <tag>重定向</tag>
         <tag>管道</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ch06 复合数据类型</title>
+    <url>/2020/10/10/ch06-%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h1 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h1><h2 id="字符类型、字符文字与量"><a href="#字符类型、字符文字与量" class="headerlink" title="字符类型、字符文字与量"></a>字符类型、字符文字与量</h2><ul>
+<li>定义格式：char ch; const char cch = ‘C’;</li>
+<li>字符文字使用单引号对</li>
+<li>实际存储时字符类型量存储字符对应ASCII值</li>
+<li>可使用 signed 与 unsigned 修饰字符类型</li>
+</ul>
+<a id="more"></a>
+
+<h2 id="字符表示的等价性"><a href="#字符表示的等价性" class="headerlink" title="字符表示的等价性"></a>字符表示的等价性</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line"><span class="keyword">char</span> a = <span class="number">65</span>;</span><br><span class="line"><span class="keyword">char</span> a = <span class="number">0101</span>;</span><br><span class="line"><span class="keyword">char</span> a = <span class="number">0x41</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h2><p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/ascii.png" alt="ascii码表"></p>
+<ul>
+<li><p>控制字符、通信专用字符、可打印字符</p>
+</li>
+<li><p>回车与换行<br>Windows：\n\r<br>Linux：\n<br>Mac：\r<br>由来：早期电传打字机每秒打印10个字符，换行需要0.2秒，为保证新传输的字符不丢失，每打印一行需要传递额外两个字符控制打字机换行（打字机走纸一行）和回车（打印头移动到最左端）。移植到计算机上时，传递两个字符有些浪费，因此不同系统的实现策略发生了分歧</p>
+</li>
+</ul>
+<h2 id="字符量的数学运算"><a href="#字符量的数学运算" class="headerlink" title="字符量的数学运算"></a>字符量的数学运算</h2><p>编写函数，判断某个字符是否为数字</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">IsDigit</span><span class="params">( <span class="keyword">char</span> c )</span>			<span class="keyword">bool</span> <span class="title">IsDigit</span><span class="params">( <span class="keyword">char</span> c )</span></span></span><br><span class="line"><span class="function"></span>&#123;					&#123;</span><br><span class="line">  <span class="keyword">if</span>( c &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;9&#x27;</span> )		  <span class="keyword">if</span>( c &gt;= <span class="number">48</span> &amp;&amp; c &lt;= <span class="number">57</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;				    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">else</span>					  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;			    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;					&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编写函数，将字符转换为大写字符</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">ToUpperCase</span><span class="params">( <span class="keyword">char</span> c )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>( c &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;z&#x27;</span> )</span><br><span class="line">    <span class="keyword">return</span> c – <span class="string">&#x27;a&#x27;</span> + <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="标准字符特征库"><a href="#标准字符特征库" class="headerlink" title="标准字符特征库"></a>标准字符特征库</h2><ul>
+<li>c标准字符特征库：ctype.h/cctype</li>
+<li>标准字符特征库常用函数<br>　bool isalnum( char c );<br>　bool isalpha( char c );<br>　bool isdigit( char c );<br>　bool islower( char c );<br>　bool isspace( char c );<br>　bool isupper( char c );<br>　char tolower( char c );<br>　char toupper( char c );  </li>
+</ul>
+<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><h2 id="数组的意义与性质"><a href="#数组的意义与性质" class="headerlink" title="数组的意义与性质"></a>数组的意义与性质</h2><p>数组的定义</p>
+<ul>
+<li>定义格式：元素类型  数组名称[常数表达式];</li>
+<li>示例：int a[8];  /* 定义包含 8 个整数元素的数组 */</li>
+</ul>
+<p>特别说明</p>
+<ul>
+<li>常数表达式必须是常数和常量，不允许为变量<br>错误示例：int count = 8;    int c[count];</li>
+<li>数组元素编号从 0 开始计数，元素访问格式为 a[0]、a[1]、……  </li>
+<li>不允许对数组进行整体赋值操作，只能使用循环逐一复制元素<br>错误示例三：int a[8], b[8];    a = b;</li>
+</ul>
+<p>意义与性质</p>
+<ul>
+<li>将相同性质的数据元素组织成整体，构成单一维度上的数据序列</li>
+</ul>
+<h2 id="数组的存储表示"><a href="#数组的存储表示" class="headerlink" title="数组的存储表示"></a>数组的存储表示</h2><p>数组元素依次连续存放，中间没有空闲空间</p>
+<p>数组的地址</p>
+<ul>
+<li>数组的基地址：数组开始存储的物理位置</li>
+<li>数组首元素的基地址：数组首个元素开始存储的物理地址，数值上总是与数组基地址相同</li>
+<li>“&amp;”操作符：&amp;a 获得数组的基地址；&amp;a[0] 获得数组首元素的基地址，数组名a其实可以不用加取地址符号，即可表示地址</li>
+<li>设数组基地址为 p，并设每个元素的存储空间为 m，则第 i 个元素的基地址为 p + m*i</li>
+</ul>
+<h2 id="数组元素的访问"><a href="#数组元素的访问" class="headerlink" title="数组元素的访问"></a>数组元素的访问</h2><h3 id="数组元素的初始化"><a href="#数组元素的初始化" class="headerlink" title="数组元素的初始化"></a>数组元素的初始化</h3><p>基本初始化格式</p>
+<ul>
+<li>定义格式：元素类型  数组名称[元素个数] = { 值1, 值2, 值3, …… };<br>示例一：int a[8] = { 1, 2, 3, 4, 5, 6, 7, 8 };</li>
+</ul>
+<p>初始化时省略元素个数表达式</p>
+<ul>
+<li>在全部元素均初始化时可以不列写元素个数，使用 sizeof 操作符可以获得元素个数<br>示例二：int a[] = { 1, 2, 3, 4, 5, 6, 7, 8 };<br><code>int num_of_elements = sizeof( a ) / sizeof( a[0] );</code><br>sizeof(a) 获取数组存储空间大小（以字节为单位），sizeof(a[0]) 获取数组首元素的存储空间大小</li>
+</ul>
+<p>sizeof 运算符可以对数据类型或变量求大小，当求数据类型大小时，必须加括号，求变量大小时，加不加括号都可以</p>
+<h3 id="数组基本操作示例"><a href="#数组基本操作示例" class="headerlink" title="数组基本操作示例"></a>数组基本操作示例</h3><p>编写程序，使用数组存储用户输入的 5 个整数，并计算它们的和</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i, a[<span class="number">5</span>], result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Integer No. &quot;</span> &lt;&lt; i + <span class="number">1</span> &lt;&lt; <span class="string">&quot;: &quot;</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ )</span><br><span class="line">    result += a[i];  </span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;The sum of elements of the array is &quot;</span> &lt;&lt; result &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组与函数"><a href="#数组与函数" class="headerlink" title="数组与函数"></a>数组与函数</h2><h3 id="数组元素作为函数实际参数"><a href="#数组元素作为函数实际参数" class="headerlink" title="数组元素作为函数实际参数"></a>数组元素作为函数实际参数</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Add</span><span class="params">( <span class="keyword">int</span> x, <span class="keyword">int</span> y )</span></span>&#123;  <span class="keyword">return</span>( x + y ); &#125;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">2</span>] = &#123; <span class="number">1</span>, <span class="number">2</span> &#125;, sum;</span><br><span class="line">sum = Add( a[<span class="number">0</span>], a[<span class="number">1</span>] );</span><br></pre></td></tr></table></figure>
+
+<h3 id="数组整体作为函数形式参数"><a href="#数组整体作为函数形式参数" class="headerlink" title="数组整体作为函数形式参数"></a>数组整体作为函数形式参数</h3><ul>
+<li>基本格式：<code>返回值类型  函数名称( 元素类型  数组名称[],  元素个数类型  元素个数 )</code><br>示例：<code>void GenerateIntegers( int a[], unsigned int n );</code><br><font color="red">特别说明：作为函数形式参数时，数组名称后的中括号内不需列写元素个数，必须使用单独的参数传递元素个数信息</font></li>
+</ul>
+<p>编写函数，随机生成 n 个位于[lower, upper]区间的整数并保存到数组中</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n, <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  Randomize();</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">    a[i] = GenerateRandomNumber( lower, upper );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接书写常数：只能操作 8 个元素的数组！</p>
+<p>不写常数：不知道元素个数，易出错</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接书写变量：错误！</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 元素元素个数不允许为量 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[n], <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用格式</p>
+<ul>
+<li>使用单独数组名称作为函数实际参数，传递数组基地址而不是数组元素值</li>
+<li>形式参数与实际参数使用相同存储区，对数组形式参数值得改变会自动反应到实际参数中</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  NUMBER_OF_ELEMENTS  8</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> lower_bound = <span class="number">10</span>;</span><br><span class="line">count <span class="keyword">int</span> upper_bound = <span class="number">99</span>;</span><br><span class="line"><span class="keyword">int</span> a[NUMBER_OF_ELEMENTS];</span><br><span class="line">GenerateIntegers(a, NUMBER_OF_ELEMENTS, lower_bound, upper_bound);</span><br></pre></td></tr></table></figure>
+
+<h3 id="编程练习"><a href="#编程练习" class="headerlink" title="编程练习"></a>编程练习</h3><p>编写程序，随机生成8个10～99之间的整数保存到数组中，然后将这些元素颠倒过来</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">arrmanip.h</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n, <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReverseIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SwapIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> i, <span class="keyword">unsigned</span> <span class="keyword">int</span> j )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PrintIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">main.cpp</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;arrmanip.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUMBER_OF_ELEMENTS 8</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> lower_bound = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> upper_bound = <span class="number">99</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a[NUMBER_OF_ELEMENTS];</span><br><span class="line">  GenerateIntegers( a, NUMBER_OF_ELEMENTS, lower_bound, upper_bound );</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Array generated at random as follows: \n&quot;</span>;</span><br><span class="line">  PrintIntegers( a, NUMBER_OF_ELEMENTS );</span><br><span class="line">  ReverseIntegers( a, NUMBER_OF_ELEMENTS );</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;After all elements of the array reversed: \n&quot;</span>;</span><br><span class="line">  PrintIntegers( a, NUMBER_OF_ELEMENTS );</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">arrmanip.cpp</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;random.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;arrmanip.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n, <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  Randomize();</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">    a[i] = GenerateRandomNumber( lower, upper );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReverseIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n / <span class="number">2</span>; i++ )</span><br><span class="line">    SwapIntegers( a, i, n - i - <span class="number">1</span> );</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SwapIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> i, <span class="keyword">unsigned</span> <span class="keyword">int</span> j )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> t;</span><br><span class="line">  t = a[i],  a[i] = a[j],  a[j] = t;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PrintIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; setw(<span class="number">3</span>) &lt;&lt; a[i];</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><h3 id="多维数组的定义"><a href="#多维数组的定义" class="headerlink" title="多维数组的定义"></a>多维数组的定义</h3><ul>
+<li>定义格式：<code>元素类型  数组名称[常数表达式1] [常数表达式2]…;</code><br>　示例一：int a[2][2];  /* 2×2 个整数元素的二维数组 */<br>　示例二：int b[2][3][4];  /* 2×3×4 个整数元素数组 */</li>
+<li>特别说明：同单维数组</li>
+<li>多维数组的初始化<br>　与一维数组类似： int a[2][3] = {1, 2, 3, 4, 5, 6};<br>　单独初始化每一维： int a[2][3] = { {1, 2, 3}, {4, 5, 6} };</li>
+</ul>
+<h3 id="多维数组的存储布局"><a href="#多维数组的存储布局" class="headerlink" title="多维数组的存储布局"></a>多维数组的存储布局</h3><ul>
+<li>同单维数组，先行后列顺序存放</li>
+</ul>
+<h3 id="编程练习-1"><a href="#编程练习-1" class="headerlink" title="编程练习"></a>编程练习</h3><p><strong>测量湖泊水深</strong><br>在湖面上等距离打上网格，分别测量每个网格的水深，就可以从整体上表示湖泊的情况。图中每个网格中的数字表示水深，值为 0 的表示湖岸，数字 1～5 表示水深（单位为米），每网格对应实际面积为5m×5m。编写程序，计算湖泊的面积和平均水深<br><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/lake_depth.png" alt="湖泊水深"></p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  NUM_OF_X_GRIDS  9</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  NUM_OF_Y_GRIDS  4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> lake_region_depths[NUM_OF_Y_GRIDS][NUM_OF_X_GRIDS] =</span><br><span class="line">&#123;</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span> &#125;,</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">5.0</span>, <span class="number">5.0</span>, <span class="number">3.0</span>, <span class="number">2.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span> &#125;,</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">4.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">2.0</span>, <span class="number">2.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span> &#125;,</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> lake_grid_width = <span class="number">5.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">double</span> num_of_lake_grids = <span class="number">0.0</span>, lake_area = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">double</span> total_lake_depth = <span class="number">0.0</span>, mean_lake_depth = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i, j;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; NUM_OF_Y_GRIDS; i++ )&#123;</span><br><span class="line">    <span class="keyword">for</span>( j = <span class="number">0</span>; j &lt; NUM_OF_X_GRIDS; j++ )&#123;</span><br><span class="line">      <span class="keyword">if</span>( lake_region_depths[i][j] &gt; <span class="number">0</span> )&#123;</span><br><span class="line">        num_of_lake_grids += <span class="number">1.0</span>;</span><br><span class="line">        total_lake_depth += lake_region_depths[i][j];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  lake_area = lake_grid_width * lake_grid_width * num_of_lake_grids;</span><br><span class="line">  mean_lake_depth = total_lake_depth / num_of_lake_grids;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Area of the lake is &quot;</span> &lt;&lt; lake_area &lt;&lt; <span class="string">&quot;(m2)&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Mean depth of the lake is &quot;</span> &lt;&lt; mean_lake_depth &lt;&lt; <span class="string">&quot;(m)&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h1><h2 id="结构体的意义与性质"><a href="#结构体的意义与性质" class="headerlink" title="结构体的意义与性质"></a>结构体的意义与性质</h2><p>结构体的意义</p>
+<ul>
+<li>与数组最大差别：不同类型数据对象构成的集合</li>
+<li>当然也可以为相同类型的但具体意义或解释不同的数据对象集合</li>
+</ul>
+<p>结构体类型的定义：注意类型定义后面的分号</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> 结构体名称</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    成员类型 <span class="number">1</span>  成员名称 <span class="number">1</span>;</span><br><span class="line">    成员类型 <span class="number">2</span>  成员名称 <span class="number">2</span>;</span><br><span class="line">    ……</span><br><span class="line">    成员类型 n  成员名称 n;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>结构体类型示例</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">　示例一：日期结构体		示例二：复数结构体</span><br><span class="line"><span class="class"><span class="keyword">struct</span>  <span class="title">DATE</span>                <span class="title">struct</span> <span class="title">COMPLEX</span></span></span><br><span class="line"><span class="class">&#123;</span>			        &#123;</span><br><span class="line">  <span class="keyword">int</span> year;		           <span class="keyword">double</span> real;</span><br><span class="line">  <span class="keyword">int</span> month;	           <span class="keyword">double</span> imag;</span><br><span class="line">  <span class="keyword">int</span> day;			&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>结构体类型声明</p>
+<ul>
+<li>仅仅引入结构体类型的名称，而没有给出具体定义，其具体定义在其他头文件中或本文件后续位置<br><code>struct COMPLEX</code></li>
+</ul>
+<p>如何表示学生信息？<br>成员：整数类型的学号 id、字符串类型的姓名 name、性别（单独定义枚举类型）gender、年龄 age、字符串类型的地址 addr</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">enum GENDER&#123; FEMALE, MALE &#125;;</span><br><span class="line">struct STUDENT</span><br><span class="line">&#123;</span><br><span class="line">  int id;</span><br><span class="line">  STRING name;     &#x2F;&#x2F; 假设已有字符串类型的定义</span><br><span class="line">  GENDER gender;</span><br><span class="line">  int age;</span><br><span class="line">  STRING addr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="结构体的存储表示"><a href="#结构体的存储表示" class="headerlink" title="结构体的存储表示"></a>结构体的存储表示</h2><p>按照成员定义顺序存放</p>
+<ul>
+<li>各成员的存储空间一般连续<br><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/date_struct.png" alt="date结构体变量"></li>
+</ul>
+<p>特殊情况</p>
+<ul>
+<li>因为不同硬件和编译器的原因，不同类型的成员可能会按照字（两个<br>　字节）或双字（四个字节）对齐后存放<br>使用 sizeof 获得结构体类型量占用空间大小（以字节为单位），下<br>　述两种使用方式均可<br><code>sizeof date;            sizeof( date );</code></li>
+</ul>
+<h2 id="结构体数据对象的访问"><a href="#结构体数据对象的访问" class="headerlink" title="结构体数据对象的访问"></a>结构体数据对象的访问</h2><p>结构体类型的变量与常量：按普通量格式定义</p>
+<ul>
+<li>示例一：DATE date;</li>
+<li>示例二：STUDENT zhang_san;</li>
+<li>示例三：STUDENT students[8];</li>
+</ul>
+<p>结构体量的初始化</p>
+<ul>
+<li>示例四：DATE date = { 2008, 8, 8 };</li>
+</ul>
+<p>结构体量的赋值</p>
+<ul>
+<li>与数组不同，结构体量可直接赋值，拷贝过程为逐成员一一复制</li>
+<li>示例五：DATE new_date;  new_date = date;</li>
+<li>存在深浅拷贝问题，有时候需要自己定义深拷贝函数</li>
+</ul>
+<p>结构体量成员的访问</p>
+<ul>
+<li>使用点号操作符“.”解析结构体量的某个特定成员</li>
+<li>示例一：DATE date;  date.year = 2008;  date.month = 8;  date.day = 8;</li>
+</ul>
+<p>嵌套结构体成员的访问</p>
+<ul>
+<li>可以连续使用点号逐层解析</li>
+<li>示例二：    <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">FRIEND</span> &#123;</span> <span class="keyword">int</span> id; STRING name; DATE birthday; &#125;;</span><br><span class="line">FRIEND <span class="keyword">friend</span>;</span><br><span class="line"><span class="keyword">friend</span>.birthday.year = <span class="number">1988</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>复杂结构体成员的访问</p>
+<ul>
+<li>严格按照语法规范进行</li>
+<li>示例三：  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">   FRIEND friends[<span class="number">4</span>];</span><br><span class="line">friends[<span class="number">0</span>].birthday.year = <span class="number">1988</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="结构体与函数"><a href="#结构体与函数" class="headerlink" title="结构体与函数"></a>结构体与函数</h2><h3 id="编程练习-2"><a href="#编程练习-2" class="headerlink" title="编程练习"></a>编程练习</h3><p>编写一函数，使用结构体类型存储日期，并返回该日在该年的第几天信息，具体天数从 1 开始计数，例如 2016 年 1 月 20 日返回 20，2 月 1 日返回 32</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">GetDateCount</span><span class="params">( DATE date )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> days_of_months[<span class="number">13</span>] =</span><br><span class="line">    &#123; <span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span> &#125;;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i, date_id = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">1</span>; i &lt; date.month; i++ )</span><br><span class="line">    date_id += days_of_months[i];</span><br><span class="line">  date_id += date.day;</span><br><span class="line">  <span class="keyword">if</span>( date.month &gt; <span class="number">2</span> &amp;&amp; IsLeap(date.year) )</span><br><span class="line">    date_id++;</span><br><span class="line">  <span class="keyword">return</span> date_id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>计算机屏幕上的点使用二维坐标描述。编写函数，随机生成一个屏幕上的点。设计算机屏幕分辨率为 1920×1200，屏幕坐标总是从 0 开始计数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">POINT</span>&#123;</span> <span class="keyword">int</span> x, y; &#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> orignal_point_x = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> orignal_point_y = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> num_of_pixels_x = <span class="number">1920</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> num_of_pixels_y = <span class="number">1200</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">POINT <span class="title">GeneratePoint</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  POINT t;</span><br><span class="line">  t.x = GenerateRandomNumber( orignal_point_x, num_of_pixels_x - <span class="number">1</span> );</span><br><span class="line">  t.y = GenerateRandomNumber( orignal_point_y, num_of_pixels_y - <span class="number">1</span> );</span><br><span class="line">  <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h1><p>6.1  编写函数Sort，对包含n个元素的整数数组a，按从小到大顺序排序。此问题有多种算法，不同算法的效率可能不同。</p>
+<p>6.2  编写函数Search，对于已排序的包含n个元素的整数数组a，在其中查找整数key。如果该整数在数组中，函数返回true，否则返回false。</p>
+<p>6.3  继续编程实践题5.2。将去除大小王的52张扑克牌平均分配给四个玩家，每家13张牌。为描述问题方便，2～9的牌张使用对应字符‘2’～‘9’，字符‘T’表示10，‘J’、‘Q’、‘K’、‘A’表示四类大牌。记每张2～10为0点，J为1点，Q为2点，K为3点，A为4点，统计每家大牌点值。上述牌点计算方法主要用于桥牌游戏。</p>
+]]></content>
+      <categories>
+        <category>c++</category>
+      </categories>
+      <tags>
+        <tag>c++</tag>
+        <tag>语法</tag>
       </tags>
   </entry>
   <entry>
@@ -686,213 +1071,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux系统管理-管理硬盘</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%A1%AC%E7%9B%98/</url>
-    <content><![CDATA[<h1 id="查看硬盘"><a href="#查看硬盘" class="headerlink" title="查看硬盘"></a>查看硬盘</h1><p>硬盘命名规则</p>
-<ul>
-<li>linux一切皆文件</li>
-<li>/dev/xxy</li>
-<li>xx：<ul>
-<li>sd: scsi,sata,usb</li>
-<li>hd: ide</li>
-</ul>
-</li>
-<li>y:<ul>
-<li>a-z，表示使用此类接口的第几个硬盘</li>
-</ul>
-</li>
-<li>示例：/dev/hdd<ul>
-<li>表示第4个使用IDE接口的磁盘</li>
-</ul>
-</li>
-<li>示例：/dev/sdb<ul>
-<li>表示第2个使用scsi，sata或usb接口的磁盘</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>    
-
-<p>分区命名规则</p>
-<ul>
-<li>文件形式出现</li>
-<li>/dev/xxyn</li>
-<li>比硬盘名字多了一个n，n表示分区</li>
-<li>主分区或者扩展分区用数字1-4表示，逻辑分区5以后</li>
-<li>示例：/dev/hda3<ul>
-<li>表示第1个IDE硬盘上的第3个主分区或扩展分区</li>
-</ul>
-</li>
-<li>示例：/dev/sdb6<ul>
-<li>表示第2个scsi，sata或usb硬盘上的第2个逻辑分区</li>
-</ul>
-</li>
-</ul>
-<p><a href="http://t.cn/RLrffqN">参考资料</a></p>
-<p>fdisk命令</p>
-<ul>
-<li>该命令功能很多，查看硬盘和分区只是他的功能之一</li>
-<li><code>fdisk -l 硬盘名/分区名</code></li>
-<li><code>fdisk -l /dev/sda</code><ul>
-<li>硬盘基本参数：硬盘容量，磁头数，每磁道扇区数，总柱面数，每个柱面的容量，每个扇区的容量，硬盘标识符。显示的柱面、磁头、扇区等参数是逻辑值，并不是实际硬盘物理参数，就比如固态ssd，物理上就没有盘片磁头扇区这些物理零件，但ssd的接口规范和定义、功能及使用方法与普机械式硬盘完全相同，因此，逻辑上ssd也有柱面、磁头、扇区等参数</li>
-<li>磁盘分区情况：未分区的磁盘此部分信息时空白，分好区的磁盘，每行代表一个分区。分区名；标准DOS PC主引导记录标识，对于grup引导程序无意义；start和end标识分区起始和结束柱面；blocks标识大小为1k块的数量，块数量后面有加号，表示分区中的扇区没有全部被使用，Id表示分区的预期用途，不代表真实用途，类型82表示linux交换分区，83表示linux数据分区</li>
-</ul>
-</li>
-<li>扇区是磁盘的最小逻辑和物理单元</li>
-</ul>
-<h1 id="分区和格式化硬盘"><a href="#分区和格式化硬盘" class="headerlink" title="分区和格式化硬盘"></a>分区和格式化硬盘</h1><p>500G硬盘，划分为5个分区，分区1主分区采用ext4文件系统100G，分区2 ext4 64G, 分区3 windows兼容的vfat 64G, 分区4 ext4 120G, 分区5 余下剩余空间 ext4</p>
-<p>采用fdisk工具完成分区格式硬盘</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fdisk -l /dev/sdb</span><br><span class="line">fdisk /dev/sdb <span class="comment"># 进入fdisk分区界面</span></span><br><span class="line"><span class="comment"># 忽略提示和警告信息，最后一行是fdisk的快捷键提示行，在其后的冒号后面可以输入fdisk的快捷键进行分区操作</span></span><br><span class="line"><span class="comment"># 建立第一个主分区</span></span><br><span class="line">n <span class="comment"># 新建分区</span></span><br><span class="line">p <span class="comment"># 主分区</span></span><br><span class="line">1 <span class="comment"># 分区号</span></span><br><span class="line">+100G <span class="comment"># 设定分区大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个扩展分区</span></span><br><span class="line">n</span><br><span class="line">e</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个逻辑分区</span></span><br><span class="line">n</span><br><span class="line">l   <span class="comment"># 建立好了扩展分区之后，分区类型中就不提示再建立扩展分区e了，而替代为逻辑分区 l</span></span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第二个逻辑分区 </span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立最后一个分区</span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"><span class="comment"># 结束柱面号选择默认值，表示剩下所有空间都划到此分区</span></span><br><span class="line"></span><br><span class="line">w <span class="comment"># 保存分区信息进入分区表</span></span><br><span class="line">q <span class="comment"># 退出，若发现分区时配置分区大小分区号有误，可以输入q退出，不保存</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改分区System Id信息使之与真正的文件系统类型一致</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">l <span class="comment"># 列出linux默认支持的文件系统类型 255种</span></span><br><span class="line">t <span class="comment"># 修改分区system id</span></span><br><span class="line">6 <span class="comment"># 修改第二个逻辑分区</span></span><br><span class="line">c <span class="comment"># 修改分区类型序号为c，表示fat32</span></span><br><span class="line">w <span class="comment"># 修改写入分区表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除分区, 并重新按要求划分为两个分区sdb7 120G 和 sdb8使用剩余所有空间</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">d</span><br><span class="line">7</span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+120G</span><br><span class="line"></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"></span><br><span class="line">w</span><br></pre></td></tr></table></figure>
-
-<p>划分好了分区之后，就可以格式化分区了，只需记住两个命令</p>
-<p>mkfs命令</p>
-<ul>
-<li><code>mkfs -t ext4 /dev/sdb1</code></li>
-</ul>
-<p>mkswap命令</p>
-<ul>
-<li>为linux 交换分区创建文件系统</li>
-<li>交换分区一般在安装系统的时候就创建好了</li>
-<li><code>mkswap /dev/sdb7</code></li>
-</ul>
-<h1 id="手动挂载和卸载分区"><a href="#手动挂载和卸载分区" class="headerlink" title="手动挂载和卸载分区"></a>手动挂载和卸载分区</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /project_mooc</span><br><span class="line"><span class="built_in">cd</span> /project_mooc</span><br><span class="line">mkdir finished material shared audio video</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
-
-<p>mount命令挂载分区</p>
-<ul>
-<li><code>mount -t 分区类型 分区名 挂载点</code>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ext4 /dev/sdb1 /project_mooc/finished/</span><br><span class="line">mount</span><br></pre></td></tr></table></figure></li>
-<li><code>mount -o 挂载后行为 分区名 挂载点</code><ul>
-<li>分区挂载后的一些行为属性，是否可以写入文件，是否允许在此分区上运行可执行文件，是否允许普通用户挂载、卸载此分区等</li>
-<li>以只读属性挂载分区5<br><code>mount -t ext4 -o ro /dev/sdb5 /project_mooc/material/</code></li>
-<li>9个挂载属性</li>
-</ul>
-</li>
-</ul>
-<p>umount命令卸载分区</p>
-<ul>
-<li>umount 分区名或挂载点</li>
-<li>umount /dev/sdb8</li>
-<li>分区中文件正在被访问时，是无法被卸载的</li>
-<li>退出分区目录，再执行卸载</li>
-</ul>
-<p>如果挂载点本来就存在文件，挂载分区后，那些文件暂时无法访问，只有分区被卸载之后，才可以访问</p>
-<p>注意：</p>
-<ol>
-<li>请尽量将分区挂载在空目录上</li>
-<li>不要将同一个分区多次挂载到不同目录上</li>
-</ol>
-<h1 id="开机自动挂载分区"><a href="#开机自动挂载分区" class="headerlink" title="开机自动挂载分区"></a>开机自动挂载分区</h1><p>一般通过上面命令挂载的分区，在机器重启后就不见了，需要重新挂载，很麻烦，但是可以通过/etc/fstab文件实现开机自动挂载分区</p>
-<p>/etc/fstab文件详解</p>
-<ul>
-<li>起作用的配置行，每行对应于1个在开机时被挂载的分区，每行6个字段</li>
-<li>字段1，指定挂载的设备文件，可以是/dev目录下的设备文件，如/dev/sdb1, 或者是通过设备标签或UUID指定要挂载的设备，如<code>LABEL=某个设备标签</code> 或 <code>UUID=某个设备UUID</code>, 用设备标签或UUID来指定要挂载的设备更加安全和稳定</li>
-<li>字段2，挂载点，指定挂在设备的目录，对于swap实际上是没有挂载点的，该处就显示swap</li>
-<li>字段3，挂载分区文件系统类型</li>
-<li>字段4，挂载参数，指定文件系统挂载后的一些行为属性，可以有多个参数，用逗号分隔</li>
-<li>字段5，dump参数，该参数被dump命令用来检查一个文件系统是否应该进行dump备份，若不需要就设置为0，如果需要每天备份的，该字段设置为1，如果需要不定期备份的，设置为2</li>
-<li>字段6，开机检查分区的次序，该字段被fsck命令用来确定系统开机进行文件系统检查时的顺序，对于根分区，该值应设置为1，表示优先，其他文件系统可以设置为2，表示次优，如果最后一个字段值为0或没有设置，开机将跳过此文件系统的检查</li>
-</ul>
-<p>添加/etc/fstab文件配置行</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;dev&#x2F;sdb1   &#x2F;project_mooc&#x2F;finished  ext4 defaults 0 0</span><br></pre></td></tr></table></figure>
-
-<p>上面的自动挂载做法有时会有点问题，假设主机上有若干块可以热插拔的硬盘，在主机运行过程中，这些硬盘会被经常性的插拔，因此硬盘的次序包括硬盘的设备名会经常性的发生改变，如sdb下次会变成sdc，显然如果遇到这样的问题，我们的自动挂载就会出问题了，那么如何保证/etc/fstab中配置的设备能正确地挂载到挂载点上呢？  </p>
-<p>标签</p>
-<ul>
-<li>标签：分区别名</li>
-<li>为分区加上标签的命令e2label<ul>
-<li>e2label 分区设备名称 标签名</li>
-<li><code>e2label /dev/sdb5 material_disk</code></li>
-</ul>
-</li>
-<li>/etc/fstab配置行  <ul>
-<li>LABEL=material_disk /project_mooc/…<br>#LABEL大写 等号左右无空格</li>
-</ul>
-</li>
-<li>标签的问题是不具备唯一性，有时会有标签重名的情况，此时系统挂载时就不知道挂载哪个分区了，最保险的做法是UUID</li>
-</ul>
-<p>UUID</p>
-<ul>
-<li>universally unique identifier</li>
-<li>与设备名和标签对比，存在如下优点<ul>
-<li>真正的唯一标志符，UUID为系统中的存储设备提供了一个唯一的标识字符串，与分区标签不同，系统中不会出现两个设备UUID相同的情况</li>
-</ul>
-</li>
-<li>列出系统中所有存储设备的uuid，<code>blkid命令</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>硬盘分区</tag>
-        <tag>硬盘格式化</tag>
-        <tag>硬盘挂载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux系统管理-管理网络</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
-    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
-<ul>
-<li>查看网络接口<ul>
-<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
-<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
-<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
-</ul>
-</li>
-<li>操纵网络接口<ul>
-<li>启动<br><code>ifconfig eth1 up</code>    </li>
-<li>关闭<br><code>ifconfig eth1 down</code></li>
-<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
-</ul>
-</li>
-</ul>
-<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
-<ul>
-<li>重启网络服务<ul>
-<li>service network restart</li>
-</ul>
-</li>
-</ul>
-<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
-<p>编辑网络配置文件</p>
-<ul>
-<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
-<li>ifcfg-ethN 网卡配置文件</li>
-</ul>
-</li>
-<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>重启网络服务</p>
-<ul>
-<li>service network restart</li>
-</ul>
-<p>测试网络连通性</p>
-<ul>
-<li>ping -c 主机名/IP地址<ul>
-<li>线路是否连接好</li>
-<li>交换机或路由器是否打开，路由表</li>
-<li>防火墙设置</li>
-</ul>
-</li>
-</ul>
-<p>测试dns配置</p>
-<ul>
-<li>dig命令</li>
-<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
-<li>dig 域名</li>
-<li><code>dig www.baidu.com</code></li>
-</ul>
-<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>linux网络配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hello World</title>
     <url>/2020/10/10/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -911,189 +1089,6 @@
 
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>ch06 复合数据类型</title>
-    <url>/2020/10/10/ch06-%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
-    <content><![CDATA[<h1 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h1><h2 id="字符类型、字符文字与量"><a href="#字符类型、字符文字与量" class="headerlink" title="字符类型、字符文字与量"></a>字符类型、字符文字与量</h2><ul>
-<li>定义格式：char ch; const char cch = ‘C’;</li>
-<li>字符文字使用单引号对</li>
-<li>实际存储时字符类型量存储字符对应ASCII值</li>
-<li>可使用 signed 与 unsigned 修饰字符类型</li>
-</ul>
-<a id="more"></a>
-
-<h2 id="字符表示的等价性"><a href="#字符表示的等价性" class="headerlink" title="字符表示的等价性"></a>字符表示的等价性</h2><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">char</span> a = <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line"><span class="keyword">char</span> a = <span class="number">65</span>;</span><br><span class="line"><span class="keyword">char</span> a = <span class="number">0101</span>;</span><br><span class="line"><span class="keyword">char</span> a = <span class="number">0x41</span>;</span><br></pre></td></tr></table></figure>
-<h2 id="ASCII码"><a href="#ASCII码" class="headerlink" title="ASCII码"></a>ASCII码</h2><p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/ascii.png" alt="ascii码表"></p>
-<ul>
-<li><p>控制字符、通信专用字符、可打印字符</p>
-</li>
-<li><p>回车与换行<br>Windows：\n\r<br>Linux：\n<br>Mac：\r<br>由来：早期电传打字机每秒打印10个字符，换行需要0.2秒，为保证新传输的字符不丢失，每打印一行需要传递额外两个字符控制打字机换行（打字机走纸一行）和回车（打印头移动到最左端）。移植到计算机上时，传递两个字符有些浪费，因此不同系统的实现策略发生了分歧</p>
-</li>
-</ul>
-<h2 id="字符量的数学运算"><a href="#字符量的数学运算" class="headerlink" title="字符量的数学运算"></a>字符量的数学运算</h2><p>编写函数，判断某个字符是否为数字</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">IsDigit</span><span class="params">( <span class="keyword">char</span> c )</span>			<span class="keyword">bool</span> <span class="title">IsDigit</span><span class="params">( <span class="keyword">char</span> c )</span></span></span><br><span class="line"><span class="function"></span>&#123;					&#123;</span><br><span class="line">  <span class="keyword">if</span>( c &gt;= <span class="string">&#x27;0&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;9&#x27;</span> )		  <span class="keyword">if</span>( c &gt;= <span class="number">48</span> &amp;&amp; c &lt;= <span class="number">57</span> )</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;				    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">else</span>					  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;			    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;					&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编写函数，将字符转换为大写字符</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">ToUpperCase</span><span class="params">( <span class="keyword">char</span> c )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>( c &gt;= <span class="string">&#x27;a&#x27;</span> &amp;&amp; c &lt;= <span class="string">&#x27;z&#x27;</span> )</span><br><span class="line">    <span class="keyword">return</span> c – <span class="string">&#x27;a&#x27;</span> + <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="标准字符特征库"><a href="#标准字符特征库" class="headerlink" title="标准字符特征库"></a>标准字符特征库</h2><ul>
-<li>c标准字符特征库：ctype.h/cctype</li>
-<li>标准字符特征库常用函数<br>　bool isalnum( char c );<br>　bool isalpha( char c );<br>　bool isdigit( char c );<br>　bool islower( char c );<br>　bool isspace( char c );<br>　bool isupper( char c );<br>　char tolower( char c );<br>　char toupper( char c );  </li>
-</ul>
-<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><h2 id="数组的意义与性质"><a href="#数组的意义与性质" class="headerlink" title="数组的意义与性质"></a>数组的意义与性质</h2><p>数组的定义</p>
-<ul>
-<li>定义格式：元素类型  数组名称[常数表达式];</li>
-<li>示例：int a[8];  /* 定义包含 8 个整数元素的数组 */</li>
-</ul>
-<p>特别说明</p>
-<ul>
-<li>常数表达式必须是常数和常量，不允许为变量<br>错误示例：int count = 8;    int c[count];</li>
-<li>数组元素编号从 0 开始计数，元素访问格式为 a[0]、a[1]、……  </li>
-<li>不允许对数组进行整体赋值操作，只能使用循环逐一复制元素<br>错误示例三：int a[8], b[8];    a = b;</li>
-</ul>
-<p>意义与性质</p>
-<ul>
-<li>将相同性质的数据元素组织成整体，构成单一维度上的数据序列</li>
-</ul>
-<h2 id="数组的存储表示"><a href="#数组的存储表示" class="headerlink" title="数组的存储表示"></a>数组的存储表示</h2><p>数组元素依次连续存放，中间没有空闲空间</p>
-<p>数组的地址</p>
-<ul>
-<li>数组的基地址：数组开始存储的物理位置</li>
-<li>数组首元素的基地址：数组首个元素开始存储的物理地址，数值上总是与数组基地址相同</li>
-<li>“&amp;”操作符：&amp;a 获得数组的基地址；&amp;a[0] 获得数组首元素的基地址，数组名a其实可以不用加取地址符号，即可表示地址</li>
-<li>设数组基地址为 p，并设每个元素的存储空间为 m，则第 i 个元素的基地址为 p + m*i</li>
-</ul>
-<h2 id="数组元素的访问"><a href="#数组元素的访问" class="headerlink" title="数组元素的访问"></a>数组元素的访问</h2><h3 id="数组元素的初始化"><a href="#数组元素的初始化" class="headerlink" title="数组元素的初始化"></a>数组元素的初始化</h3><p>基本初始化格式</p>
-<ul>
-<li>定义格式：元素类型  数组名称[元素个数] = { 值1, 值2, 值3, …… };<br>示例一：int a[8] = { 1, 2, 3, 4, 5, 6, 7, 8 };</li>
-</ul>
-<p>初始化时省略元素个数表达式</p>
-<ul>
-<li>在全部元素均初始化时可以不列写元素个数，使用 sizeof 操作符可以获得元素个数<br>示例二：int a[] = { 1, 2, 3, 4, 5, 6, 7, 8 };<br><code>int num_of_elements = sizeof( a ) / sizeof( a[0] );</code><br>sizeof(a) 获取数组存储空间大小（以字节为单位），sizeof(a[0]) 获取数组首元素的存储空间大小</li>
-</ul>
-<p>sizeof 运算符可以对数据类型或变量求大小，当求数据类型大小时，必须加括号，求变量大小时，加不加括号都可以</p>
-<h3 id="数组基本操作示例"><a href="#数组基本操作示例" class="headerlink" title="数组基本操作示例"></a>数组基本操作示例</h3><p>编写程序，使用数组存储用户输入的 5 个整数，并计算它们的和</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> i, a[<span class="number">5</span>], result = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Integer No. &quot;</span> &lt;&lt; i + <span class="number">1</span> &lt;&lt; <span class="string">&quot;: &quot;</span>;</span><br><span class="line">    <span class="built_in">cin</span> &gt;&gt; a[i];</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ )</span><br><span class="line">    result += a[i];  </span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;The sum of elements of the array is &quot;</span> &lt;&lt; result &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="数组与函数"><a href="#数组与函数" class="headerlink" title="数组与函数"></a>数组与函数</h2><h3 id="数组元素作为函数实际参数"><a href="#数组元素作为函数实际参数" class="headerlink" title="数组元素作为函数实际参数"></a>数组元素作为函数实际参数</h3><figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Add</span><span class="params">( <span class="keyword">int</span> x, <span class="keyword">int</span> y )</span></span>&#123;  <span class="keyword">return</span>( x + y ); &#125;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">2</span>] = &#123; <span class="number">1</span>, <span class="number">2</span> &#125;, sum;</span><br><span class="line">sum = Add( a[<span class="number">0</span>], a[<span class="number">1</span>] );</span><br></pre></td></tr></table></figure>
-
-<h3 id="数组整体作为函数形式参数"><a href="#数组整体作为函数形式参数" class="headerlink" title="数组整体作为函数形式参数"></a>数组整体作为函数形式参数</h3><ul>
-<li>基本格式：<code>返回值类型  函数名称( 元素类型  数组名称[],  元素个数类型  元素个数 )</code><br>示例：<code>void GenerateIntegers( int a[], unsigned int n );</code><br><font color="red">特别说明：作为函数形式参数时，数组名称后的中括号内不需列写元素个数，必须使用单独的参数传递元素个数信息</font></li>
-</ul>
-<p>编写函数，随机生成 n 个位于[lower, upper]区间的整数并保存到数组中</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n, <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  Randomize();</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">    a[i] = GenerateRandomNumber( lower, upper );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>直接书写常数：只能操作 8 个元素的数组！</p>
-<p>不写常数：不知道元素个数，易出错</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>直接书写变量：错误！</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">/* 元素元素个数不允许为量 */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[n], <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>调用格式</p>
-<ul>
-<li>使用单独数组名称作为函数实际参数，传递数组基地址而不是数组元素值</li>
-<li>形式参数与实际参数使用相同存储区，对数组形式参数值得改变会自动反应到实际参数中</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  NUMBER_OF_ELEMENTS  8</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> lower_bound = <span class="number">10</span>;</span><br><span class="line">count <span class="keyword">int</span> upper_bound = <span class="number">99</span>;</span><br><span class="line"><span class="keyword">int</span> a[NUMBER_OF_ELEMENTS];</span><br><span class="line">GenerateIntegers(a, NUMBER_OF_ELEMENTS, lower_bound, upper_bound);</span><br></pre></td></tr></table></figure>
-
-<h3 id="编程练习"><a href="#编程练习" class="headerlink" title="编程练习"></a>编程练习</h3><p>编写程序，随机生成8个10～99之间的整数保存到数组中，然后将这些元素颠倒过来</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">arrmanip.h</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n, <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReverseIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SwapIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> i, <span class="keyword">unsigned</span> <span class="keyword">int</span> j )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PrintIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">main.cpp</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;arrmanip.h&quot;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUMBER_OF_ELEMENTS 8</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> lower_bound = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> upper_bound = <span class="number">99</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a[NUMBER_OF_ELEMENTS];</span><br><span class="line">  GenerateIntegers( a, NUMBER_OF_ELEMENTS, lower_bound, upper_bound );</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Array generated at random as follows: \n&quot;</span>;</span><br><span class="line">  PrintIntegers( a, NUMBER_OF_ELEMENTS );</span><br><span class="line">  ReverseIntegers( a, NUMBER_OF_ELEMENTS );</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;After all elements of the array reversed: \n&quot;</span>;</span><br><span class="line">  PrintIntegers( a, NUMBER_OF_ELEMENTS );</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">arrmanip.cpp</span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;random.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;arrmanip.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n, <span class="keyword">int</span> lower, <span class="keyword">int</span> upper )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  Randomize();</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">    a[i] = GenerateRandomNumber( lower, upper );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ReverseIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n / <span class="number">2</span>; i++ )</span><br><span class="line">    SwapIntegers( a, i, n - i - <span class="number">1</span> );</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">SwapIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> i, <span class="keyword">unsigned</span> <span class="keyword">int</span> j )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> t;</span><br><span class="line">  t = a[i],  a[i] = a[j],  a[j] = t;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PrintIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; setw(<span class="number">3</span>) &lt;&lt; a[i];</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="多维数组"><a href="#多维数组" class="headerlink" title="多维数组"></a>多维数组</h2><h3 id="多维数组的定义"><a href="#多维数组的定义" class="headerlink" title="多维数组的定义"></a>多维数组的定义</h3><ul>
-<li>定义格式：<code>元素类型  数组名称[常数表达式1] [常数表达式2]…;</code><br>　示例一：int a[2][2];  /* 2×2 个整数元素的二维数组 */<br>　示例二：int b[2][3][4];  /* 2×3×4 个整数元素数组 */</li>
-<li>特别说明：同单维数组</li>
-<li>多维数组的初始化<br>　与一维数组类似： int a[2][3] = {1, 2, 3, 4, 5, 6};<br>　单独初始化每一维： int a[2][3] = { {1, 2, 3}, {4, 5, 6} };</li>
-</ul>
-<h3 id="多维数组的存储布局"><a href="#多维数组的存储布局" class="headerlink" title="多维数组的存储布局"></a>多维数组的存储布局</h3><ul>
-<li>同单维数组，先行后列顺序存放</li>
-</ul>
-<h3 id="编程练习-1"><a href="#编程练习-1" class="headerlink" title="编程练习"></a>编程练习</h3><p><strong>测量湖泊水深</strong><br>在湖面上等距离打上网格，分别测量每个网格的水深，就可以从整体上表示湖泊的情况。图中每个网格中的数字表示水深，值为 0 的表示湖岸，数字 1～5 表示水深（单位为米），每网格对应实际面积为5m×5m。编写程序，计算湖泊的面积和平均水深<br><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/lake_depth.png" alt="湖泊水深"></p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  NUM_OF_X_GRIDS  9</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span>  NUM_OF_Y_GRIDS  4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">double</span> lake_region_depths[NUM_OF_Y_GRIDS][NUM_OF_X_GRIDS] =</span><br><span class="line">&#123;</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span> &#125;,</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>, <span class="number">5.0</span>, <span class="number">5.0</span>, <span class="number">3.0</span>, <span class="number">2.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span> &#125;,</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">4.0</span>, <span class="number">3.0</span>, <span class="number">4.0</span>, <span class="number">2.0</span>, <span class="number">2.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span> &#125;,</span><br><span class="line">  &#123; <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span> &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> lake_grid_width = <span class="number">5.0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">double</span> num_of_lake_grids = <span class="number">0.0</span>, lake_area = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">double</span> total_lake_depth = <span class="number">0.0</span>, mean_lake_depth = <span class="number">0.0</span>;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i, j;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; NUM_OF_Y_GRIDS; i++ )&#123;</span><br><span class="line">    <span class="keyword">for</span>( j = <span class="number">0</span>; j &lt; NUM_OF_X_GRIDS; j++ )&#123;</span><br><span class="line">      <span class="keyword">if</span>( lake_region_depths[i][j] &gt; <span class="number">0</span> )&#123;</span><br><span class="line">        num_of_lake_grids += <span class="number">1.0</span>;</span><br><span class="line">        total_lake_depth += lake_region_depths[i][j];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  lake_area = lake_grid_width * lake_grid_width * num_of_lake_grids;</span><br><span class="line">  mean_lake_depth = total_lake_depth / num_of_lake_grids;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Area of the lake is &quot;</span> &lt;&lt; lake_area &lt;&lt; <span class="string">&quot;(m2)&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Mean depth of the lake is &quot;</span> &lt;&lt; mean_lake_depth &lt;&lt; <span class="string">&quot;(m)&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h1><h2 id="结构体的意义与性质"><a href="#结构体的意义与性质" class="headerlink" title="结构体的意义与性质"></a>结构体的意义与性质</h2><p>结构体的意义</p>
-<ul>
-<li>与数组最大差别：不同类型数据对象构成的集合</li>
-<li>当然也可以为相同类型的但具体意义或解释不同的数据对象集合</li>
-</ul>
-<p>结构体类型的定义：注意类型定义后面的分号</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> 结构体名称</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    成员类型 <span class="number">1</span>  成员名称 <span class="number">1</span>;</span><br><span class="line">    成员类型 <span class="number">2</span>  成员名称 <span class="number">2</span>;</span><br><span class="line">    ……</span><br><span class="line">    成员类型 n  成员名称 n;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>结构体类型示例</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">　示例一：日期结构体		示例二：复数结构体</span><br><span class="line"><span class="class"><span class="keyword">struct</span>  <span class="title">DATE</span>                <span class="title">struct</span> <span class="title">COMPLEX</span></span></span><br><span class="line"><span class="class">&#123;</span>			        &#123;</span><br><span class="line">  <span class="keyword">int</span> year;		           <span class="keyword">double</span> real;</span><br><span class="line">  <span class="keyword">int</span> month;	           <span class="keyword">double</span> imag;</span><br><span class="line">  <span class="keyword">int</span> day;			&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>结构体类型声明</p>
-<ul>
-<li>仅仅引入结构体类型的名称，而没有给出具体定义，其具体定义在其他头文件中或本文件后续位置<br><code>struct COMPLEX</code></li>
-</ul>
-<p>如何表示学生信息？<br>成员：整数类型的学号 id、字符串类型的姓名 name、性别（单独定义枚举类型）gender、年龄 age、字符串类型的地址 addr</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">enum GENDER&#123; FEMALE, MALE &#125;;</span><br><span class="line">struct STUDENT</span><br><span class="line">&#123;</span><br><span class="line">  int id;</span><br><span class="line">  STRING name;     &#x2F;&#x2F; 假设已有字符串类型的定义</span><br><span class="line">  GENDER gender;</span><br><span class="line">  int age;</span><br><span class="line">  STRING addr;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="结构体的存储表示"><a href="#结构体的存储表示" class="headerlink" title="结构体的存储表示"></a>结构体的存储表示</h2><p>按照成员定义顺序存放</p>
-<ul>
-<li>各成员的存储空间一般连续<br><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/date_struct.png" alt="date结构体变量"></li>
-</ul>
-<p>特殊情况</p>
-<ul>
-<li>因为不同硬件和编译器的原因，不同类型的成员可能会按照字（两个<br>　字节）或双字（四个字节）对齐后存放<br>使用 sizeof 获得结构体类型量占用空间大小（以字节为单位），下<br>　述两种使用方式均可<br><code>sizeof date;            sizeof( date );</code></li>
-</ul>
-<h2 id="结构体数据对象的访问"><a href="#结构体数据对象的访问" class="headerlink" title="结构体数据对象的访问"></a>结构体数据对象的访问</h2><p>结构体类型的变量与常量：按普通量格式定义</p>
-<ul>
-<li>示例一：DATE date;</li>
-<li>示例二：STUDENT zhang_san;</li>
-<li>示例三：STUDENT students[8];</li>
-</ul>
-<p>结构体量的初始化</p>
-<ul>
-<li>示例四：DATE date = { 2008, 8, 8 };</li>
-</ul>
-<p>结构体量的赋值</p>
-<ul>
-<li>与数组不同，结构体量可直接赋值，拷贝过程为逐成员一一复制</li>
-<li>示例五：DATE new_date;  new_date = date;</li>
-<li>存在深浅拷贝问题，有时候需要自己定义深拷贝函数</li>
-</ul>
-<p>结构体量成员的访问</p>
-<ul>
-<li>使用点号操作符“.”解析结构体量的某个特定成员</li>
-<li>示例一：DATE date;  date.year = 2008;  date.month = 8;  date.day = 8;</li>
-</ul>
-<p>嵌套结构体成员的访问</p>
-<ul>
-<li>可以连续使用点号逐层解析</li>
-<li>示例二：    <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">   <span class="class"><span class="keyword">struct</span> <span class="title">FRIEND</span> &#123;</span> <span class="keyword">int</span> id; STRING name; DATE birthday; &#125;;</span><br><span class="line">FRIEND <span class="keyword">friend</span>;</span><br><span class="line"><span class="keyword">friend</span>.birthday.year = <span class="number">1988</span>;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>复杂结构体成员的访问</p>
-<ul>
-<li>严格按照语法规范进行</li>
-<li>示例三：  <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">   FRIEND friends[<span class="number">4</span>];</span><br><span class="line">friends[<span class="number">0</span>].birthday.year = <span class="number">1988</span>;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h2 id="结构体与函数"><a href="#结构体与函数" class="headerlink" title="结构体与函数"></a>结构体与函数</h2><h3 id="编程练习-2"><a href="#编程练习-2" class="headerlink" title="编程练习"></a>编程练习</h3><p>编写一函数，使用结构体类型存储日期，并返回该日在该年的第几天信息，具体天数从 1 开始计数，例如 2016 年 1 月 20 日返回 20，2 月 1 日返回 32</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">GetDateCount</span><span class="params">( DATE date )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> days_of_months[<span class="number">13</span>] =</span><br><span class="line">    &#123; <span class="number">0</span>, <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span> &#125;;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i, date_id = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">1</span>; i &lt; date.month; i++ )</span><br><span class="line">    date_id += days_of_months[i];</span><br><span class="line">  date_id += date.day;</span><br><span class="line">  <span class="keyword">if</span>( date.month &gt; <span class="number">2</span> &amp;&amp; IsLeap(date.year) )</span><br><span class="line">    date_id++;</span><br><span class="line">  <span class="keyword">return</span> date_id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>计算机屏幕上的点使用二维坐标描述。编写函数，随机生成一个屏幕上的点。设计算机屏幕分辨率为 1920×1200，屏幕坐标总是从 0 开始计数</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">POINT</span>&#123;</span> <span class="keyword">int</span> x, y; &#125;;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> orignal_point_x = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> orignal_point_y = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> num_of_pixels_x = <span class="number">1920</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> num_of_pixels_y = <span class="number">1200</span>;</span><br><span class="line"></span><br><span class="line"><span class="function">POINT <span class="title">GeneratePoint</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  POINT t;</span><br><span class="line">  t.x = GenerateRandomNumber( orignal_point_x, num_of_pixels_x - <span class="number">1</span> );</span><br><span class="line">  t.y = GenerateRandomNumber( orignal_point_y, num_of_pixels_y - <span class="number">1</span> );</span><br><span class="line">  <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h1><p>6.1  编写函数Sort，对包含n个元素的整数数组a，按从小到大顺序排序。此问题有多种算法，不同算法的效率可能不同。</p>
-<p>6.2  编写函数Search，对于已排序的包含n个元素的整数数组a，在其中查找整数key。如果该整数在数组中，函数返回true，否则返回false。</p>
-<p>6.3  继续编程实践题5.2。将去除大小王的52张扑克牌平均分配给四个玩家，每家13张牌。为描述问题方便，2～9的牌张使用对应字符‘2’～‘9’，字符‘T’表示10，‘J’、‘Q’、‘K’、‘A’表示四类大牌。记每张2～10为0点，J为1点，Q为2点，K为3点，A为4点，统计每家大牌点值。上述牌点计算方法主要用于桥牌游戏。</p>
-]]></content>
-      <categories>
-        <category>c++</category>
-      </categories>
-      <tags>
-        <tag>c++</tag>
-        <tag>语法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>操作系统实验0</title>
-    <url>/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C0/</url>
-    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>学习计划</title>
@@ -1144,15 +1139,6 @@
 ]]></content>
       <categories>
         <category>学习计划</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>立足当下，未来可期</title>
-    <url>/2020/10/20/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
-    <content><![CDATA[<p>科研、论文 &amp; PPT，想到这些，总是会有意或无意的走神，一天下来，没多少产出，这是为啥呢？因为不热爱啊，我不是很适合走科研这条路，没啥成就感。但是，在deadline以及白纸黑字的要求面前，还是要坚持做下去，已然没有多大兴趣了，此时更不能乱了章法，需要自己为自己设立阶段性的小目标，这个目标需要清晰明确以及可行，垫垫脚再伸伸手就能够到，而不是去靠自己想象中的谜一般的自律，因为人性这个东西作为人你很难与之抗争，贪玩和懒惰是人的本性。在面对一个复杂且较为陌生的问题面前，大多数人都是会后退的，这是很自然的，所以，在面对此类问题时，首先战术上需要保持自信乐观的心态，其次在战略上对其进行分而治之，从逻辑上思考如何将问题进行拆分，然后针对每一个小点，有针对性的学习处理的方式，此过程中需要按照前面说的，制定清晰明确的小目标，如此一来，即使是复杂的问题，也会变得有迹可循。我相信水滴石穿。希望自己通过日积月累地实践可以渐渐培养起自己这方面的能力，这种能力会受益终身，无论是工作还是生活。</p>
-]]></content>
-      <categories>
-        <category>生活</category>
       </categories>
   </entry>
   <entry>
@@ -1286,6 +1272,20 @@
         <tag>异常</tag>
         <tag>系统调用</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>操作系统实验0</title>
+    <url>/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C0/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>立足当下，未来可期</title>
+    <url>/2020/10/20/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
+    <content><![CDATA[<p>科研、论文 &amp; PPT，想到这些，总是会有意或无意的走神，一天下来，没多少产出，这是为啥呢？因为不热爱啊，我不是很适合走科研这条路，没啥成就感。但是，在deadline以及白纸黑字的要求面前，还是要坚持做下去，已然没有多大兴趣了，此时更不能乱了章法，需要自己为自己设立阶段性的小目标，这个目标需要清晰明确以及可行，垫垫脚再伸伸手就能够到，而不是去靠自己想象中的谜一般的自律，因为人性这个东西作为人你很难与之抗争，贪玩和懒惰是人的本性。在面对一个复杂且较为陌生的问题面前，大多数人都是会后退的，这是很自然的，所以，在面对此类问题时，首先战术上需要保持自信乐观的心态，其次在战略上对其进行分而治之，从逻辑上思考如何将问题进行拆分，然后针对每一个小点，有针对性的学习处理的方式，此过程中需要按照前面说的，制定清晰明确的小目标，如此一来，即使是复杂的问题，也会变得有迹可循。我相信水滴石穿。希望自己通过日积月累地实践可以渐渐培养起自己这方面的能力，这种能力会受益终身，无论是工作还是生活。</p>
+]]></content>
+      <categories>
+        <category>生活</category>
+      </categories>
   </entry>
   <entry>
     <title>Linux系统管理-安装 &amp; 管理文件</title>
