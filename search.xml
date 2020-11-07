@@ -3790,9 +3790,8 @@
 </li>
 <li><p>打开制作好目录书签的文档，享受阅读。</p>
 </li>
-<li><p>可以先生成目录接口文件，直接在该文件中预处理目录文档信息，可以减少一次文件的新建和拷贝操作。</p>
-</li>
 </ul>
+<p><strong>注:</strong> 可以先生成目录接口文件，直接在该文件中预处理目录文档信息，可以减少一次文件的新建和拷贝操作。</p>
 <p>参考链接：<br><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017639890281664">正则表达式</a><br><a href="https://blog.csdn.net/hzm7512/article/details/8523748">PDF电子书（扫描版）的目录书签批量导入</a>  </p>
 ]]></content>
       <categories>
