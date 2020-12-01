@@ -4047,7 +4047,7 @@
 
 </li>
 </ul>
-<h1 id="什么是操作系统"><a href="#什么是操作系统" class="headerlink" title="什么是操作系统"></a>什么是操作系统</h1><ul>
+<h2 id="什么是操作系统"><a href="#什么是操作系统" class="headerlink" title="什么是操作系统"></a>什么是操作系统</h2><ul>
 <li>用户角度，操作系统是一个控制软件<ul>
 <li>管理应用程序</li>
 <li>为应用程序提供服务</li>
@@ -4060,14 +4060,14 @@
 </li>
 </ul>
 <p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.png"></p>
-<h2 id="操作系统Kernel内部组件"><a href="#操作系统Kernel内部组件" class="headerlink" title="操作系统Kernel内部组件"></a>操作系统Kernel内部组件</h2><ul>
+<h3 id="操作系统Kernel内部组件"><a href="#操作系统Kernel内部组件" class="headerlink" title="操作系统Kernel内部组件"></a>操作系统Kernel内部组件</h3><ul>
 <li>CPU调度器</li>
 <li>物理内存管理</li>
 <li>虚拟内存管理</li>
 <li>文件系统管理</li>
 <li>中断处理与设备驱动</li>
 </ul>
-<h2 id="OS-Kernel的特征"><a href="#OS-Kernel的特征" class="headerlink" title="OS Kernel的特征"></a>OS Kernel的特征</h2><ul>
+<h3 id="OS-Kernel的特征"><a href="#OS-Kernel的特征" class="headerlink" title="OS Kernel的特征"></a>OS Kernel的特征</h3><ul>
 <li>并发<ul>
 <li>计算机系统中同时存在多个运行的程序，需要OS管理和调度</li>
 </ul>
@@ -4087,7 +4087,7 @@
 </ul>
 </li>
 </ul>
-<h1 id="为什么要学习操作系统"><a href="#为什么要学习操作系统" class="headerlink" title="为什么要学习操作系统"></a>为什么要学习操作系统</h1><ul>
+<h2 id="为什么要学习操作系统"><a href="#为什么要学习操作系统" class="headerlink" title="为什么要学习操作系统"></a>为什么要学习操作系统</h2><ul>
 <li>综合课程<ul>
 <li>程序设计语言</li>
 <li>数据结构</li>
@@ -4143,12 +4143,12 @@
 </ul>
 </li>
 </ul>
-<h1 id="学习格言"><a href="#学习格言" class="headerlink" title="学习格言"></a>学习格言</h1><ul>
+<h2 id="学习格言"><a href="#学习格言" class="headerlink" title="学习格言"></a>学习格言</h2><ul>
 <li>我听到的我会忘记</li>
 <li>我看到的我能记住</li>
 <li>只有我做过的我才能理解</li>
 </ul>
-<h1 id="操作系统历史"><a href="#操作系统历史" class="headerlink" title="操作系统历史"></a>操作系统历史</h1><ul>
+<h2 id="操作系统历史"><a href="#操作系统历史" class="headerlink" title="操作系统历史"></a>操作系统历史</h2><ul>
 <li>早期计算机使用纸带传输程序和数据，操作系统只起到加载作用</li>
 <li>CPU等硬件快速发展，计算机速度得到提升，性能未得到充分利用</li>
 <li>批处理阶段</li>
@@ -4165,8 +4165,8 @@
 </ul>
 </li>
 </ul>
-<h2 id="操作系统的演变"><a href="#操作系统的演变" class="headerlink" title="操作系统的演变"></a>操作系统的演变</h2><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%BC%94%E5%8F%98.png"></p>
-<h1 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h1><ul>
+<h3 id="操作系统的演变"><a href="#操作系统的演变" class="headerlink" title="操作系统的演变"></a>操作系统的演变</h3><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%BC%94%E5%8F%98.png"></p>
+<h2 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><ul>
 <li>简单操作系统：MS-DOS(1981-1994)<ul>
 <li>不分模块的单体内核</li>
 <li>汇编语言</li>
