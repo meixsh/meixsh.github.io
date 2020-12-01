@@ -6233,7 +6233,90 @@
 </li>
 </ul>
 <p>哲学家就餐问题</p>
-<h2 id="死锁-deadlock"><a href="#死锁-deadlock" class="headerlink" title="死锁 deadlock"></a>死锁 deadlock</h2><h2 id="进程间通信-inter-process-communication"><a href="#进程间通信-inter-process-communication" class="headerlink" title="进程间通信(inter-process communication)"></a>进程间通信(inter-process communication)</h2><ul>
+<ul>
+<li><p>从人的角度看 - 指导思想<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9001.png"></p>
+</li>
+<li><p>从计算机角度看 - 指导思想<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9002.png"></p>
+</li>
+<li><p>使用信号量实现哲学家就餐问题<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9003.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9004.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9005.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9006.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9007.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9008.png"></p>
+</li>
+</ul>
+<h2 id="死锁-deadlock"><a href="#死锁-deadlock" class="headerlink" title="死锁 deadlock"></a>死锁 deadlock</h2><h3 id="死锁问题"><a href="#死锁问题" class="headerlink" title="死锁问题"></a>死锁问题</h3><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%AD%BB%E9%94%81.png"></p>
+<ul>
+<li>流量只在一个方向</li>
+<li>桥的每一个部分都可以看作一个资源</li>
+<li>如果死锁，可能通过一辆车倒退可以解决（抢占资源和回滚）</li>
+<li>如果发生死锁，可能几辆车必须都倒退</li>
+<li>可能发生饥饿</li>
+</ul>
+<p>操作系统中的案例  </p>
+<ul>
+<li>一组阻塞的进程持有一种资源等待获取另一个进程所占有的一个资源<ul>
+<li>例子<ul>
+<li>系统有2个磁带驱动器</li>
+<li>P1和P2各有一个，都需要另一个<h3 id="系统模型"><a href="#系统模型" class="headerlink" title="系统模型"></a>系统模型</h3></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>资源类型R<sub>1</sub>, R<sub>2</sub>, …, R<sub>m</sub><br>CPU cycles, memory space, I/O devices</li>
+<li>每个资源类型R<sub>i</sub>有W<sub>i</sub>实例</li>
+<li>每个进程使用资源如下<ul>
+<li>request/get &larr; free resource</li>
+<li>use/hold &larr; requested/used resource</li>
+<li>release &larr; free resource</li>
+</ul>
+</li>
+<li>可重复使用的资源<ul>
+<li>在一个时间只能一个进程使用且不能被删除</li>
+<li>进程获得资源，后来释放由其他进程重用</li>
+<li>处理器，I/O通道，主和副存储器，设备和数据结构，如文件，数据库和信号量</li>
+<li>如果每个进程拥有一个资源并请求其他资源，死锁可能发生</li>
+</ul>
+</li>
+<li>使用资源<ul>
+<li>创建和销毁</li>
+<li>在I/O缓冲区的中断，信号，消息，信息</li>
+<li>如果接收消息阻塞可能会发生死锁</li>
+<li>可能少见的组合事件会引起死锁</li>
+</ul>
+</li>
+<li>资源分配图<ul>
+<li>一组顶点V和边E的集合</li>
+<li>V有两种类型<ul>
+<li>P = {P<sub>1</sub>, P<sub>2</sub>, …, P<sub>n</sub>}, 集合包含系统中所有进程</li>
+<li>R = {R<sub>1</sub>, R<sub>2</sub>, …, R<sub>m</sub>}, 集合包含系统中所有资源类型</li>
+</ul>
+</li>
+<li>requesting/claiming edge - directed edge P<sub>i</sub> &rarr; R<sub>j</sub> </li>
+<li>assignment/holding edge - directed edge R<sub>j</sub> &rarr; P<sub>i</sub><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE.png"></li>
+</ul>
+</li>
+<li>资源分配图例子<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE01.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE02.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE03.png">  </li>
+<li>基本结论<ul>
+<li>如果图中不包含循环 &rarr; 没有死锁</li>
+<li>如果图中包含循环 &rarr; <ul>
+<li>如果每个资源类只有一个实例，那么会死锁</li>
+<li>如果每个资源类有几个实例，可能死锁</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="死锁特征"><a href="#死锁特征" class="headerlink" title="死锁特征"></a>死锁特征</h3><p>死锁可能出现如果四个条件同时成立 必要条件而非充分条件</p>
+<ul>
+<li>互斥：在一个时间只能有一个进程使用资源</li>
+<li>持有并等待：进程保持至少一个资源正在等待获取其他进程持有的额外资源</li>
+<li>无抢占：一个资源只能被进程资源释放，进程已经完成了它的任务之后</li>
+<li>循环等待：存在等待进程集合{P0, P1, …, Pn}, P0正在等待P1所占用资源，P1正在等待P2占用的资源，…, Pn-1正在等待Pn所占用的资源，Pn正在等待P0所占用的资源</li>
+</ul>
+<h3 id="死锁处理方法"><a href="#死锁处理方法" class="headerlink" title="死锁处理方法"></a>死锁处理方法</h3><ul>
+<li>Deadlock Prevention 死锁预防</li>
+<li>Deadlock Avoidance 死锁避免</li>
+<li>Deadlock Detection 死锁检测</li>
+<li>Recovery from Deadlock 死锁恢复</li>
+</ul>
+<h2 id="进程间通信-inter-process-communication"><a href="#进程间通信-inter-process-communication" class="headerlink" title="进程间通信(inter-process communication)"></a>进程间通信(inter-process communication)</h2><ul>
 <li><p>概述</p>
 <ul>
 <li>通信模型<ul>
