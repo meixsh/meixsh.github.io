@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"meixsh.github.io","root":"/","scheme":"Mist","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="提纲指针  指针的基本概念 指针运算 指针与函数 指针与数组 指针与结构体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ch07 指针与引用">
+<meta property="og:url" content="https://meixsh.github.io/2020/10/11/06_old_backup/ch07-%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8/index.html">
+<meta property="og:site_name" content="melvin&#39;s blog">
+<meta property="og:description" content="提纲指针  指针的基本概念 指针运算 指针与函数 指针与数组 指针与结构体">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-11T02:37:00.000Z">
+<meta property="article:modified_time" content="2020-10-11T14:27:45.565Z">
+<meta property="article:author" content="melvin">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="指针">
+<meta property="article:tag" content="引用">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://meixsh.github.io/2020/10/11/06_old_backup/ch07-%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>ch07 指针与引用 | melvin's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">melvin's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">脚踏实地，仰望星空</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%90%E7%BA%B2"><span class="nav-number">1.</span> <span class="nav-text">提纲</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8C%87%E9%92%88"><span class="nav-number">2.</span> <span class="nav-text">指针</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">指针变量的定义与使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E5%AE%9A%E4%B9%89%E6%A0%BC%E5%BC%8F"><span class="nav-number">2.1.1.</span> <span class="nav-text">指针的定义格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F%E7%9A%84%E5%AD%98%E5%82%A8%E5%B8%83%E5%B1%80"><span class="nav-number">2.1.2.</span> <span class="nav-text">指针变量的存储布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F%E7%9A%84%E8%B5%8B%E5%80%BC"><span class="nav-number">2.1.3.</span> <span class="nav-text">指针变量的赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%96%E5%80%BC%E6%93%8D%E4%BD%9C%E7%AC%A6-amp"><span class="nav-number">2.1.4.</span> <span class="nav-text">取值操作符 &amp;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E9%A2%86%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">2.1.5.</span> <span class="nav-text">引领操作符 *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%9A%84%E6%84%8F%E4%B9%89%E4%B8%8E%E4%BD%9C%E7%94%A8"><span class="nav-number">2.1.6.</span> <span class="nav-text">指针的意义与作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">指针与函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.1.</span> <span class="nav-text">数据交换函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88%E4%B8%8E%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="nav-number">2.2.2.</span> <span class="nav-text">常量指针与指针常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E6%8C%87%E9%92%88%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.3.</span> <span class="nav-text">返回指针的函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">2.3.</span> <span class="nav-text">指针与复合数据类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="nav-number">2.3.1.</span> <span class="nav-text">指针与数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1%E5%9C%B0%E5%9D%80%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">2.3.1.1.</span> <span class="nav-text">数据对象地址的计算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E8%BF%90%E7%AE%97"><span class="nav-number">2.3.1.2.</span> <span class="nav-text">指针运算</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E6%8C%87%E9%92%88%E4%B8%8E%E6%95%B0%E7%BB%84"><span class="nav-number">2.3.1.3.</span> <span class="nav-text">作为函数参数的指针与数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%8F%AF%E4%BA%92%E6%8D%A2%E6%80%A7"><span class="nav-number">2.3.1.4.</span> <span class="nav-text">指针与数组的可互换性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E6%95%B0%E7%BB%84%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">2.3.1.5.</span> <span class="nav-text">指针与数组的差异</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.1.6.</span> <span class="nav-text">多维数组作为函数参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E4%B8%8E%E7%BB%93%E6%9E%84%E4%BD%93"><span class="nav-number">2.3.2.</span> <span class="nav-text">指针与结构体</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.</span> <span class="nav-text">字符串</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84"><span class="nav-number">3.1.</span> <span class="nav-text">字符数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E6%8C%87%E9%92%88"><span class="nav-number">3.2.</span> <span class="nav-text">字符指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">3.3.</span> <span class="nav-text">抽象字符串</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E6%95%B0%E7%BB%84%E4%B8%8E%E5%AD%97%E7%AC%A6%E6%8C%87%E9%92%88%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">3.4.</span> <span class="nav-text">字符数组与字符指针的差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.5.</span> <span class="nav-text">返回字符串的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BA%93"><span class="nav-number">3.6.</span> <span class="nav-text">标准字符串库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#string-%E7%B1%BB"><span class="nav-number">3.7.</span> <span class="nav-text">string 类</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">动态存储管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E4%B8%8E%E9%87%8A%E6%94%BE"><span class="nav-number">4.1.</span> <span class="nav-text">内存分配与释放</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">4.1.1.</span> <span class="nav-text">动态内存分配的性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E5%BA%93%E7%9A%84%E5%8A%A8%E6%80%81%E5%AD%98%E5%82%A8%E7%AE%A1%E7%90%86%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.2.</span> <span class="nav-text">标准库的动态存储管理函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-new-%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">4.1.3.</span> <span class="nav-text">new&#x2F;new[]操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#delete-delete-%E6%93%8D%E4%BD%9C%E7%AC%A6"><span class="nav-number">4.1.4.</span> <span class="nav-text">delete&#x2F;delete[]操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%80%E6%9C%89%E6%9D%83%E4%B8%8E%E7%A9%BA%E6%82%AC%E6%8C%87%E9%92%88"><span class="nav-number">4.1.5.</span> <span class="nav-text">所有权与空悬指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E4%B8%8E%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">4.1.6.</span> <span class="nav-text">内存泄露与垃圾回收</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.</span> <span class="nav-text">引用类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">5.1.</span> <span class="nav-text">引用的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">5.2.</span> <span class="nav-text">引用的性质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E8%AF%B4%E6%98%8E"><span class="nav-number">5.3.</span> <span class="nav-text">特殊说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E7%BB%83%E4%B9%A0"><span class="nav-number">5.4.</span> <span class="nav-text">编程练习</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0"><span class="nav-number">5.5.</span> <span class="nav-text">引用作为函数参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E4%BD%9C%E4%B8%BA%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">5.6.</span> <span class="nav-text">引用作为函数返回值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5"><span class="nav-number">6.</span> <span class="nav-text">编程实践</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="melvin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">melvin</p>
+  <div class="site-description" itemprop="description">Life is fantastic!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meixsh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meixsh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:meixsh@qq.com" title="E-Mail → mailto:meixsh@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meixsh.github.io/2020/10/11/06_old_backup/ch07-%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="melvin">
+      <meta itemprop="description" content="Life is fantastic!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="melvin's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ch07 指针与引用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-10-11 10:37:00 / 修改时间：22:27:45" itemprop="dateCreated datePublished" datetime="2020-10-11T10:37:00+08:00">2020-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>10 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="提纲"><a href="#提纲" class="headerlink" title="提纲"></a>提纲</h1><p>指针</p>
+<ul>
+<li>指针的基本概念</li>
+<li>指针运算</li>
+<li>指针与函数</li>
+<li>指针与数组</li>
+<li>指针与结构体<a id="more"></a>
+字符串</li>
+<li>字符数组</li>
+<li>字符指针</li>
+<li>字符串整体</li>
+<li>C标准字符串库</li>
+<li>C++字符串类</li>
+</ul>
+<p>动态存储管理</p>
+<ul>
+<li>c格式：malloc/free</li>
+<li>c++格式: new/delete</li>
+</ul>
+<p>引用</p>
+<h1 id="指针"><a href="#指针" class="headerlink" title="指针"></a>指针</h1><p>数据对象的地址与值</p>
+<ul>
+<li>地址：数据对象的存储位置在计算机中的编号</li>
+<li>值：在该位置处存储的内容</li>
+<li>地址与值是辩证统一的关系</li>
+</ul>
+<h2 id="指针变量的定义与使用"><a href="#指针变量的定义与使用" class="headerlink" title="指针变量的定义与使用"></a>指针变量的定义与使用</h2><h3 id="指针的定义格式"><a href="#指针的定义格式" class="headerlink" title="指针的定义格式"></a>指针的定义格式</h3><ul>
+<li>格式：<code>目标数据对象类型 * 指针变量名称;</code></li>
+<li>例1：定义p为指向整数的指针：<code>int * p;</code></li>
+<li>例2：定义p为指向结构体类型的指针：<br><code>struct POINT&#123; int x, y; &#125;;  POINT * p;</code></li>
+<li>多个指针变量的定义<ul>
+<li>例3：int * p, * q;</li>
+<li>例4：typedef int * PINT;  PINT p, q;<br>这里使用typedef先定义好指针类型PINT，接下来就不用像例3一样，每次定义时都重复书写 * 号，从这里也可以看出虽然typedef定义出来的类型与原始类型含义上等价，但绝对不是简单的文本替换！</li>
+</ul>
+</li>
+</ul>
+<h3 id="指针变量的存储布局"><a href="#指针变量的存储布局" class="headerlink" title="指针变量的存储布局"></a>指针变量的存储布局</h3><h3 id="指针变量的赋值"><a href="#指针变量的赋值" class="headerlink" title="指针变量的赋值"></a>指针变量的赋值</h3><h3 id="取值操作符-amp"><a href="#取值操作符-amp" class="headerlink" title="取值操作符 &amp;"></a>取值操作符 &amp;</h3><h3 id="引领操作符"><a href="#引领操作符" class="headerlink" title="引领操作符 *"></a>引领操作符 *</h3><h3 id="指针的意义与作用"><a href="#指针的意义与作用" class="headerlink" title="指针的意义与作用"></a>指针的意义与作用</h3><ul>
+<li><p>作为函数通信的一种手段<br>使用指针作为函数参数，不仅可以提高参数传递效率，还可以将该参数作为函数输出集的一员，带回结果</p>
+</li>
+<li><p>作为构造复杂数据结构的手段<br>使用指针构造复杂数据对象之间的关联，形成复杂数据结构</p>
+</li>
+<li><p>作为动态内存分配和管理的手段<br>在程序执行期间动态构造数据对象之间的关联</p>
+</li>
+<li><p>作为执行特定程序代码的手段<br>使用指针指向特定代码段，执行未来才能实现的函数</p>
+</li>
+</ul>
+<h2 id="指针与函数"><a href="#指针与函数" class="headerlink" title="指针与函数"></a>指针与函数</h2><h3 id="数据交换函数"><a href="#数据交换函数" class="headerlink" title="数据交换函数"></a>数据交换函数</h3><p>编写程序互换两个整形数据对象的值，要求使用函数实现数据对象值的互换</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">(<span class="keyword">int</span> *x, <span class="keyword">int</span> *y)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m = <span class="number">10</span>, n = <span class="number">20</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">ifndef</span> NDEBUG</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;main (before swapped): m = &quot;</span> &lt;&lt; m &lt;&lt; <span class="string">&quot;; n = &quot;</span> &lt;&lt; n &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    Swap(&amp;m, &amp;n);</span><br><span class="line"></span><br><span class="line">    <span class="meta">#<span class="meta-keyword">ifndef</span> NDEBUG</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;main (after swapped): m = &quot;</span> &lt;&lt; m &lt;&lt; <span class="string">&quot;; n = &quot;</span> &lt;&lt; n &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">( <span class="keyword">int</span> * x, <span class="keyword">int</span> * y )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> t;</span><br><span class="line">  <span class="keyword">if</span>( !x || !y )&#123;</span><br><span class="line">   <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Swap: Parameter(s) illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">   <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NDEBUG</span></span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Swap (before swapped): *x = &quot;</span> &lt;&lt; *x &lt;&lt; <span class="string">&quot;; *y = &quot;</span> &lt;&lt; *y &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">  t = *x;</span><br><span class="line">  *x = *y;</span><br><span class="line">  *y = t;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NDEBUG</span></span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Swap (after swapped): *x = &quot;</span> &lt;&lt; *x &lt;&lt; <span class="string">&quot;; *y = &quot;</span> &lt;&lt; *y &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="常量指针与指针常量"><a href="#常量指针与指针常量" class="headerlink" title="常量指针与指针常量"></a>常量指针与指针常量</h3><p>常量指针：指向常量的指针</p>
+<ul>
+<li>性质：不能通过指针修改目标数据对象的值，但可以改变指针值，使其指向其他地方</li>
+<li>例1：<code>int n = 10; const int * p = &amp;n;</code></li>
+<li>典型使用场合：作为函数参数，表示函数内部不能修改指针所指向的目标数据对象值</li>
+<li>例2：<code>void PrintObject(const int * p);</code></li>
+</ul>
+<p>指针常量：指针指向的位置不可变化</p>
+<ul>
+<li>性质：不可将指针指向其他地方，但可改变指针所指向的目标数据对象值</li>
+<li>例3：<code>int n = 10; int * const p = &amp;n;</code></li>
+<li>指针常量和其它常量一样，必须在定义时初始化</li>
+</ul>
+<p>常量指针常量：指向常量的指针常量 (指针的双重只读属性)</p>
+<ul>
+<li>性质：指针值不可改变，指向的目标数据对象值也不可改变</li>
+<li>例4：<code>const int n = 10; const int * const p = &amp;n;</code></li>
+<li>典型使用场合：主要作为函数参数使用</li>
+</ul>
+<p><strong>注意:</strong> const关键字是左结合的</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> * p; <span class="keyword">int</span> <span class="keyword">const</span> * p; <span class="comment">//合法</span></span><br><span class="line"><span class="comment">// 上述两个语句都合法，前者因为const前面什么都没有，只能作用在后面的int类型，所以严格来说后者更为规范，此时const完全限定的是int类型的常量属性，表达整形常量的含义。</span></span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> * <span class="keyword">const</span> p; <span class="comment">// 合法</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> * <span class="keyword">const</span> p; <span class="comment">// 合法</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> <span class="keyword">const</span> * p; <span class="comment">// 非法</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="返回指针的函数"><a href="#返回指针的函数" class="headerlink" title="返回指针的函数"></a>返回指针的函数</h3><p>指针类型可以作为函数返回值</p>
+<ul>
+<li>函数内部返回某个数据对象的地址</li>
+<li>调用函数后将返回值赋值给某个指针</li>
+<li>特别说明：<font color="red">不能返回函数内部定义的局部变量地址</font><ul>
+<li>函数内部局部变量生存期只存在函数内部，函数返回之后，空间释放，该地址内容无效！</li>
+</ul>
+</li>
+</ul>
+<h2 id="指针与复合数据类型"><a href="#指针与复合数据类型" class="headerlink" title="指针与复合数据类型"></a>指针与复合数据类型</h2><h3 id="指针与数组"><a href="#指针与数组" class="headerlink" title="指针与数组"></a>指针与数组</h3><h4 id="数据对象地址的计算"><a href="#数据对象地址的计算" class="headerlink" title="数据对象地址的计算"></a>数据对象地址的计算</h4><ul>
+<li>数组定义: <code>int a[8] = &#123;1, 2, 3, 4, 5, 6, 7, 8&#125;;</code></li>
+<li>数组基地址：&amp;a 或 a</li>
+<li>数组元素地址<ul>
+<li>数组首元素地址: &amp;a[0]</li>
+<li>数组第i元素地址：&amp;a[0] + i * sizeof(int)</li>
+<li>数组基地址与首元素地址数值相同，故<br>数组第i元素地址：a + i * sizeof(int)<br>这边关于数组第i元素地址计算公式，如果真正编程解引用后不是所想的那样结果，这里更多是算术上的理解</li>
+</ul>
+</li>
+</ul>
+<h4 id="指针运算"><a href="#指针运算" class="headerlink" title="指针运算"></a>指针运算</h4><p>希望表达p、q之间的联系</p>
+<ul>
+<li>它们都指向同一数组中的元素</li>
+</ul>
+<p>指针与整数加减运算</p>
+<ul>
+<li>设p为指向整数数组中某元素的指针，i为整数，则<code>p + i</code>表示指针向后滑动i个整数，<code>p - i</code>表示指针向前滑动i个整数</li>
+<li>例1：p指向a[0], 则<code>p + 2</code>指向a[2]</li>
+<li>例2：p指向a[3], 则<code>p - 2</code>指向a[1]</li>
+<li>指针与整数加减运算的结果仍为指针类型量，故可赋值</li>
+<li>例3：p指向a[0], 则<code>q = p + 2</code>使得q指向a[2]</li>
+</ul>
+<p>指针与整数加减运算规律</p>
+<ul>
+<li>以指针指向的目标数据对象类型为单位，而不是以字节为单位</li>
+</ul>
+<p>指针的递增递减运算</p>
+<ul>
+<li>例4：p指向a[0], 则<code>p++</code>指向a[1]</li>
+<li>例5：p指向a[1], 则<code>--p</code>指向a[0]</li>
+</ul>
+<p>指针减法运算</p>
+<ul>
+<li>两个指针的减法运算结果为其间元素个数</li>
+<li>例6：p指向a[0], q指向a[2], <code>q - p</code>结果为2</li>
+</ul>
+<p>指针关系运算</p>
+<ul>
+<li>可以测试两个指针是否相等</li>
+<li>例1：设p, q为指针，则<code>p == q</code>测试两个指针是否指向同一个目标数据对象</li>
+</ul>
+<p>空指针：NULL 定义在标准库中cstdlib</p>
+<ul>
+<li>指针值0: 表示指针不指向任何地方，表示为NULL</li>
+<li>例2：设p为指针，则p = NULL表示p不指向任何目标数据对象</li>
+<li>例3：测试指针p是否有意义 <code>if (p != NULL)</code> 等价于 <code>if (p)</code><br><font color="red"><strong>使用指针前一定要测试其是否有意义！</strong></font></li>
+</ul>
+<h4 id="作为函数参数的指针与数组"><a href="#作为函数参数的指针与数组" class="headerlink" title="作为函数参数的指针与数组"></a>作为函数参数的指针与数组</h4><p>数组作为函数参数：函数定义</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span> a[], <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> 　<span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line"> 　Randomize();</span><br><span class="line"> 　<span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">  　 a[i] = GenerateRandomNumber( lower_bound, upper_bound );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>数组作为函数参数：函数调用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUM_OF_ELEMENTS 8</span></span><br><span class="line"><span class="keyword">int</span> a[NUM_OF_ELEMENTS];</span><br><span class="line">GenerateIntegers( a, NUM_OF_ELEMENTS );</span><br></pre></td></tr></table></figure>
+<p>指针作为函数参数：函数定义</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">GenerateIntegers</span><span class="params">( <span class="keyword">int</span>* p, <span class="keyword">unsigned</span> <span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"> 　<span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line"> 　Randomize();</span><br><span class="line"> 　<span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">  　 *p++ = GenerateRandomNumber( lower_bound, upper_bound );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>指针作为函数参数：函数调用</p>
+<ul>
+<li>必须传递已分配空间的数组基地址<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUM_OF_ELEMENTS 8</span></span><br><span class="line"><span class="keyword">int</span> a[NUM_OF_ELEMENTS];</span><br><span class="line">GenerateIntegers( a, NUM_OF_ELEMENTS );</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="指针与数组的可互换性"><a href="#指针与数组的可互换性" class="headerlink" title="指针与数组的可互换性"></a>指针与数组的可互换性</h4><p>互换情况</p>
+<ul>
+<li>指针一旦指向数组的基地址，则使用指针和数组格式访问元素时的地址计算方式是相同的，此时可以互换指针与数组操作格式<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[<span class="number">3</span>] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;    <span class="keyword">int</span> * p = &amp;a;    <span class="keyword">int</span> i;</span><br><span class="line"><span class="comment">/* 正确，可以将指针 p 当作数组来处理  */</span></span><br><span class="line"><span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ )</span><br><span class="line">   <span class="built_in">cout</span> &lt;&lt; p[i] &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">   <span class="comment">/* 正确，可以将数组 a 当作指针来处理  */</span></span><br><span class="line">   <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ )</span><br><span class="line">   <span class="built_in">cout</span> &lt;&lt; *(a+i) &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>例外情况</p>
+<ul>
+<li>数组名为常数，不能在数组格式上进行指针运算<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 正确，指针 p 可赋值，指向下一元素  */</span></span><br><span class="line"><span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ )</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; *p++ &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 错误，不能将数组 a 当作指针赋值  */</span></span><br><span class="line"><span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++ )</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; *a++ &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="指针与数组的差异"><a href="#指针与数组的差异" class="headerlink" title="指针与数组的差异"></a>指针与数组的差异</h4><p>使用指针或数组声明的数据对象性质不同</p>
+<ul>
+<li><code>例：int a[3] = &#123;1, 2, 3&#125;; int * p= &amp;a;</code></li>
+<li>定义数组的同时确定了数组元素的存储布局：a为静态分配内存的数组，若a为全局数组，则程序执行前分配内存，若为局部数组，则在进入该块时分配内存</li>
+<li>定义指针时规定指针数据对象的存储布局：p为指针，若p为全局变量，则程序执行前分配内存，若为局部变量，则在进入该块时分配内存</li>
+<li>定义指针时未规定目标数据对象的存储布局：p为指针，指向一个已存在数组的基地址，即指向该位置处的整数a[0]，若p为初始化，则目标数据对象未知</li>
+</ul>
+<p>使用指针时，显示构造指针与目标对象之间的关联</p>
+<h4 id="多维数组作为函数参数"><a href="#多维数组作为函数参数" class="headerlink" title="多维数组作为函数参数"></a>多维数组作为函数参数</h4><p>函数原型：正确例（有不妥，非错误）</p>
+<ul>
+<li>直接传递元素个数也不妥当，只能处理固定元素个数的数组，应用场合十分受限<br><code>void PrintTwoDimensinalArray( int a[8][8], unsigned int m, unsigned int n );</code></li>
+</ul>
+<p>函数原型：错误例</p>
+<ul>
+<li>不能每维都不传递元素个数，语法规则不允许<br><code>void PrintTwoDimensinalArray( int a[][], unsigned int m, unsigned int n );</code></li>
+</ul>
+<p>函数原型：正确例（有不妥，非错误）</p>
+<ul>
+<li>a 为指向数组基地址的整数指针，m 为第一维元素个数，n 为第二维元素个数，函数内部使用指针运算访问某个元素<br><code>void PrintTwoDimensinalArray( int * a, unsigned int m, unsigned int n );</code><br>如：第 i 行 j 列元素，使用指针运算 a + n * i + j 的结果指针指向</li>
+</ul>
+<h3 id="指针与结构体"><a href="#指针与结构体" class="headerlink" title="指针与结构体"></a>指针与结构体</h3><p>指向结构体的指针对象</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">STUDENT</span>&#123;</span> <span class="keyword">int</span> id; STRING name; <span class="keyword">int</span> age; &#125;;</span><br><span class="line">STUDENT student = &#123; <span class="number">2007010367</span>, <span class="string">&quot;Name&quot;</span>, <span class="number">19</span> &#125;;</span><br><span class="line">STUDENT * pstudent = &amp;student;</span><br></pre></td></tr></table></figure>
+<p>访问指针所指向的结构体对象的成员</p>
+<ul>
+<li>必须使用括号：选员操作符优先级高于引领操作符    <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(*pstudent).id = <span class="number">2007010367</span>;</span><br><span class="line">(*pstudent).name = DuplicateString( <span class="string">&quot;Name&quot;</span> );</span><br><span class="line">(*pstudent).age = <span class="number">19</span>;</span><br></pre></td></tr></table></figure></li>
+<li>选员操作符“-&gt;”<br><code>pstudent-&gt;id = 2007010367;    // 不用书写括号，更方便</code></li>
+</ul>
+<p>结构体成员类型为指针</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ARRAY</span>&#123;</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> count; <span class="keyword">int</span> * elements; &#125;;</span><br><span class="line"><span class="keyword">int</span> a[<span class="number">8</span>] = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span> &#125;;</span><br><span class="line">ARRAY <span class="built_in">array</span> = &#123; <span class="number">8</span>, &amp;a &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>访问指针类型的结构体成员</p>
+<ul>
+<li>访问 elements 的第 i 个元素： array.elements[i]</li>
+<li>若有定义：ARRAY * parray = &array;</li>
+<li>访问 parray 指向的结构体对象 elements 的第 i 个元素： </li>
+<li>(*parray).elements[i] 或 parray-&gt;elements[i]</li>
+</ul>
+<p>使用指向结构体对象的指针作为函数参数</p>
+<ul>
+<li>好处一：节省结构体整体赋值的时间成本</li>
+<li>好处二：解决普通函数参数不能直接带回结果的问题，可以在函数内部改变目标结构体对象的值</li>
+</ul>
+<p>构造复杂的数据结构</p>
+<ul>
+<li>动态创建和管理这些复杂的数据结构</li>
+<li>动态数组：<code>struct ARRAY &#123; unsigned int count; int * elements; &#125;;</code></li>
+</ul>
+<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><p>字符串的表示</p>
+<ul>
+<li>三种理解角度：作为字符数组，作为指向字符数组的指针，作为抽象的字符串整体</li>
+</ul>
+<h2 id="字符数组"><a href="#字符数组" class="headerlink" title="字符数组"></a>字符数组</h2><ul>
+<li>字符数组的分配空间必须能容纳额外的结束标志‘\0’  </li>
+<li>可以在程序运行时通过测试‘\0’字符确定字符数组是否结束，而不需要了解数组元素个数，使处理元素个数未知的数组成为可能  </li>
+<li>通过指针运算直接操作字符数组中的字符，而不再使用数组格式访问字符元素</li>
+</ul>
+<p>返回字符c在字符串s中首次出现的位置</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">FindCharFirst</span><span class="params">( <span class="keyword">char</span> c, <span class="keyword">char</span> s[] )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">  <span class="keyword">if</span>( !s )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;FindCharFirst: Illegal string.\n&quot;</span>;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; s[i] != <span class="string">&#x27;\0&#x27;</span>; i++ )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span>( s[i] == c )</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> inexistent_index;   <span class="comment">// 0xFFFFFFFF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符指针"><a href="#字符指针" class="headerlink" title="字符指针"></a>字符指针</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">FindCharFirst</span><span class="params">( <span class="keyword">char</span> c, <span class="keyword">char</span> * s )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> * t;</span><br><span class="line">  <span class="keyword">if</span>( !s )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;FindCharFirst: Illegal string.\n&quot;</span>;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">for</span>( t = s; *t != <span class="string">&#x27;\0&#x27;</span>; t++ )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">if</span>( *t == c )</span><br><span class="line">      <span class="keyword">return</span> t - s;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> inexistent_index;   <span class="comment">// 0xFFFFFFFF</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="抽象字符串"><a href="#抽象字符串" class="headerlink" title="抽象字符串"></a>抽象字符串</h2><p>抽象字符串的定义</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> * STRING;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">const</span> <span class="keyword">char</span> * CSTRING;</span><br></pre></td></tr></table></figure>
+
+<p>FindCharFirst 函数的声明格式<br>下述三种声明格式完全相同:  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">FindCharFirst</span><span class="params">( <span class="keyword">char</span> c, <span class="keyword">char</span> s[] )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">FindCharFirst</span><span class="params">( <span class="keyword">char</span> c, <span class="keyword">char</span>* s )</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="keyword">int</span> <span class="title">FindCharFirst</span><span class="params">( <span class="keyword">char</span> c, STRING s )</span></span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符数组与字符指针的差异"><a href="#字符数组与字符指针的差异" class="headerlink" title="字符数组与字符指针的差异"></a>字符数组与字符指针的差异</h2><p>字符数组量的定义、初始化与存储<br><code>char s[9] = &#123; &#39;C&#39;, &#39;P&#39;, &#39;P&#39;, &#39;-&#39;, &#39;P&#39;, &#39;r&#39;, &#39;o&#39;, &#39;g&#39;, &#39;\0&#39; &#125;;</code></p>
+<p>字符指针量的定义、初始化与存储<br><code>char * s = &quot;CPP-Prog&quot;;</code></p>
+<p>后者存在单独的指针变量，前者则没有</p>
+<p>按指针格式定义字符串，可以直接赋值</p>
+<ul>
+<li>示例：char * s;   s = “CPP-Prog”;    //  正确</li>
+<li>字符串文字首先分配空间，然后将其基地址赋给 s，使 s 指向该字符串基地址</li>
+</ul>
+<p>按字符数组格式定义字符串，不能直接赋值</p>
+<ul>
+<li>示例：char s[9];   s = “CPP-Prog”;    //  错误</li>
+<li>不能对数组进行整体赋值操作</li>
+<li>原因：数组空间已分配，字符串文字空间已分配，且它们位于不同位置，不能直接整体复制</li>
+</ul>
+<h2 id="返回字符串的函数"><a href="#返回字符串的函数" class="headerlink" title="返回字符串的函数"></a>返回字符串的函数</h2><p>编写函数，将某个字符 c 转换为字符串</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 正确例</span></span><br><span class="line"><span class="function">STRING <span class="title">TransformCharIntoString</span><span class="params">( <span class="keyword">char</span> c )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  STRING _s = (STRING)<span class="built_in">malloc</span>( <span class="number">2</span> );</span><br><span class="line">  _s[<span class="number">0</span>] = c;</span><br><span class="line">  _s[<span class="number">1</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">  <span class="keyword">return</span> _s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 错误例</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">TransformCharIntoString</span><span class="params">( <span class="keyword">char</span> c )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> _s[<span class="number">2</span>];</span><br><span class="line">  _s[<span class="number">0</span>] = c;</span><br><span class="line">  _s[<span class="number">1</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">  <span class="keyword">return</span> _s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><font color="red">对于所有返回值为指针类型的函数，都不能返回在函数内部定义的局部数据对象——所有局部对象在函数结束后不再有效，其地址在函数返回后没有意义</font></p>
+<h2 id="标准字符串库"><a href="#标准字符串库" class="headerlink" title="标准字符串库"></a>标准字符串库</h2><p>标准库中关于字符串处理的函数很多，均定义于头文件“cstring”中<br>常用字符串函数</p>
+<ul>
+<li>char * strcat(char *dest, const char *src);</li>
+<li>int strcmp(const char *s1, const char *s2);</li>
+<li>char <em>strcpy(char \</em>dest, const char*src);</li>
+<li>int strlen(const char *s);</li>
+<li>char *strtok(char *token, const char *delimiter);</li>
+</ul>
+<p>不建议使用标准字符串库，使用 string 类替代</p>
+<h2 id="string-类"><a href="#string-类" class="headerlink" title="string 类"></a>string 类</h2><p>定义于头文件“string”中</p>
+<p>声明与构造string对象</p>
+<ul>
+<li>string s = “abcdefg”;</li>
+<li>string s( “abcdefg” );</li>
+</ul>
+<p>读取与写入string对象</p>
+<ul>
+<li>cout &lt;&lt; s &lt;&lt; endl;</li>
+<li>cin &gt;&gt; s;  // 读取以空格、制表符与回车符分隔的单词</li>
+<li>getline( cin, s, ‘\n’ );  // 读取包含空格和制表符在内的整行</li>
+</ul>
+<p>获取string对象的长度</p>
+<ul>
+<li>string s = “abcdefg”;</li>
+<li>int a = s.length();</li>
+</ul>
+<p>改变string对象的容量大小</p>
+<ul>
+<li>s.resize(32);  // 将s设为32字符长，多余舍弃，不足空闲</li>
+<li>s.resize(32, ‘=’);  // 多余舍弃，不足补‘=’</li>
+</ul>
+<p>string对象的追加操作</p>
+<ul>
+<li>string s1 = “abcd”, s2 = “efg”;</li>
+<li>s1.append( s2 );  // 将字符串s2追加到s1尾部</li>
+</ul>
+<p>string对象的比较操作</p>
+<ul>
+<li>string s1 = “abcdefg”, s2 = “abcdxyz”;</li>
+<li>int a = s1.compare( s2, 0 );  // 从0号位字符开始比较</li>
+</ul>
+<p>string对象的查找操作</p>
+<ul>
+<li>string s1 = “abcdefg”, s2 = “bcd”;</li>
+<li>int a = s1.find( s2, 0 );  // 从字符串开头开始查找，结果为s2在s1中首次出现的位置</li>
+</ul>
+<h1 id="动态存储管理"><a href="#动态存储管理" class="headerlink" title="动态存储管理"></a>动态存储管理</h1><h2 id="内存分配与释放"><a href="#内存分配与释放" class="headerlink" title="内存分配与释放"></a>内存分配与释放</h2><p>静态内存分配方式</p>
+<ul>
+<li>适用对象：全局变量与静态局部变量</li>
+<li>分配与释放时机：在程序运行前分配，程序结束时释放</li>
+</ul>
+<p>自动内存分配方式</p>
+<ul>
+<li>适用对象：普通局部变量</li>
+<li>分配与释放时机：程序进入该函数或该块时自动进行，退出时自动释放</li>
+</ul>
+<p>动态内存分配方式</p>
+<ul>
+<li>适用对象：匿名数据对象（指针指向的目标数据对象）</li>
+<li>分配与释放时机：在执行特定代码段时按照该代码段的要求动态分配和释放</li>
+</ul>
+<h3 id="动态内存分配的性质"><a href="#动态内存分配的性质" class="headerlink" title="动态内存分配的性质"></a>动态内存分配的性质</h3><p>动态内存分配的目的</p>
+<ul>
+<li>静态与自动内存分配方式必须事先了解数据对象的格式和存储空间大小</li>
+<li>部分场合无法确定数据对象的大小</li>
+<li>示例：声明一个包含 n 个元素的整数数组，n 值由用户在程序执行时输入。编译时程序未执行，不知道 n 值！</li>
+</ul>
+<p>动态内存分配的位置</p>
+<ul>
+<li>计算机维护的一个专门存储区：堆</li>
+<li>所有动态分配的内存都位于堆中</li>
+</ul>
+<p>动态内存分配的关键技术</p>
+<ul>
+<li>使用指针指向动态分配的内存区</li>
+<li>使用引领操作符操作目标数据对象</li>
+</ul>
+<h3 id="标准库的动态存储管理函数"><a href="#标准库的动态存储管理函数" class="headerlink" title="标准库的动态存储管理函数"></a>标准库的动态存储管理函数</h3><p>动态存储管理函数的原型</p>
+<ul>
+<li>头文件：“cstdlib”和“cmalloc”，两者包含其一即可</li>
+<li>内存分配函数原型：<code>void * malloc( unsigned int size );</code></li>
+<li>内存释放函数原型：<code>void free( void * memblock );</code></li>
+</ul>
+<p>void * 类型</p>
+<ul>
+<li>特殊的指针类型，指向的目标数据对象类型未知</li>
+<li>不能在其上使用引领操作符访问目标数据对象</li>
+<li>可以转换为任意指针类型，不过转换后类型是否有意义要看程序逻辑</li>
+<li>可以在转换后的类型上使用引领操作符</li>
+<li>主要目的：作为一种通用指针类型，首先构造指针对象与目标数据对象的一般性关联，然后由程序员在未来明确该关联的性质</li>
+</ul>
+<p>malloc 函数的一般用法</p>
+<ul>
+<li>首先定义特定类型的指针变量：char * p;</li>
+<li>调用 malloc 函数分配内存：<code>p = (char *)malloc(11);</code></li>
+<li>参数表示所需要分配的存储空间大小，以字节为单位</li>
+<li>例：若要分配能够保存 10 个字符的字符串，分配 11 个字节（字符串结束标志也要分配空间）</li>
+<li>将返回值转换为 char * 类型赋值给原指针，使 p 指向新分配空间的匿名目标数据对象</li>
+</ul>
+<p>复制字符串</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">DuplicateString</span><span class="params">( <span class="keyword">char</span> * s )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">char</span> * t;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> n, i;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span>( !s )</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;DuplicateString: Parameter Illegal.&quot;</span>;  <span class="built_in">exit</span>(<span class="number">1</span>);  </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  n = <span class="built_in">strlen</span>( s );</span><br><span class="line">  t = ( <span class="keyword">char</span> * )<span class="built_in">malloc</span>( n + <span class="number">1</span> );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; n; i++ )</span><br><span class="line">    t[i] = s[i];</span><br><span class="line">  t[n] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>free 函数的一般用法</p>
+<ul>
+<li>传递一个指向动态分配内存的目标数据对象的指针</li>
+<li>示例一：<code>char * p;    p = (char *)malloc(11);    free(p);</code></li>
+<li>示例二：<code>int * p = ( int * )malloc( 10 * sizeof( int ) );    free( p );</code></li>
+<li>示例二分配能够容纳 10 个整数的连续存储空间，使 p 指向该空间的基地址，最后调用 free 函数释放 p 指向的整个空间</li>
+</ul>
+<p>特别说明：有分配就有释放</p>
+<ul>
+<li>free 函数释放的是 p 指向的目标数据对象的空间，而不是 p 本身的存储空间</li>
+<li>调用 free 函数后，p 指向的空间不再有效，但 p 仍指向它</li>
+<li>为保证在释放目标数据对象空间后，不会再次使用 p 访问，建议按照下述格式书写代码：<code>free( p );   p = NULL;</code></li>
+</ul>
+<h3 id="new-new-操作符"><a href="#new-new-操作符" class="headerlink" title="new/new[]操作符"></a>new/new[]操作符</h3><p>动态创建单个目标数据对象</p>
+<ul>
+<li>分配目标对象：<code>int * p;  p = new int;  *p = 10;</code></li>
+<li>分配目标对象：<code>int * p;  p = new( int );  *p = 10;</code></li>
+<li>分配目标对象并初始化：<code>int * p;  p = new int(10);  // 将 *p 初始化为 10</code></li>
+<li>分配目标对象并初始化：<code>int * p;  p = new(int)(10);</code></li>
+</ul>
+<p>动态创建多个目标数据对象</p>
+<ul>
+<li>分配数组目标对象：<code>int * p;  p = new int[8]; // 分配 8 个元素的整数数组</code></li>
+</ul>
+<h3 id="delete-delete-操作符"><a href="#delete-delete-操作符" class="headerlink" title="delete/delete[]操作符"></a>delete/delete[]操作符</h3><p>释放单个目标数据对象</p>
+<ul>
+<li>释放目标对象：<code>int * p;  p = new int;  *p = 10;  delete p;</code></li>
+</ul>
+<p>释放多个目标数据对象</p>
+<ul>
+<li>释放数组目标对象：<code>int * p;  p = new int[8];  delete[] p;</code><br><font color="red">不是delete p[]</font></li>
+</ul>
+<h3 id="所有权与空悬指针"><a href="#所有权与空悬指针" class="headerlink" title="所有权与空悬指针"></a>所有权与空悬指针</h3><p>目标数据对象的所有权</p>
+<ul>
+<li>指向该目标数据对象的指针对象拥有所有权</li>
+<li>在程序中要时刻明确动态分配内存的目标数据对象的所有权归属于哪个指针数据对象</li>
+</ul>
+<p>指针使用的一般原则</p>
+<ul>
+<li>主动释放原则：如果某函数动态分配了内存，在函数退出时该目标数据对象不再需要，应主动释放它，此时 malloc 与 free 在函数中成对出现</li>
+<li>所有权转移原则：如果某函数动态分配了内存，在函数退出后该目标数据对象仍然需要，此时应将其所有权转交给本函数之外的同型指针对象，函数内部代码只有 malloc，没有 free</li>
+</ul>
+<p>空悬指针问题</p>
+<ul>
+<li>所有权的重叠：指针赋值操作导致两个指针数据对象指向同样的目标数据对象，即两个指针都声称“自己拥有目标数据对象的所有权”</li>
+<li>示例：<code>int *p, *q; q = ( int* )malloc( sizeof(int) ); p = q;</code></li>
+<li>产生原因：如果在程序中通过某个指针释放了目标数据对象，另一指针并不了解这种情况，它仍指向不再有效的目标数据对象，导致空悬指针  </li>
+<li>示例：<code>free( p );   p = NULL;  //  q 为空悬指针，仍指向原处</code></li>
+</ul>
+<p>解决方案</p>
+<ul>
+<li>确保程序中只有惟一一个指针拥有目标数据对象，即只有它负责目标数据对象的存储管理，其它指针只可访问，不可管理；若目标数据对象仍有存在价值，但该指针不再有效，此时应进行所有权移交</li>
+<li>在一个函数中，确保最多只有一个指针拥有目标数据对象，其它指针即使存在，也仅能访问，不可管理</li>
+<li>如果可能，在分配目标数据对象动态内存的函数中释放内存，如 main 函数分配的内存在 main 函数中释放</li>
+<li>退一步，如果上述条件不满足，在分配目标数据对象动态内存的函数的主调函数中释放内存，即将所有权移交给上级函数</li>
+<li>级级上报，层层审批</li>
+</ul>
+<h3 id="内存泄露与垃圾回收"><a href="#内存泄露与垃圾回收" class="headerlink" title="内存泄露与垃圾回收"></a>内存泄露与垃圾回收</h3><p>内存泄露问题</p>
+<ul>
+<li>产生原因：若某个函数通过局部指针变量动态分配了一个目标数据对象内存，在函数调用结束后没有释放该内存，并且所有权没有上交</li>
+<li>示例：<code>void f()&#123;  int * p = new int;  *p = 10;  &#125;</code></li>
+<li>函数 f 结束后，p 不再存在，*p 所在的存储空间仍在，10 仍在，但没有任何指针对象拥有它，故不可访问</li>
+<li>问题的实质：动态分配的内存必须动态释放，函数本身并不负责管理它</li>
+</ul>
+<p>垃圾回收机制</p>
+<ul>
+<li>系统负责管理，程序员不需要主动释放动态分配的内存，Java 有此功能，C 语言无</li>
+<li>垃圾回收机制在需要时效率很差，而不需要时效率很好</li>
+</ul>
+<h1 id="引用类型"><a href="#引用类型" class="headerlink" title="引用类型"></a>引用类型</h1><h2 id="引用的定义"><a href="#引用的定义" class="headerlink" title="引用的定义"></a>引用的定义</h2><p>定义格式：<code>数据类型&amp; 变量名称 = 被引用变量名称</code></p>
+<p>示例：<code>int a;  int &amp; ref = a;</code></p>
+<h2 id="引用的性质"><a href="#引用的性质" class="headerlink" title="引用的性质"></a>引用的性质</h2><p>引用类型的变量不占用单独的存储空间</p>
+<p>为另一数据对象起个别名，与该对象同享存储空间</p>
+<h2 id="特殊说明"><a href="#特殊说明" class="headerlink" title="特殊说明"></a>特殊说明</h2><p>引用类型的变量必须在定义时初始化</p>
+<p>此关联关系在引用类型变量的整个存续期都保持不变</p>
+<p>对引用类型变量的操作就是对被引用变量的操作</p>
+<h2 id="编程练习"><a href="#编程练习" class="headerlink" title="编程练习"></a>编程练习</h2><p>编写程序，使用引用操作目标数据</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a;</span><br><span class="line">  <span class="keyword">int</span> &amp; ref = a;</span><br><span class="line">  a = <span class="number">5</span>;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;a: &quot;</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;ref: &quot;</span> &lt;&lt; ref &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  ref = <span class="number">8</span>;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;a: &quot;</span> &lt;&lt; a &lt;&lt; <span class="built_in">endl</span>;  <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;ref: &quot;</span> &lt;&lt; ref &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="引用作为函数参数"><a href="#引用作为函数参数" class="headerlink" title="引用作为函数参数"></a>引用作为函数参数</h2><p>引用的最大意义：作为函数参数</p>
+<ul>
+<li>参数传递机制：引用传递，直接修改实际参数值</li>
+<li>使用格式：<code>返回值类型 函数名称( 类型 &amp; 参数名称)；</code></li>
+<li>函数原型示例：void Swap( int &amp; x, int &amp; y );</li>
+<li>函数实现示例：  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Swap</span><span class="params">( <span class="keyword">int</span> &amp; x, <span class="keyword">int</span> &amp; y )</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">　<span class="keyword">int</span> t;  t = x;  x = y;  y = t;  <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>函数调用示例：  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">　<span class="keyword">int</span> a = <span class="number">10</span>, b = <span class="number">20</span>;  Swap( a, b );  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="引用作为函数返回值"><a href="#引用作为函数返回值" class="headerlink" title="引用作为函数返回值"></a>引用作为函数返回值</h2><p>常量引用：仅能引用常量，不能通过引用改变目标对象值；引用本身也不能改变引用对象</p>
+<p>引用作为函数返回值时不生成副本</p>
+<ul>
+<li>函数原型示例：<code>int &amp; Inc( int &amp; dest, const int &amp; alpha );</code></li>
+<li>函数实现示例：  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> &amp; <span class="title">Inc</span><span class="params">( <span class="keyword">int</span> &amp; dest, <span class="keyword">const</span> <span class="keyword">int</span> &amp; alpha )</span></span>&#123;</span><br><span class="line">　dest += alpha;  <span class="keyword">return</span> dest;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>函数调用示例：引用类型返回值可以递增  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = <span class="number">10</span>, b = <span class="number">20</span>, c;  Inc( a, b );  c = Inc(a, b)++;</span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h1><ol>
+<li><p>设计并实现有理数库。使用整数表示有理数的分子与分母，完成有理数的加减乘除与化简运算。</p>
+</li>
+<li><p>继续编程实践题 ch06-3。完成桥牌库的初步设计与实现。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="melvin 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="melvin 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>melvin
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://meixsh.github.io/2020/10/11/06_old_backup/ch07-%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8/" title="ch07 指针与引用">https://meixsh.github.io/2020/10/11/06_old_backup/ch07-指针与引用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/c/" rel="tag"># c++</a>
+              <a href="/tags/%E6%8C%87%E9%92%88/" rel="tag"># 指针</a>
+              <a href="/tags/%E5%BC%95%E7%94%A8/" rel="tag"># 引用</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/10/06_old_backup/ch06-%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" rel="prev" title="ch06 复合数据类型">
+                  <i class="fa fa-chevron-left"></i> ch06 复合数据类型
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/" rel="next" title="ch08 链表与程序抽象">
+                  ch08 链表与程序抽象 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">melvin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">149k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:15</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

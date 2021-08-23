@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>test</title>
+    <url>/2021/08/23/02_%E5%B5%8C%E5%85%A5%E5%BC%8F/c-%E6%8B%BE%E9%81%97/</url>
+    <content><![CDATA[<p>this page for nothing but test.</p>
+]]></content>
+      <categories>
+        <category>test</category>
+      </categories>
+      <tags>
+        <tag>test</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux系统管理-vi&amp;vim使用方法</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-vi%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
+    <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-vi%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h1 id="vi-入门"><a href="#vi-入门" class="headerlink" title="vi 入门"></a>vi 入门</h1><ul>
 <li>vi几乎是所有linux发行版的标准配置，功能丰富，效率极高，久经考验  </li>
 <li>vi的改进版本vim (Vi IMproved), vim向前完美兼容vi</li>
@@ -252,215 +264,8 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux系统管理-管理硬盘</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%A1%AC%E7%9B%98/</url>
-    <content><![CDATA[<h1 id="查看硬盘"><a href="#查看硬盘" class="headerlink" title="查看硬盘"></a>查看硬盘</h1><p>硬盘命名规则</p>
-<ul>
-<li>linux一切皆文件</li>
-<li>/dev/xxy</li>
-<li>xx：<ul>
-<li>sd: scsi,sata,usb</li>
-<li>hd: ide</li>
-</ul>
-</li>
-<li>y:<ul>
-<li>a-z，表示使用此类接口的第几个硬盘</li>
-</ul>
-</li>
-<li>示例：/dev/hdd<ul>
-<li>表示第4个使用IDE接口的磁盘</li>
-</ul>
-</li>
-<li>示例：/dev/sdb<ul>
-<li>表示第2个使用scsi，sata或usb接口的磁盘</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>    
-
-<p>分区命名规则</p>
-<ul>
-<li>文件形式出现</li>
-<li>/dev/xxyn</li>
-<li>比硬盘名字多了一个n，n表示分区</li>
-<li>主分区或者扩展分区用数字1-4表示，逻辑分区5以后</li>
-<li>示例：/dev/hda3<ul>
-<li>表示第1个IDE硬盘上的第3个主分区或扩展分区</li>
-</ul>
-</li>
-<li>示例：/dev/sdb6<ul>
-<li>表示第2个scsi，sata或usb硬盘上的第2个逻辑分区</li>
-</ul>
-</li>
-</ul>
-<p><a href="http://t.cn/RLrffqN">参考资料</a></p>
-<p>fdisk命令</p>
-<ul>
-<li>该命令功能很多，查看硬盘和分区只是他的功能之一</li>
-<li><code>fdisk -l 硬盘名/分区名</code></li>
-<li><code>fdisk -l /dev/sda</code><ul>
-<li>硬盘基本参数：硬盘容量，磁头数，每磁道扇区数，总柱面数，每个柱面的容量，每个扇区的容量，硬盘标识符。显示的柱面、磁头、扇区等参数是逻辑值，并不是实际硬盘物理参数，就比如固态ssd，物理上就没有盘片磁头扇区这些物理零件，但ssd的接口规范和定义、功能及使用方法与普机械式硬盘完全相同，因此，逻辑上ssd也有柱面、磁头、扇区等参数</li>
-<li>磁盘分区情况：未分区的磁盘此部分信息时空白，分好区的磁盘，每行代表一个分区。分区名；标准DOS PC主引导记录标识，对于grup引导程序无意义；start和end标识分区起始和结束柱面；blocks标识大小为1k块的数量，块数量后面有加号，表示分区中的扇区没有全部被使用，Id表示分区的预期用途，不代表真实用途，类型82表示linux交换分区，83表示linux数据分区</li>
-</ul>
-</li>
-<li>扇区是磁盘的最小逻辑和物理单元</li>
-</ul>
-<h1 id="分区和格式化硬盘"><a href="#分区和格式化硬盘" class="headerlink" title="分区和格式化硬盘"></a>分区和格式化硬盘</h1><p>500G硬盘，划分为5个分区，分区1主分区采用ext4文件系统100G，分区2 ext4 64G, 分区3 windows兼容的vfat 64G, 分区4 ext4 120G, 分区5 余下剩余空间 ext4</p>
-<p>采用fdisk工具完成分区格式硬盘</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fdisk -l /dev/sdb</span><br><span class="line">fdisk /dev/sdb <span class="comment"># 进入fdisk分区界面</span></span><br><span class="line"><span class="comment"># 忽略提示和警告信息，最后一行是fdisk的快捷键提示行，在其后的冒号后面可以输入fdisk的快捷键进行分区操作</span></span><br><span class="line"><span class="comment"># 建立第一个主分区</span></span><br><span class="line">n <span class="comment"># 新建分区</span></span><br><span class="line">p <span class="comment"># 主分区</span></span><br><span class="line">1 <span class="comment"># 分区号</span></span><br><span class="line">+100G <span class="comment"># 设定分区大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个扩展分区</span></span><br><span class="line">n</span><br><span class="line">e</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个逻辑分区</span></span><br><span class="line">n</span><br><span class="line">l   <span class="comment"># 建立好了扩展分区之后，分区类型中就不提示再建立扩展分区e了，而替代为逻辑分区 l</span></span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第二个逻辑分区 </span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立最后一个分区</span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"><span class="comment"># 结束柱面号选择默认值，表示剩下所有空间都划到此分区</span></span><br><span class="line"></span><br><span class="line">w <span class="comment"># 保存分区信息进入分区表</span></span><br><span class="line">q <span class="comment"># 退出，若发现分区时配置分区大小分区号有误，可以输入q退出，不保存</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改分区System Id信息使之与真正的文件系统类型一致</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">l <span class="comment"># 列出linux默认支持的文件系统类型 255种</span></span><br><span class="line">t <span class="comment"># 修改分区system id</span></span><br><span class="line">6 <span class="comment"># 修改第二个逻辑分区</span></span><br><span class="line">c <span class="comment"># 修改分区类型序号为c，表示fat32</span></span><br><span class="line">w <span class="comment"># 修改写入分区表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除分区, 并重新按要求划分为两个分区sdb7 120G 和 sdb8使用剩余所有空间</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">d</span><br><span class="line">7</span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+120G</span><br><span class="line"></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"></span><br><span class="line">w</span><br></pre></td></tr></table></figure>
-
-<p>划分好了分区之后，就可以格式化分区了，只需记住两个命令</p>
-<p>mkfs命令</p>
-<ul>
-<li><code>mkfs -t ext4 /dev/sdb1</code></li>
-</ul>
-<p>mkswap命令</p>
-<ul>
-<li>为linux 交换分区创建文件系统</li>
-<li>交换分区一般在安装系统的时候就创建好了</li>
-<li><code>mkswap /dev/sdb7</code></li>
-</ul>
-<h1 id="手动挂载和卸载分区"><a href="#手动挂载和卸载分区" class="headerlink" title="手动挂载和卸载分区"></a>手动挂载和卸载分区</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /project_mooc</span><br><span class="line"><span class="built_in">cd</span> /project_mooc</span><br><span class="line">mkdir finished material shared audio video</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
-
-<p>mount命令挂载分区</p>
-<ul>
-<li><code>mount -t 分区类型 分区名 挂载点</code>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ext4 /dev/sdb1 /project_mooc/finished/</span><br><span class="line">mount</span><br></pre></td></tr></table></figure></li>
-<li><code>mount -o 挂载后行为 分区名 挂载点</code><ul>
-<li>分区挂载后的一些行为属性，是否可以写入文件，是否允许在此分区上运行可执行文件，是否允许普通用户挂载、卸载此分区等</li>
-<li>以只读属性挂载分区5<br><code>mount -t ext4 -o ro /dev/sdb5 /project_mooc/material/</code></li>
-<li>9个挂载属性</li>
-</ul>
-</li>
-</ul>
-<p>umount命令卸载分区</p>
-<ul>
-<li>umount 分区名或挂载点</li>
-<li>umount /dev/sdb8</li>
-<li>分区中文件正在被访问时，是无法被卸载的</li>
-<li>退出分区目录，再执行卸载</li>
-</ul>
-<p>如果挂载点本来就存在文件，挂载分区后，那些文件暂时无法访问，只有分区被卸载之后，才可以访问</p>
-<p>注意：</p>
-<ol>
-<li>请尽量将分区挂载在空目录上</li>
-<li>不要将同一个分区多次挂载到不同目录上</li>
-</ol>
-<h1 id="开机自动挂载分区"><a href="#开机自动挂载分区" class="headerlink" title="开机自动挂载分区"></a>开机自动挂载分区</h1><p>一般通过上面命令挂载的分区，在机器重启后就不见了，需要重新挂载，很麻烦，但是可以通过/etc/fstab文件实现开机自动挂载分区</p>
-<p>/etc/fstab文件详解</p>
-<ul>
-<li>起作用的配置行，每行对应于1个在开机时被挂载的分区，每行6个字段</li>
-<li>字段1，指定挂载的设备文件，可以是/dev目录下的设备文件，如/dev/sdb1, 或者是通过设备标签或UUID指定要挂载的设备，如<code>LABEL=某个设备标签</code> 或 <code>UUID=某个设备UUID</code>, 用设备标签或UUID来指定要挂载的设备更加安全和稳定</li>
-<li>字段2，挂载点，指定挂在设备的目录，对于swap实际上是没有挂载点的，该处就显示swap</li>
-<li>字段3，挂载分区文件系统类型</li>
-<li>字段4，挂载参数，指定文件系统挂载后的一些行为属性，可以有多个参数，用逗号分隔</li>
-<li>字段5，dump参数，该参数被dump命令用来检查一个文件系统是否应该进行dump备份，若不需要就设置为0，如果需要每天备份的，该字段设置为1，如果需要不定期备份的，设置为2</li>
-<li>字段6，开机检查分区的次序，该字段被fsck命令用来确定系统开机进行文件系统检查时的顺序，对于根分区，该值应设置为1，表示优先，其他文件系统可以设置为2，表示次优，如果最后一个字段值为0或没有设置，开机将跳过此文件系统的检查</li>
-</ul>
-<p>添加/etc/fstab文件配置行</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;dev&#x2F;sdb1   &#x2F;project_mooc&#x2F;finished  ext4 defaults 0 0</span><br></pre></td></tr></table></figure>
-
-<p>上面的自动挂载做法有时会有点问题，假设主机上有若干块可以热插拔的硬盘，在主机运行过程中，这些硬盘会被经常性的插拔，因此硬盘的次序包括硬盘的设备名会经常性的发生改变，如sdb下次会变成sdc，显然如果遇到这样的问题，我们的自动挂载就会出问题了，那么如何保证/etc/fstab中配置的设备能正确地挂载到挂载点上呢？  </p>
-<p>标签</p>
-<ul>
-<li>标签：分区别名</li>
-<li>为分区加上标签的命令e2label<ul>
-<li>e2label 分区设备名称 标签名</li>
-<li><code>e2label /dev/sdb5 material_disk</code></li>
-</ul>
-</li>
-<li>/etc/fstab配置行  <ul>
-<li>LABEL=material_disk /project_mooc/…<br>#LABEL大写 等号左右无空格</li>
-</ul>
-</li>
-<li>标签的问题是不具备唯一性，有时会有标签重名的情况，此时系统挂载时就不知道挂载哪个分区了，最保险的做法是UUID</li>
-</ul>
-<p>UUID</p>
-<ul>
-<li>universally unique identifier</li>
-<li>与设备名和标签对比，存在如下优点<ul>
-<li>真正的唯一标志符，UUID为系统中的存储设备提供了一个唯一的标识字符串，与分区标签不同，系统中不会出现两个设备UUID相同的情况</li>
-</ul>
-</li>
-<li>列出系统中所有存储设备的uuid，<code>blkid命令</code></li>
-</ul>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>硬盘分区</tag>
-        <tag>硬盘格式化</tag>
-        <tag>硬盘挂载</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux系统管理-管理网络</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
-    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
-<ul>
-<li>查看网络接口<ul>
-<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
-<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
-<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
-</ul>
-</li>
-<li>操纵网络接口<ul>
-<li>启动<br><code>ifconfig eth1 up</code>    </li>
-<li>关闭<br><code>ifconfig eth1 down</code></li>
-<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
-</ul>
-</li>
-</ul>
-<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
-<ul>
-<li>重启网络服务<ul>
-<li>service network restart</li>
-</ul>
-</li>
-</ul>
-<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
-<p>编辑网络配置文件</p>
-<ul>
-<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
-<li>ifcfg-ethN 网卡配置文件</li>
-</ul>
-</li>
-<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>重启网络服务</p>
-<ul>
-<li>service network restart</li>
-</ul>
-<p>测试网络连通性</p>
-<ul>
-<li>ping -c 主机名/IP地址<ul>
-<li>线路是否连接好</li>
-<li>交换机或路由器是否打开，路由表</li>
-<li>防火墙设置</li>
-</ul>
-</li>
-</ul>
-<p>测试dns配置</p>
-<ul>
-<li>dig命令</li>
-<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
-<li>dig 域名</li>
-<li><code>dig www.baidu.com</code></li>
-</ul>
-<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>linux网络配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux系统管理-管理用户</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7/</url>
+    <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7/</url>
     <content><![CDATA[<h1 id="用户和用户组"><a href="#用户和用户组" class="headerlink" title="用户和用户组"></a>用户和用户组</h1><p>用户使用用户名登录使用linux系统，但是linux系统内部使用uid来管理用户账户，linux中用户可以分为三类：</p>
 <ul>
 <li>管理员用户 根用户 root uid为0</li>
@@ -632,8 +437,294 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux系统管理-管理硬盘</title>
+    <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%A1%AC%E7%9B%98/</url>
+    <content><![CDATA[<h1 id="查看硬盘"><a href="#查看硬盘" class="headerlink" title="查看硬盘"></a>查看硬盘</h1><p>硬盘命名规则</p>
+<ul>
+<li>linux一切皆文件</li>
+<li>/dev/xxy</li>
+<li>xx：<ul>
+<li>sd: scsi,sata,usb</li>
+<li>hd: ide</li>
+</ul>
+</li>
+<li>y:<ul>
+<li>a-z，表示使用此类接口的第几个硬盘</li>
+</ul>
+</li>
+<li>示例：/dev/hdd<ul>
+<li>表示第4个使用IDE接口的磁盘</li>
+</ul>
+</li>
+<li>示例：/dev/sdb<ul>
+<li>表示第2个使用scsi，sata或usb接口的磁盘</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>    
+
+<p>分区命名规则</p>
+<ul>
+<li>文件形式出现</li>
+<li>/dev/xxyn</li>
+<li>比硬盘名字多了一个n，n表示分区</li>
+<li>主分区或者扩展分区用数字1-4表示，逻辑分区5以后</li>
+<li>示例：/dev/hda3<ul>
+<li>表示第1个IDE硬盘上的第3个主分区或扩展分区</li>
+</ul>
+</li>
+<li>示例：/dev/sdb6<ul>
+<li>表示第2个scsi，sata或usb硬盘上的第2个逻辑分区</li>
+</ul>
+</li>
+</ul>
+<p><a href="http://t.cn/RLrffqN">参考资料</a></p>
+<p>fdisk命令</p>
+<ul>
+<li>该命令功能很多，查看硬盘和分区只是他的功能之一</li>
+<li><code>fdisk -l 硬盘名/分区名</code></li>
+<li><code>fdisk -l /dev/sda</code><ul>
+<li>硬盘基本参数：硬盘容量，磁头数，每磁道扇区数，总柱面数，每个柱面的容量，每个扇区的容量，硬盘标识符。显示的柱面、磁头、扇区等参数是逻辑值，并不是实际硬盘物理参数，就比如固态ssd，物理上就没有盘片磁头扇区这些物理零件，但ssd的接口规范和定义、功能及使用方法与普机械式硬盘完全相同，因此，逻辑上ssd也有柱面、磁头、扇区等参数</li>
+<li>磁盘分区情况：未分区的磁盘此部分信息时空白，分好区的磁盘，每行代表一个分区。分区名；标准DOS PC主引导记录标识，对于grup引导程序无意义；start和end标识分区起始和结束柱面；blocks标识大小为1k块的数量，块数量后面有加号，表示分区中的扇区没有全部被使用，Id表示分区的预期用途，不代表真实用途，类型82表示linux交换分区，83表示linux数据分区</li>
+</ul>
+</li>
+<li>扇区是磁盘的最小逻辑和物理单元</li>
+</ul>
+<h1 id="分区和格式化硬盘"><a href="#分区和格式化硬盘" class="headerlink" title="分区和格式化硬盘"></a>分区和格式化硬盘</h1><p>500G硬盘，划分为5个分区，分区1主分区采用ext4文件系统100G，分区2 ext4 64G, 分区3 windows兼容的vfat 64G, 分区4 ext4 120G, 分区5 余下剩余空间 ext4</p>
+<p>采用fdisk工具完成分区格式硬盘</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fdisk -l /dev/sdb</span><br><span class="line">fdisk /dev/sdb <span class="comment"># 进入fdisk分区界面</span></span><br><span class="line"><span class="comment"># 忽略提示和警告信息，最后一行是fdisk的快捷键提示行，在其后的冒号后面可以输入fdisk的快捷键进行分区操作</span></span><br><span class="line"><span class="comment"># 建立第一个主分区</span></span><br><span class="line">n <span class="comment"># 新建分区</span></span><br><span class="line">p <span class="comment"># 主分区</span></span><br><span class="line">1 <span class="comment"># 分区号</span></span><br><span class="line">+100G <span class="comment"># 设定分区大小</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个扩展分区</span></span><br><span class="line">n</span><br><span class="line">e</span><br><span class="line">2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第一个逻辑分区</span></span><br><span class="line">n</span><br><span class="line">l   <span class="comment"># 建立好了扩展分区之后，分区类型中就不提示再建立扩展分区e了，而替代为逻辑分区 l</span></span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立第二个逻辑分区 </span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+64G</span><br><span class="line"></span><br><span class="line"><span class="comment"># 建立最后一个分区</span></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"><span class="comment"># 结束柱面号选择默认值，表示剩下所有空间都划到此分区</span></span><br><span class="line"></span><br><span class="line">w <span class="comment"># 保存分区信息进入分区表</span></span><br><span class="line">q <span class="comment"># 退出，若发现分区时配置分区大小分区号有误，可以输入q退出，不保存</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改分区System Id信息使之与真正的文件系统类型一致</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">l <span class="comment"># 列出linux默认支持的文件系统类型 255种</span></span><br><span class="line">t <span class="comment"># 修改分区system id</span></span><br><span class="line">6 <span class="comment"># 修改第二个逻辑分区</span></span><br><span class="line">c <span class="comment"># 修改分区类型序号为c，表示fat32</span></span><br><span class="line">w <span class="comment"># 修改写入分区表</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除分区, 并重新按要求划分为两个分区sdb7 120G 和 sdb8使用剩余所有空间</span></span><br><span class="line">fdisk /dev/sdb</span><br><span class="line">d</span><br><span class="line">7</span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line">+120G</span><br><span class="line"></span><br><span class="line">n</span><br><span class="line">l</span><br><span class="line"></span><br><span class="line">w</span><br></pre></td></tr></table></figure>
+
+<p>划分好了分区之后，就可以格式化分区了，只需记住两个命令</p>
+<p>mkfs命令</p>
+<ul>
+<li><code>mkfs -t ext4 /dev/sdb1</code></li>
+</ul>
+<p>mkswap命令</p>
+<ul>
+<li>为linux 交换分区创建文件系统</li>
+<li>交换分区一般在安装系统的时候就创建好了</li>
+<li><code>mkswap /dev/sdb7</code></li>
+</ul>
+<h1 id="手动挂载和卸载分区"><a href="#手动挂载和卸载分区" class="headerlink" title="手动挂载和卸载分区"></a>手动挂载和卸载分区</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir /project_mooc</span><br><span class="line"><span class="built_in">cd</span> /project_mooc</span><br><span class="line">mkdir finished material shared audio video</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+
+<p>mount命令挂载分区</p>
+<ul>
+<li><code>mount -t 分区类型 分区名 挂载点</code>  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mount -t ext4 /dev/sdb1 /project_mooc/finished/</span><br><span class="line">mount</span><br></pre></td></tr></table></figure></li>
+<li><code>mount -o 挂载后行为 分区名 挂载点</code><ul>
+<li>分区挂载后的一些行为属性，是否可以写入文件，是否允许在此分区上运行可执行文件，是否允许普通用户挂载、卸载此分区等</li>
+<li>以只读属性挂载分区5<br><code>mount -t ext4 -o ro /dev/sdb5 /project_mooc/material/</code></li>
+<li>9个挂载属性</li>
+</ul>
+</li>
+</ul>
+<p>umount命令卸载分区</p>
+<ul>
+<li>umount 分区名或挂载点</li>
+<li>umount /dev/sdb8</li>
+<li>分区中文件正在被访问时，是无法被卸载的</li>
+<li>退出分区目录，再执行卸载</li>
+</ul>
+<p>如果挂载点本来就存在文件，挂载分区后，那些文件暂时无法访问，只有分区被卸载之后，才可以访问</p>
+<p>注意：</p>
+<ol>
+<li>请尽量将分区挂载在空目录上</li>
+<li>不要将同一个分区多次挂载到不同目录上</li>
+</ol>
+<h1 id="开机自动挂载分区"><a href="#开机自动挂载分区" class="headerlink" title="开机自动挂载分区"></a>开机自动挂载分区</h1><p>一般通过上面命令挂载的分区，在机器重启后就不见了，需要重新挂载，很麻烦，但是可以通过/etc/fstab文件实现开机自动挂载分区</p>
+<p>/etc/fstab文件详解</p>
+<ul>
+<li>起作用的配置行，每行对应于1个在开机时被挂载的分区，每行6个字段</li>
+<li>字段1，指定挂载的设备文件，可以是/dev目录下的设备文件，如/dev/sdb1, 或者是通过设备标签或UUID指定要挂载的设备，如<code>LABEL=某个设备标签</code> 或 <code>UUID=某个设备UUID</code>, 用设备标签或UUID来指定要挂载的设备更加安全和稳定</li>
+<li>字段2，挂载点，指定挂在设备的目录，对于swap实际上是没有挂载点的，该处就显示swap</li>
+<li>字段3，挂载分区文件系统类型</li>
+<li>字段4，挂载参数，指定文件系统挂载后的一些行为属性，可以有多个参数，用逗号分隔</li>
+<li>字段5，dump参数，该参数被dump命令用来检查一个文件系统是否应该进行dump备份，若不需要就设置为0，如果需要每天备份的，该字段设置为1，如果需要不定期备份的，设置为2</li>
+<li>字段6，开机检查分区的次序，该字段被fsck命令用来确定系统开机进行文件系统检查时的顺序，对于根分区，该值应设置为1，表示优先，其他文件系统可以设置为2，表示次优，如果最后一个字段值为0或没有设置，开机将跳过此文件系统的检查</li>
+</ul>
+<p>添加/etc/fstab文件配置行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;dev&#x2F;sdb1   &#x2F;project_mooc&#x2F;finished  ext4 defaults 0 0</span><br></pre></td></tr></table></figure>
+
+<p>上面的自动挂载做法有时会有点问题，假设主机上有若干块可以热插拔的硬盘，在主机运行过程中，这些硬盘会被经常性的插拔，因此硬盘的次序包括硬盘的设备名会经常性的发生改变，如sdb下次会变成sdc，显然如果遇到这样的问题，我们的自动挂载就会出问题了，那么如何保证/etc/fstab中配置的设备能正确地挂载到挂载点上呢？  </p>
+<p>标签</p>
+<ul>
+<li>标签：分区别名</li>
+<li>为分区加上标签的命令e2label<ul>
+<li>e2label 分区设备名称 标签名</li>
+<li><code>e2label /dev/sdb5 material_disk</code></li>
+</ul>
+</li>
+<li>/etc/fstab配置行  <ul>
+<li>LABEL=material_disk /project_mooc/…<br>#LABEL大写 等号左右无空格</li>
+</ul>
+</li>
+<li>标签的问题是不具备唯一性，有时会有标签重名的情况，此时系统挂载时就不知道挂载哪个分区了，最保险的做法是UUID</li>
+</ul>
+<p>UUID</p>
+<ul>
+<li>universally unique identifier</li>
+<li>与设备名和标签对比，存在如下优点<ul>
+<li>真正的唯一标志符，UUID为系统中的存储设备提供了一个唯一的标识字符串，与分区标签不同，系统中不会出现两个设备UUID相同的情况</li>
+</ul>
+</li>
+<li>列出系统中所有存储设备的uuid，<code>blkid命令</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>硬盘分区</tag>
+        <tag>硬盘格式化</tag>
+        <tag>硬盘挂载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-管理网络</title>
+    <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
+    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
+<ul>
+<li>查看网络接口<ul>
+<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
+<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
+<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
+</ul>
+</li>
+<li>操纵网络接口<ul>
+<li>启动<br><code>ifconfig eth1 up</code>    </li>
+<li>关闭<br><code>ifconfig eth1 down</code></li>
+<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
+</ul>
+</li>
+</ul>
+<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
+<ul>
+<li>重启网络服务<ul>
+<li>service network restart</li>
+</ul>
+</li>
+</ul>
+<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
+<p>编辑网络配置文件</p>
+<ul>
+<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
+<li>ifcfg-ethN 网卡配置文件</li>
+</ul>
+</li>
+<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>重启网络服务</p>
+<ul>
+<li>service network restart</li>
+</ul>
+<p>测试网络连通性</p>
+<ul>
+<li>ping -c 主机名/IP地址<ul>
+<li>线路是否连接好</li>
+<li>交换机或路由器是否打开，路由表</li>
+<li>防火墙设置</li>
+</ul>
+</li>
+</ul>
+<p>测试dns配置</p>
+<ul>
+<li>dig命令</li>
+<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
+<li>dig 域名</li>
+<li><code>dig www.baidu.com</code></li>
+</ul>
+<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>linux网络配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-重定向 &amp; 管道</title>
+    <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E9%87%8D%E5%AE%9A%E5%90%91-%E7%AE%A1%E9%81%93/</url>
+    <content><![CDATA[<h1 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h1><blockquote>
+<p>Do one thing and do it well. 一次只做一件事，并做到最好<br>Unix创建者，图灵奖获得者，ken Thompson</p>
+</blockquote>
+<blockquote>
+<p>Unix 3 准则<br>一次只做一件事，并做到最好<br>能够与其他程序协同工作<br>能够处理文本流<br>美国工程院院士 计算机大师 Doug Mcllroy 扩充</p>
+</blockquote>
+<a id="more"></a>
+
+<p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/redirect.png" alt="输入输出重定向"><br>一般来说，终端用户通过键盘输入所期待执行的命令，这些命令可能包含选项<br>和参数，linux中的标准输入流从键盘读取用户输入的命令信息，根据用户所输入的命令要求，调用命令，命令执行成功，则结果通过标准输出流输出到显示器，命令执行失败，则通过错误输出流输出到显示器。<br>输入输出重定向就是改变标准输入流，标准输出流以及错误输出流所默认关联的输入输出文件。</p>
+<ul>
+<li><p>标准输出重定向<br><code>ls -l /tmp/example 1&gt; ./stdout.txt</code><br><code>cat ./stdout.txt</code><br>注意：如果./stdout.txt本来不在，文件将被创建，原本存在，内容将被覆盖！<br><code>ls -l /tmp/example 1&gt;&gt; ./stdout.txt</code><br>使用 <code>&gt;&gt;</code> 命令输出追加至文件原来内容的后面，不覆盖<br><code>ls -l /tmp/example/file01 /tmp/example/file02 1&gt; ./stdout.txt 2&gt; ./stderr.txt</code><br>分别指定标准输出以及错误输出重定向文件<br><code>ls -l /tmp/example/file01 /tmp/example/file02 &amp;&gt; std.txt</code><br>使用 <code>&amp;&gt;</code> 将标准输出与错误输出重定向至一个文件</p>
+</li>
+<li><p>利用输出重定向结合touch命令创建文件<br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot;</code><br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot; &gt; fruit.txt</code><br><code>cat ./fruit.txt</code></p>
+</li>
+<li><p>忽略命令错误输出<br><code>ls -l /tmp/example/file01 /tmp/example/file04 2&gt;&gt;/dev/null</code></p>
+</li>
+<li><p>标准输入重定向 <code>&lt; &lt;&lt;</code></p>
+<ul>
+<li>结合tr命令  <strong>transform</strong><br>tr命令从标准输入中替换特定字符，并将结果写到标准输出<br><code>tr [准备要替换的字符] [要替换成的字符]</code><br><code>tr &#39; &#39; &#39;\t&#39; &lt;./fruit.txt</code></li>
+<li>结合sort命令<br>here doucument<br><code>sort -k [关键字字段序号] [要排序的文本文件]</code><br>sort命令本来要接受一个文本文件作为参数，这里使用标准输入重定向here document的用法，通过指定一对相同的文件界定符，将从键盘输入的内容作为文件传递给sort命令，这里使用EOF作为界定符，但是也可以自定义，注意结尾EOF界定符一定要顶格写，前面不能有任何字符，前后无空格。    <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ <span class="built_in">echo</span> -e <span class="string">&#x27;1 apple\n2 pear\n3 banana&#x27;</span> &gt; fruit.txt</span><br><span class="line">mgl@mgl:~/workspace/shell$ cat fruit.txt </span><br><span class="line">1 apple</span><br><span class="line">2 pear</span><br><span class="line">3 banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ tr <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;\t&#x27;</span> &lt; ./fruit.txt </span><br><span class="line">1	apple</span><br><span class="line">2	pear</span><br><span class="line">3	banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ sort -k2 &lt;&lt;EOF</span><br><span class="line">&gt; 1 apple</span><br><span class="line">&gt; 2 pear</span><br><span class="line">&gt; 3 banana</span><br><span class="line">&gt; EOF</span><br><span class="line">1 apple</span><br><span class="line">3 banana</span><br><span class="line">2 pear</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>管道本质上就是一种特殊的输入输出重定向，将一个命令的标准输出重定向为另一个命令的标准输入，在Linux环境中，完成复杂的任务，往往需要构造命令管道。</p>
+<p>管道操作符 <code>|</code></p>
+<p>使用管道操作符连接命令执行序列时，管道操作符右边的命令必须可以接收标准输入才可以，能接收标准输入的命令不多，大多数是一些文本处理命令，包括 <code>grep, cut, head, tail, less, more, wc, tr, sort</code> 等</p>
+<ul>
+<li><p>命令输出分页查看<br><code>ls -al /etc | less</code></p>
+</li>
+<li><p>grep 命令  </p>
+<ul>
+<li>一个非常强大的文本搜索工具，可以使用正则表达式来匹配文本</li>
+<li>grep 正则表达式  </li>
+<li><a href="http://t.cn/RLs31YV">正则表达式学习资料</a></li>
+<li><code>grep [关键字] [目标文件]</code></li>
+<li><code>ls -al /etc | grep &#39;ssh&#39;</code></li>
+</ul>
+</li>
+</ul>
+<p>文本提取和统计处理</p>
+<ul>
+<li><p>cut 文本切割命令</p>
+<ul>
+<li>用于切割文本文件或者标准输出中的指定列并输出</li>
+<li>可以用 -c 选项按字符列切割文本，其后的数字表示要切割的字符列序号，支持切割多列，数字之间用逗号隔开即可</li>
+<li><code>cat ~/install.log | cut -c1,2</code></li>
+<li>联合 -d -f 选项按指定分隔符切割文本，-d指定分隔符，-f指定切割后的字段序列号</li>
+<li><code>cat /etc/passwd | cut -f1 -d&quot;:&quot;</code></li>
+</ul>
+</li>
+<li><p>wc 文本统计命令</p>
+<ul>
+<li>统计文本文件或者标准输出中的，<code>文本行数，单词数以及字节数</code></li>
+<li>-l 选项 仅仅统计文本行数</li>
+<li><code>wc -l /etc/passwd</code></li>
+</ul>
+</li>
+<li><p>统计当前用户家目录下所有目录文件的数目<br><code>ls -al ~ | cut -c1 | grep &quot;d&quot; | wc -l</code>  </p>
+</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li>管道不会传递错误输出  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni | wc -l</span><br><span class="line">ls: cannot access <span class="string">&#x27;/sbni&#x27;</span>: No such file or directory</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni 2&gt;/dev/null | wc -l</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
+  如上，错误输出会直接输出到终端，而不进入管道进行下一步处理，如果不想看到错误输出，直接重定向错误输出至/dev/null文件即可</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>重定向</tag>
+        <tag>管道</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>c-拾遗</title>
-    <url>/2020/11/04/c-%E6%8B%BE%E9%81%97/</url>
+    <url>/2020/11/04/06_old_backup/c-%E6%8B%BE%E9%81%97/</url>
     <content><![CDATA[<h1 id="格式化输入输出"><a href="#格式化输入输出" class="headerlink" title="格式化输入输出"></a>格式化输入输出</h1><ul>
 <li><p>printf<br><code>%[flags][width][.prec][hlL]type</code></p>
 <ul>
@@ -722,87 +813,8 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux系统管理-重定向 &amp; 管道</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E9%87%8D%E5%AE%9A%E5%90%91-%E7%AE%A1%E9%81%93/</url>
-    <content><![CDATA[<h1 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h1><blockquote>
-<p>Do one thing and do it well. 一次只做一件事，并做到最好<br>Unix创建者，图灵奖获得者，ken Thompson</p>
-</blockquote>
-<blockquote>
-<p>Unix 3 准则<br>一次只做一件事，并做到最好<br>能够与其他程序协同工作<br>能够处理文本流<br>美国工程院院士 计算机大师 Doug Mcllroy 扩充</p>
-</blockquote>
-<a id="more"></a>
-
-<p><img src="http://qi0lr8tiy.hn-bkt.clouddn.com/redirect.png" alt="输入输出重定向"><br>一般来说，终端用户通过键盘输入所期待执行的命令，这些命令可能包含选项<br>和参数，linux中的标准输入流从键盘读取用户输入的命令信息，根据用户所输入的命令要求，调用命令，命令执行成功，则结果通过标准输出流输出到显示器，命令执行失败，则通过错误输出流输出到显示器。<br>输入输出重定向就是改变标准输入流，标准输出流以及错误输出流所默认关联的输入输出文件。</p>
-<ul>
-<li><p>标准输出重定向<br><code>ls -l /tmp/example 1&gt; ./stdout.txt</code><br><code>cat ./stdout.txt</code><br>注意：如果./stdout.txt本来不在，文件将被创建，原本存在，内容将被覆盖！<br><code>ls -l /tmp/example 1&gt;&gt; ./stdout.txt</code><br>使用 <code>&gt;&gt;</code> 命令输出追加至文件原来内容的后面，不覆盖<br><code>ls -l /tmp/example/file01 /tmp/example/file02 1&gt; ./stdout.txt 2&gt; ./stderr.txt</code><br>分别指定标准输出以及错误输出重定向文件<br><code>ls -l /tmp/example/file01 /tmp/example/file02 &amp;&gt; std.txt</code><br>使用 <code>&amp;&gt;</code> 将标准输出与错误输出重定向至一个文件</p>
-</li>
-<li><p>利用输出重定向结合touch命令创建文件<br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot;</code><br><code>echo -e &quot;1 apple\n2 pear\n3 banana&quot; &gt; fruit.txt</code><br><code>cat ./fruit.txt</code></p>
-</li>
-<li><p>忽略命令错误输出<br><code>ls -l /tmp/example/file01 /tmp/example/file04 2&gt;&gt;/dev/null</code></p>
-</li>
-<li><p>标准输入重定向 <code>&lt; &lt;&lt;</code></p>
-<ul>
-<li>结合tr命令  <strong>transform</strong><br>tr命令从标准输入中替换特定字符，并将结果写到标准输出<br><code>tr [准备要替换的字符] [要替换成的字符]</code><br><code>tr &#39; &#39; &#39;\t&#39; &lt;./fruit.txt</code></li>
-<li>结合sort命令<br>here doucument<br><code>sort -k [关键字字段序号] [要排序的文本文件]</code><br>sort命令本来要接受一个文本文件作为参数，这里使用标准输入重定向here document的用法，通过指定一对相同的文件界定符，将从键盘输入的内容作为文件传递给sort命令，这里使用EOF作为界定符，但是也可以自定义，注意结尾EOF界定符一定要顶格写，前面不能有任何字符，前后无空格。    <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ <span class="built_in">echo</span> -e <span class="string">&#x27;1 apple\n2 pear\n3 banana&#x27;</span> &gt; fruit.txt</span><br><span class="line">mgl@mgl:~/workspace/shell$ cat fruit.txt </span><br><span class="line">1 apple</span><br><span class="line">2 pear</span><br><span class="line">3 banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ tr <span class="string">&#x27; &#x27;</span> <span class="string">&#x27;\t&#x27;</span> &lt; ./fruit.txt </span><br><span class="line">1	apple</span><br><span class="line">2	pear</span><br><span class="line">3	banana</span><br><span class="line">mgl@mgl:~/workspace/shell$ sort -k2 &lt;&lt;EOF</span><br><span class="line">&gt; 1 apple</span><br><span class="line">&gt; 2 pear</span><br><span class="line">&gt; 3 banana</span><br><span class="line">&gt; EOF</span><br><span class="line">1 apple</span><br><span class="line">3 banana</span><br><span class="line">2 pear</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-</li>
-</ul>
-<h1 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h1><p>管道本质上就是一种特殊的输入输出重定向，将一个命令的标准输出重定向为另一个命令的标准输入，在Linux环境中，完成复杂的任务，往往需要构造命令管道。</p>
-<p>管道操作符 <code>|</code></p>
-<p>使用管道操作符连接命令执行序列时，管道操作符右边的命令必须可以接收标准输入才可以，能接收标准输入的命令不多，大多数是一些文本处理命令，包括 <code>grep, cut, head, tail, less, more, wc, tr, sort</code> 等</p>
-<ul>
-<li><p>命令输出分页查看<br><code>ls -al /etc | less</code></p>
-</li>
-<li><p>grep 命令  </p>
-<ul>
-<li>一个非常强大的文本搜索工具，可以使用正则表达式来匹配文本</li>
-<li>grep 正则表达式  </li>
-<li><a href="http://t.cn/RLs31YV">正则表达式学习资料</a></li>
-<li><code>grep [关键字] [目标文件]</code></li>
-<li><code>ls -al /etc | grep &#39;ssh&#39;</code></li>
-</ul>
-</li>
-</ul>
-<p>文本提取和统计处理</p>
-<ul>
-<li><p>cut 文本切割命令</p>
-<ul>
-<li>用于切割文本文件或者标准输出中的指定列并输出</li>
-<li>可以用 -c 选项按字符列切割文本，其后的数字表示要切割的字符列序号，支持切割多列，数字之间用逗号隔开即可</li>
-<li><code>cat ~/install.log | cut -c1,2</code></li>
-<li>联合 -d -f 选项按指定分隔符切割文本，-d指定分隔符，-f指定切割后的字段序列号</li>
-<li><code>cat /etc/passwd | cut -f1 -d&quot;:&quot;</code></li>
-</ul>
-</li>
-<li><p>wc 文本统计命令</p>
-<ul>
-<li>统计文本文件或者标准输出中的，<code>文本行数，单词数以及字节数</code></li>
-<li>-l 选项 仅仅统计文本行数</li>
-<li><code>wc -l /etc/passwd</code></li>
-</ul>
-</li>
-<li><p>统计当前用户家目录下所有目录文件的数目<br><code>ls -al ~ | cut -c1 | grep &quot;d&quot; | wc -l</code>  </p>
-</li>
-</ul>
-<p><strong>注意：</strong></p>
-<ul>
-<li>管道不会传递错误输出  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni | wc -l</span><br><span class="line">ls: cannot access <span class="string">&#x27;/sbni&#x27;</span>: No such file or directory</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ ls -al /bin /sbni 2&gt;/dev/null | wc -l</span><br><span class="line">163</span><br><span class="line">mgl@mgl:~/workspace/shell$ </span><br></pre></td></tr></table></figure>
-  如上，错误输出会直接输出到终端，而不进入管道进行下一步处理，如果不想看到错误输出，直接重定向错误输出至/dev/null文件即可</li>
-</ul>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>重定向</tag>
-        <tag>管道</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>ch01 c++基本语法元素</title>
-    <url>/2020/10/11/ch01-c-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%85%83%E7%B4%A0/</url>
+    <url>/2020/10/11/06_old_backup/ch01-c-%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95%E5%85%83%E7%B4%A0/</url>
     <content><![CDATA[<h1 id="程序设计的基本概念"><a href="#程序设计的基本概念" class="headerlink" title="程序设计的基本概念"></a>程序设计的基本概念</h1><p>程序</p>
 <ul>
 <li>一系列遵守一定规则并能正确完成特定功能的代码或指令序列</li>
@@ -1059,7 +1071,7 @@
   </entry>
   <entry>
     <title>ch06 复合数据类型</title>
-    <url>/2020/10/10/ch06-%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+    <url>/2020/10/10/06_old_backup/ch06-%E5%A4%8D%E5%90%88%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
     <content><![CDATA[<h1 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h1><h2 id="字符类型、字符文字与量"><a href="#字符类型、字符文字与量" class="headerlink" title="字符类型、字符文字与量"></a>字符类型、字符文字与量</h2><ul>
 <li>定义格式：char ch; const char cch = ‘C’;</li>
 <li>字符文字使用单引号对</li>
@@ -1237,7 +1249,7 @@
   </entry>
   <entry>
     <title>ch11-泛型编程</title>
-    <url>/2020/11/02/ch11-%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/</url>
+    <url>/2020/11/02/06_old_backup/ch11-%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<h1 id="泛型编程概览"><a href="#泛型编程概览" class="headerlink" title="泛型编程概览"></a>泛型编程概览</h1><h2 id="什么是泛型编程？"><a href="#什么是泛型编程？" class="headerlink" title="什么是泛型编程？"></a>什么是泛型编程？</h2><ul>
 <li>泛型就是通用型式</li>
 <li>编写不依赖数据对象型式的代码就是泛型编程</li>
@@ -1407,7 +1419,7 @@
   </entry>
   <entry>
     <title>cpp-拾遗</title>
-    <url>/2020/11/06/cpp-%E6%8B%BE%E9%81%97/</url>
+    <url>/2020/11/06/06_old_backup/cpp-%E6%8B%BE%E9%81%97/</url>
     <content><![CDATA[<h1 id="c-取模运算符"><a href="#c-取模运算符" class="headerlink" title="c++ 取模运算符"></a>c++ 取模运算符</h1><p>根据取余运算定义，如果<code>m</code>和<code>n</code>是整数且<code>n</code>非0，则表达式<code>(m/n)*n+m%n</code>的求值结果与<code>m</code>相等。隐含的意思是，如果<code>m%n</code>不等于0，则它的符号和<code>m</code>相等。c++早期版本允许<code>m%n</code>的符号匹配<code>n</code>的符号，而且商向负无穷一侧取整，这一方式在新标准中已经被禁止使用了。除了<code>-m</code>导致溢出的情况，其他时候<code>(-m)/n</code>和<code>m/(-n)</code>都等于<code>-(m/n)</code>，<code>m%(-n)</code>等于<code>m%n</code>，<code>(-m)%n</code>等于<code>-(m%n)</code>。具体示例如下：</p>
 <ul>
 <li><p><code>-21 % -8</code> 结果是<code>-5</code></p>
@@ -1435,7 +1447,7 @@
   </entry>
   <entry>
     <title>Hello World</title>
-    <url>/2020/10/10/hello-world/</url>
+    <url>/2020/10/10/06_old_backup/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <a id="more"></a>
 
@@ -1455,7 +1467,7 @@
   </entry>
   <entry>
     <title>linux-系统编程之信号机制</title>
-    <url>/2020/11/21/linux-%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BF%A1%E5%8F%B7%E6%9C%BA%E5%88%B6/</url>
+    <url>/2020/11/21/06_old_backup/linux-%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BF%A1%E5%8F%B7%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<h1 id="信号的概念和机制"><a href="#信号的概念和机制" class="headerlink" title="信号的概念和机制"></a>信号的概念和机制</h1><ul>
 <li>信号共性<ul>
 <li>简单</li>
@@ -1568,8 +1580,31 @@
       </tags>
   </entry>
   <entry>
+    <title>十条技术原则</title>
+    <url>/2020/11/05/06_old_backup/%E5%8D%81%E6%9D%A1%E6%8A%80%E6%9C%AF%E5%8E%9F%E5%88%99/</url>
+    <content><![CDATA[<ul>
+<li>原则一：Owner意识</li>
+<li>原则二：时间观念</li>
+<li>原则三：以终为始</li>
+<li>原则四：闭环思维</li>
+<li>原则五：保持敬畏</li>
+<li>原则六：事不过二</li>
+<li>原则七：设计优先</li>
+<li>原则八：产出/产能平衡</li>
+<li>原则九：善于提问</li>
+<li>原则十：空杯心态</li>
+</ul>
+]]></content>
+      <categories>
+        <category>感悟</category>
+      </categories>
+      <tags>
+        <tag>技术原则</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>二分查找算法模板</title>
-    <url>/2020/11/05/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/</url>
+    <url>/2020/11/05/06_old_backup/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/</url>
     <content><![CDATA[<h1 id="二分查找算法模板"><a href="#二分查找算法模板" class="headerlink" title="二分查找算法模板"></a>二分查找算法模板</h1><p>二分查找模板一共有两个，分别适用于不同情况。<br>算法思路：假设目标值在闭区间 <code>[l, r]</code>中，每次将区间长度缩小一半，当<code>l == r</code>时，我们就找到了目标值。  </p>
 <h2 id="版本1"><a href="#版本1" class="headerlink" title="版本1"></a>版本1</h2><p>当我们将区间<code>[l, r]</code>划分为<code>[l, mid]</code> 和 <code>[mid+1, r]</code>时，其更新操作是 <code>[r = mid]</code>或者<code>[l = mid + 1]</code>,计算<code>mid</code>时不需要加1。</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bsearch_1</span><span class="params">(<span class="keyword">int</span> l, <span class="keyword">int</span> r)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (l &lt; r) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = l + (r - l) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (check(mid)) r = mid;</span><br><span class="line">        <span class="keyword">else</span> l = mid + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> l;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -1594,31 +1629,8 @@
       </tags>
   </entry>
   <entry>
-    <title>十条技术原则</title>
-    <url>/2020/11/05/%E5%8D%81%E6%9D%A1%E6%8A%80%E6%9C%AF%E5%8E%9F%E5%88%99/</url>
-    <content><![CDATA[<ul>
-<li>原则一：Owner意识</li>
-<li>原则二：时间观念</li>
-<li>原则三：以终为始</li>
-<li>原则四：闭环思维</li>
-<li>原则五：保持敬畏</li>
-<li>原则六：事不过二</li>
-<li>原则七：设计优先</li>
-<li>原则八：产出/产能平衡</li>
-<li>原则九：善于提问</li>
-<li>原则十：空杯心态</li>
-</ul>
-]]></content>
-      <categories>
-        <category>感悟</category>
-      </categories>
-      <tags>
-        <tag>技术原则</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>学习计划</title>
-    <url>/2020/10/12/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</url>
+    <url>/2020/10/12/06_old_backup/%E5%AD%A6%E4%B9%A0%E8%AE%A1%E5%88%92/</url>
     <content><![CDATA[<a id="more"></a>
 
 <p>编程类</p>
@@ -1669,10 +1681,10 @@
   </entry>
   <entry>
     <title>操作系统-系统启动、中断、异常和系统调用</title>
-    <url>/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
+    <url>/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/</url>
     <content><![CDATA[<h1 id="启动前的准备"><a href="#启动前的准备" class="headerlink" title="启动前的准备"></a>启动前的准备</h1><h2 id="启动时计算机内存和磁盘布局"><a href="#启动时计算机内存和磁盘布局" class="headerlink" title="启动时计算机内存和磁盘布局"></a>启动时计算机内存和磁盘布局</h2><a id="more"></a>
-<p><img src="/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%90%AF%E5%8A%A8%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="启动内存布局"></p>
-<h2 id="加载程序的内存地址空间"><a href="#加载程序的内存地址空间" class="headerlink" title="加载程序的内存地址空间"></a>加载程序的内存地址空间</h2><p><img src="/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%8A%A0%E8%BD%BD%E7%A8%8B%E5%BA%8F.png" alt="加载程序内存布局"></p>
+<p><img src="/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%90%AF%E5%8A%A8%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png" alt="启动内存布局"></p>
+<h2 id="加载程序的内存地址空间"><a href="#加载程序的内存地址空间" class="headerlink" title="加载程序的内存地址空间"></a>加载程序的内存地址空间</h2><p><img src="/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%8A%A0%E8%BD%BD%E7%A8%8B%E5%BA%8F.png" alt="加载程序内存布局"></p>
 <h2 id="BIOS系统调用"><a href="#BIOS系统调用" class="headerlink" title="BIOS系统调用"></a>BIOS系统调用</h2><ul>
 <li>BIOS以中断调用的方式 提供了基本的I/O功能<ul>
 <li>INT 10h：字符显示</li>
@@ -1683,7 +1695,7 @@
 </li>
 <li>只能在x86的实模式下访问</li>
 </ul>
-<h1 id="系统启动流程"><a href="#系统启动流程" class="headerlink" title="系统启动流程"></a>系统启动流程</h1><h2 id="一般计算机启动过程描述"><a href="#一般计算机启动过程描述" class="headerlink" title="一般计算机启动过程描述"></a>一般计算机启动过程描述</h2><p><img src="/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B.png" alt="启动过程"></p>
+<h1 id="系统启动流程"><a href="#系统启动流程" class="headerlink" title="系统启动流程"></a>系统启动流程</h1><h2 id="一般计算机启动过程描述"><a href="#一般计算机启动过程描述" class="headerlink" title="一般计算机启动过程描述"></a>一般计算机启动过程描述</h2><p><img src="/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B.png" alt="启动过程"></p>
 <h2 id="CPU初始化"><a href="#CPU初始化" class="headerlink" title="CPU初始化"></a>CPU初始化</h2><ul>
 <li>CPU加电稳定后从0xffff0读第一条指令<ul>
 <li>CS:IP = 0xf000:fff0</li>
@@ -1708,7 +1720,7 @@
 <li>更新CMOS中的扩展系统配置数据ESCD</li>
 <li>按指定启动顺序从软盘、硬盘或光驱启动</li>
 </ul>
-<h2 id="主引导记录MBR格式"><a href="#主引导记录MBR格式" class="headerlink" title="主引导记录MBR格式"></a>主引导记录MBR格式</h2><p><img src="/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/MBR.png" alt="MBR"></p>
+<h2 id="主引导记录MBR格式"><a href="#主引导记录MBR格式" class="headerlink" title="主引导记录MBR格式"></a>主引导记录MBR格式</h2><p><img src="/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/MBR.png" alt="MBR"></p>
 <ul>
 <li>启动代码：446字节<ul>
 <li>检查分区表正确性</li>
@@ -1725,7 +1737,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="分区引导扇区格式"><a href="#分区引导扇区格式" class="headerlink" title="分区引导扇区格式"></a>分区引导扇区格式</h2><p><img src="/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%88%86%E5%8C%BA%E5%BC%95%E5%AF%BC%E6%89%87%E5%8C%BA.png" alt="分区引导扇区"></p>
+<h2 id="分区引导扇区格式"><a href="#分区引导扇区格式" class="headerlink" title="分区引导扇区格式"></a>分区引导扇区格式</h2><p><img src="/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E5%88%86%E5%8C%BA%E5%BC%95%E5%AF%BC%E6%89%87%E5%8C%BA.png" alt="分区引导扇区"></p>
 <ul>
 <li>跳转指令：跳转到启动代码<ul>
 <li>与平台相关代码</li>
@@ -1735,7 +1747,7 @@
 <li>启动代码：跳转到加载程序</li>
 <li>结束标志：55AA</li>
 </ul>
-<h2 id="加载程序-bootloader"><a href="#加载程序-bootloader" class="headerlink" title="加载程序(bootloader)"></a>加载程序(bootloader)</h2><p><img src="/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/bootloader.png" alt="bootloader"></p>
+<h2 id="加载程序-bootloader"><a href="#加载程序-bootloader" class="headerlink" title="加载程序(bootloader)"></a>加载程序(bootloader)</h2><p><img src="/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/bootloader.png" alt="bootloader"></p>
 <h2 id="系统启动规范"><a href="#系统启动规范" class="headerlink" title="系统启动规范"></a>系统启动规范</h2><ul>
 <li>BIOS<ul>
 <li>固化到计算机主板上的程序</li>
@@ -1787,7 +1799,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="基本中断、异常和系统调用（10个）"><a href="#基本中断、异常和系统调用（10个）" class="headerlink" title="基本中断、异常和系统调用（10个）"></a>基本中断、异常和系统调用（10个）</h2><p><img src="/2020/10/20/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E4%B8%AD%E6%96%AD.png" alt="中断"></p>
+<h2 id="基本中断、异常和系统调用（10个）"><a href="#基本中断、异常和系统调用（10个）" class="headerlink" title="基本中断、异常和系统调用（10个）"></a>基本中断、异常和系统调用（10个）</h2><p><img src="/2020/10/20/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E3%80%81%E4%B8%AD%E6%96%AD%E3%80%81%E5%BC%82%E5%B8%B8%E5%92%8C%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/%E4%B8%AD%E6%96%AD.png" alt="中断"></p>
 <h1 id="系统调用示例"><a href="#系统调用示例" class="headerlink" title="系统调用示例"></a>系统调用示例</h1><h1 id="ucore-系统调用代码"><a href="#ucore-系统调用代码" class="headerlink" title="ucore+系统调用代码"></a>ucore+系统调用代码</h1>]]></content>
       <categories>
         <category>操作系统</category>
@@ -1801,7 +1813,7 @@
   </entry>
   <entry>
     <title>技能-PDF扫描版书籍制作目录书签</title>
-    <url>/2020/11/07/%E7%94%9F%E6%B4%BB%E6%8A%80%E8%83%BD-PDF%E6%89%AB%E6%8F%8F%E7%89%88%E4%B9%A6%E7%B1%8D%E5%88%B6%E4%BD%9C%E7%9B%AE%E5%BD%95%E4%B9%A6%E7%AD%BE/</url>
+    <url>/2020/11/07/06_old_backup/%E7%94%9F%E6%B4%BB%E6%8A%80%E8%83%BD-PDF%E6%89%AB%E6%8F%8F%E7%89%88%E4%B9%A6%E7%B1%8D%E5%88%B6%E4%BD%9C%E7%9B%AE%E5%BD%95%E4%B9%A6%E7%AD%BE/</url>
     <content><![CDATA[<p>最近利用学校图书馆下了几本专业书籍的电子版，可是这些电子版书籍是扫描版的PDF格式，不支持搜索且无目录书签，十分不利于阅读学习，前者暂时不知道怎么解决同时也不是非常的紧急，但是没有后者目录书签的功能，可真是太令我头疼了。遂上网调研寻求解决方法，利用万能的谷歌，加上关键字搜索，<code>如何为扫描版PDF添加目录</code>，参考摸索得到下面的解决方案，真叫一个爽！</p>
 <a id="more"></a>
 
@@ -1843,7 +1855,7 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2020/11/21/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/</url>
+    <url>/2020/11/21/06_old_backup/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/</url>
     <content><![CDATA[<ul>
 <li>程序员的自我修养 1,2,3,4,6,10章</li>
 <li>深入理解计算机系统 5,6,7,8,9章</li>
@@ -1948,7 +1960,7 @@
   </entry>
   <entry>
     <title>立足当下，未来可期</title>
-    <url>/2020/10/20/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
+    <url>/2020/10/20/06_old_backup/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
     <content><![CDATA[<p>科研、论文 &amp; PPT，想到这些，总是会有意或无意的走神，一天下来，没多少产出，这是为啥呢？因为不热爱啊，我不是很适合走科研这条路，没啥成就感。但是，在deadline以及白纸黑字的要求面前，还是要坚持做下去，已然没有多大兴趣了，此时更不能乱了章法，需要自己为自己设立阶段性的小目标，这个目标需要清晰明确以及可行，垫垫脚再伸伸手就能够到，而不是去靠自己想象中的谜一般的自律，因为人性这个东西作为人你很难与之抗争，贪玩和懒惰是人的本性。在面对一个复杂且较为陌生的问题面前，大多数人都是会后退的，这是很自然的，所以，在面对此类问题时，首先战术上需要保持自信乐观的心态，其次在战略上对其进行分而治之，从逻辑上思考如何将问题进行拆分，然后针对每一个小点，有针对性的学习处理的方式，此过程中需要按照前面说的，制定清晰明确的小目标，如此一来，即使是复杂的问题，也会变得有迹可循。我相信水滴石穿。希望自己通过日积月累的实践可以渐渐培养起自己这方面的能力，这种能力会令我受益终身，无论是工作还是生活。</p>
 ]]></content>
       <categories>
@@ -1956,25 +1968,8 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
-    <url>/2021/05/30/01_%E5%A4%9A%E5%AA%92%E4%BD%93%E7%9F%A5%E8%AF%86/01_%E5%9B%BE%E5%83%8F/%E5%9B%BE%E5%83%8F/</url>
-    <content><![CDATA[<h1 id="数字图像压缩技术"><a href="#数字图像压缩技术" class="headerlink" title="数字图像压缩技术"></a>数字图像压缩技术</h1>]]></content>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2021/08/23/02_%E5%B5%8C%E5%85%A5%E5%BC%8F/c-%E6%8B%BE%E9%81%97/</url>
-    <content><![CDATA[<p>this page for nothing but test.</p>
-]]></content>
-      <categories>
-        <category>test</category>
-      </categories>
-      <tags>
-        <tag>test</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux系统管理-安装 &amp; 管理文件</title>
-    <url>/2020/10/12/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E5%AE%89%E8%A3%85-%E7%AE%A1%E7%90%86%E6%96%87%E4%BB%B6/</url>
+    <url>/2020/10/12/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E5%AE%89%E8%A3%85-%E7%AE%A1%E7%90%86%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h1 id="安装Linux系统"><a href="#安装Linux系统" class="headerlink" title="安装Linux系统"></a>安装Linux系统</h1><h2 id="选择安装镜像"><a href="#选择安装镜像" class="headerlink" title="选择安装镜像"></a>选择安装镜像</h2><ul>
 <li>32位机 i386, 64位机 x86_64</li>
 <li><a href="https://www.igorware.com/64bit-checker">64bit Checker</a> 工具确定windows主机是否是64位机</li>
@@ -2382,7 +2377,7 @@
   </entry>
   <entry>
     <title>ch07 指针与引用</title>
-    <url>/2020/10/11/ch07-%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8/</url>
+    <url>/2020/10/11/06_old_backup/ch07-%E6%8C%87%E9%92%88%E4%B8%8E%E5%BC%95%E7%94%A8/</url>
     <content><![CDATA[<h1 id="提纲"><a href="#提纲" class="headerlink" title="提纲"></a>提纲</h1><p>指针</p>
 <ul>
 <li>指针的基本概念</li>
@@ -2839,7 +2834,7 @@
   </entry>
   <entry>
     <title>ch08 链表与程序抽象</title>
-    <url>/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/</url>
+    <url>/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/</url>
     <content><![CDATA[<h1 id="数据抽象"><a href="#数据抽象" class="headerlink" title="数据抽象"></a>数据抽象</h1><h2 id="数据抽象的目的与意义"><a href="#数据抽象的目的与意义" class="headerlink" title="数据抽象的目的与意义"></a>数据抽象的目的与意义</h2><p>数据对象</p>
 <ul>
 <li>信息缺失：程序中的数据对象只有地址和值，没有数据类型、数据解释及数据意义等信息</li>
@@ -2914,7 +2909,7 @@
 <li><p>链表的定义</p>
 <ul>
 <li><p>元素序列，每个元素与前后元素相链接</p>
-<p>  <img src="/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/linked-list.png" alt="链表"></p>
+<p>  <img src="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/linked-list.png" alt="链表"></p>
 </li>
 </ul>
 </li>
@@ -2933,7 +2928,7 @@
 </li>
 <li><p>链表结构：封装结点表示的细节</p>
   <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LIST</span>;</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">LIST</span> * <span class="title">PLIST</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LIST</span>&#123;</span></span><br><span class="line">　<span class="keyword">unsigned</span> <span class="keyword">int</span> count;    <span class="comment">/* 链表中包含的结点数目 */</span></span><br><span class="line">　PNODE head, tail;    <span class="comment">/* 链表头尾指针 */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
-<li><p>标准链表图例<br><img src="/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/list.png"></p>
+<li><p>标准链表图例<br><img src="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/list.png"></p>
 </li>
 <li><p>特别说明</p>
 <ul>
@@ -2950,7 +2945,7 @@
 
 <h3 id="抽象链表实现"><a href="#抽象链表实现" class="headerlink" title="抽象链表实现"></a>抽象链表实现</h3><h4 id="链表的构造与销毁"><a href="#链表的构造与销毁" class="headerlink" title="链表的构造与销毁"></a>链表的构造与销毁</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">PLIST <span class="title">LICreate</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PLIST p = <span class="keyword">new</span> LIST;</span><br><span class="line">    p-&gt;count = <span class="number">0</span>;</span><br><span class="line">    p-&gt;head = <span class="literal">NULL</span>;</span><br><span class="line">    p-&gt;tail = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIDestroy</span><span class="params">(PLIST <span class="built_in">list</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">list</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        LIClear(<span class="built_in">list</span>);</span><br><span class="line">        <span class="keyword">delete</span> <span class="built_in">list</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIClear</span><span class="params">(PLIST <span class="built_in">list</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">list</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;LIClear: Parameter illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">list</span>-&gt;head)</span><br><span class="line">    &#123;</span><br><span class="line">        PNODE t = <span class="built_in">list</span>-&gt;head;</span><br><span class="line">        <span class="built_in">list</span>-&gt;head = t-&gt;next;</span><br><span class="line">        PtDestroy(t-&gt;data);</span><br><span class="line">        <span class="keyword">delete</span> t;</span><br><span class="line">        <span class="built_in">list</span>-&gt;count--;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">list</span>-&gt;tail = <span class="literal">NULL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="表头结点的删除"><a href="#表头结点的删除" class="headerlink" title="表头结点的删除"></a>表头结点的删除</h4><p><img src="/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/delete-list-head.png" alt="删除过程"></p>
+<h4 id="表头结点的删除"><a href="#表头结点的删除" class="headerlink" title="表头结点的删除"></a>表头结点的删除</h4><p><img src="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/delete-list-head.png" alt="删除过程"></p>
 <p>操作步骤</p>
 <ul>
 <li>设置临时指针t，使其指向链表头结点</li>
@@ -2959,7 +2954,7 @@
 <li>删除t所指向的结点</li>
 <li>递减链表结点数目</li>
 </ul>
-<h4 id="结点的追加"><a href="#结点的追加" class="headerlink" title="结点的追加"></a>结点的追加</h4><p><img src="/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-append.png"></p>
+<h4 id="结点的追加"><a href="#结点的追加" class="headerlink" title="结点的追加"></a>结点的追加</h4><p><img src="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-append.png"></p>
 <p>操作步骤</p>
 <ul>
 <li>动态构造一个新结点，用t指向它</li>
@@ -2970,7 +2965,7 @@
 </ul>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIAppend</span><span class="params">(PLIST <span class="built_in">list</span>, PPONIT point)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PNODE t = <span class="keyword">new</span> NODE;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">list</span> || !point) </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;LIAppend: Parameter illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    t-&gt;data = point;</span><br><span class="line">    t-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">list</span>-&gt;head)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">list</span>-&gt;head = t;</span><br><span class="line">        <span class="built_in">list</span>-&gt;tail = t;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">list</span>-&gt;tail-&gt;next = t;</span><br><span class="line">        <span class="built_in">list</span>-&gt;tail = t;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">list</span>-&gt;count++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="结点的插入"><a href="#结点的插入" class="headerlink" title="结点的插入"></a>结点的插入</h4><p><img src="/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-insert.png"></p>
+<h4 id="结点的插入"><a href="#结点的插入" class="headerlink" title="结点的插入"></a>结点的插入</h4><p><img src="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-insert.png"></p>
 <p>表头插入的操作步骤</p>
 <ul>
 <li>动态构造一个新结点，用t指向它</li>
@@ -2979,7 +2974,7 @@
 <li>修改链表首结点指针，使其指向新结点</li>
 <li>递增链表的结点数目</li>
 </ul>
-<p><img src="/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-insert-mid.png"></p>
+<p><img src="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-insert-mid.png"></p>
 <p>表中插入的操作步骤</p>
 <ul>
 <li>动态构造一个新结点，用t指向它</li>
@@ -2991,7 +2986,7 @@
 </ul>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LIInsert</span><span class="params">(PLIST <span class="built_in">list</span>, PPOINT point, <span class="keyword">unsigned</span> <span class="keyword">int</span> pos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!<span class="built_in">list</span> || !point)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;LIInsert: Parameter illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pos &lt; <span class="built_in">list</span>-&gt;count)</span><br><span class="line">    &#123;</span><br><span class="line">        PNODE t = <span class="keyword">new</span> NODE;</span><br><span class="line">        t-&gt;data = point;</span><br><span class="line">        t-&gt;next = <span class="literal">NULL</span>;</span><br><span class="line">        <span class="keyword">if</span> (pos == <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            t-&gt;next = <span class="built_in">list</span>-&gt;head;</span><br><span class="line">            <span class="built_in">list</span>-&gt;head = t;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> i;</span><br><span class="line">            PNODE u = <span class="built_in">list</span>-&gt;head;</span><br><span class="line">            <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; pos - <span class="number">1</span>; ++i)</span><br><span class="line">            &#123;</span><br><span class="line">                u = u-&gt;next;</span><br><span class="line">            &#125;</span><br><span class="line">            t-&gt;next = u-&gt;next;</span><br><span class="line">            u-&gt;next = t;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">list</span>-&gt;count++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        LIAppend(<span class="built_in">list</span>, point);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="结点的删除"><a href="#结点的删除" class="headerlink" title="结点的删除"></a>结点的删除</h4><p><img src="/2020/10/11/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-del.png"></p>
+<h4 id="结点的删除"><a href="#结点的删除" class="headerlink" title="结点的删除"></a>结点的删除</h4><p><img src="/2020/10/11/06_old_backup/ch08-%E9%93%BE%E8%A1%A8%E4%B8%8E%E7%A8%8B%E5%BA%8F%E6%8A%BD%E8%B1%A1/node-del.png"></p>
 <p>表中或表尾删除的操作步骤</p>
 <ul>
 <li>使用临时指针u保存待删除结点前一结点的地址</li>
@@ -3147,7 +3142,7 @@
   </entry>
   <entry>
     <title>ch09-类与对象</title>
-    <url>/2020/10/28/ch09-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/</url>
+    <url>/2020/10/28/06_old_backup/ch09-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/</url>
     <content><![CDATA[<h1 id="程序抽象与面向对象"><a href="#程序抽象与面向对象" class="headerlink" title="程序抽象与面向对象"></a>程序抽象与面向对象</h1><h2 id="结构化编程案例"><a href="#结构化编程案例" class="headerlink" title="结构化编程案例"></a>结构化编程案例</h2><p>抽象数据类型：设计能够存储二维平面上点的抽象数据类型</p>
 <a id="more"></a>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 点库接口 point.h</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">POINT</span>;</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">POINT</span> * <span class="title">PPOINT</span>;</span></span><br><span class="line"></span><br><span class="line"><span class="function">PPOINT <span class="title">PtCreate</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtDestroy</span><span class="params">(PPOINT point)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtGetValue</span><span class="params">(POINT point, <span class="keyword">int</span> *x, <span class="keyword">int</span> *y)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtSetValue</span><span class="params">(PPOINT point, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">PtCompare</span><span class="params">(PPOINT point1, PPOINT point2)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">PtTransformIntoString</span><span class="params">(PPOINT point)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtPrint</span><span class="params">(PPOINT point)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 点库实现 point.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;point.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">char</span>* <span class="title">DuplicateString</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s)</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">POINT</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x, y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">PPOINT <span class="title">PtCreate</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    PPOINT t = <span class="keyword">new</span> POINT;</span><br><span class="line">    t-&gt;x = x;</span><br><span class="line">    t-&gt;y = y;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtDestroy</span><span class="params">(PPOINT point)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (point)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">delete</span> point;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtGetValue</span><span class="params">(PPOINT point, <span class="keyword">int</span> *x, <span class="keyword">int</span> *y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (point)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (x) *x = point-&gt;x;</span><br><span class="line">        <span class="keyword">if</span> (y) *y = point-&gt;y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtSetValue</span><span class="params">(PPOINT point, <span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (point)</span><br><span class="line">    &#123;</span><br><span class="line">        point-&gt;x = x;</span><br><span class="line">        point-&gt;y = y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">PtCompare</span><span class="params">(PPOINT point1, PPOINT point2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!point1 || !point2)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;PtCompare: Parameter(s) illegal.&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> point1-&gt;x == point2-&gt;x &amp;&amp; point1-&gt;y == point2-&gt;y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">PtPrint</span><span class="params">(PPOINT point)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (point)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;(%d, %d)&quot;</span>, point-&gt;x, point-&gt;y);</span><br><span class="line">    <span class="keyword">else</span> </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;NULL&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">PtTransformIntoString</span><span class="params">(PPOINT point)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> buf[BUFSIZE];</span><br><span class="line">    <span class="keyword">if</span> (point)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">sprintf</span>(buf, <span class="string">&quot;(%d, %d)&quot;</span>, point-&gt;x, point-&gt;y);</span><br><span class="line">        <span class="keyword">return</span> DuplicateString(buf);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span> * <span class="title">DuplicateString</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *s)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> n = <span class="built_in">strlen</span>(s);</span><br><span class="line">    <span class="keyword">char</span> *t = <span class="keyword">new</span> <span class="keyword">char</span>[n+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        t[i] = s[i];</span><br><span class="line">    &#125;</span><br><span class="line">    t[n] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -3517,7 +3512,7 @@
   </entry>
   <entry>
     <title>hexo + github 搭建个人博客</title>
-    <url>/2020/10/10/hexo%20+%20github%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
+    <url>/2020/10/10/06_old_backup/hexo%20+%20github%20%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h1 id="序"><a href="#序" class="headerlink" title="序"></a>序</h1><p>说实话，我几年前就想搭建一个属于自己的博客，但是那时候比较懒，没有动手干起来，总觉得会是一件比较复杂的事情，有点害怕自己干得不够好，说白了就是不自信加惰性。就在几年前一次偶然的机会，从同学那里了解到了github可以帮助建立个人博客，但是那时候没有深入研究下，遂一直搁置。最近我打算认真记点学习笔记，但是之前使用的有道云笔记和印象笔记都被我弄得很杂乱，而且他们对于md的支持不够好，所以我下定决心一定要搭建一个属于自己的博客，用来保存及展示自己的学习笔记，一方面精心写一篇博客特别锤炼人的耐心有助于养成好习惯，另一方也会给自己带来成就感。我相信通过日积月累自己一定会有所收获。实际上，我从调研到动手搭建好自己的初代博客，也不过花了一上午的时间，所以，一个看似比较复杂的问题，一旦开始动手干起来了，碰到问题时，只要耐心搜索思考，问题都可以解决的。一定要动手实践，做起来！</p>
 <a id="more"></a>
 
@@ -3614,7 +3609,7 @@
   </entry>
   <entry>
     <title>ch10-操作符重载</title>
-    <url>/2020/10/30/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/</url>
+    <url>/2020/10/30/06_old_backup/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/</url>
     <content><![CDATA[<h1 id="四则运算符重载"><a href="#四则运算符重载" class="headerlink" title="四则运算符重载"></a>四则运算符重载</h1><h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>设计一个数偶类，定义专用的四则运算</p>
 <a id="more"></a>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Couple</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        Couple(<span class="keyword">int</span> a = <span class="number">0</span>, <span class="keyword">int</span> b = <span class="number">0</span>): _a(a), _b(b) &#123;&#125;</span><br><span class="line">        Couple <span class="keyword">operator</span>+(<span class="keyword">const</span> Couple &amp; c);</span><br><span class="line">        Couple <span class="keyword">operator</span>*(<span class="keyword">const</span> Couple &amp; c);</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        <span class="keyword">int</span> _a, _b;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Couple Couple::<span class="keyword">operator</span>+(<span class="keyword">const</span> Couple &amp;c)</span><br><span class="line">&#123;</span><br><span class="line">    Couple <span class="keyword">_t</span>(<span class="keyword">this</span>-&gt;_a + c.a, <span class="keyword">this</span>-&gt;_b + c.b);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">_t</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Couple Couple::<span class="keyword">operator</span>*(<span class="keyword">const</span> Couple &amp;c)</span><br><span class="line">&#123;</span><br><span class="line">    Couple <span class="keyword">_t</span>(<span class="keyword">this</span>-&gt;_a * c.a, <span class="keyword">this</span>-&gt;_b * c.b);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">_t</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Couple a(1, 2), b(3, 4), c, d;</span><br><span class="line">    c = a + b;     <span class="comment">// 等价于 c = a.operator+(b)</span></span><br><span class="line">    d = a + b + c; <span class="comment">// 等价于 d = a.operator+(b).operator+(c)</span></span><br><span class="line">    c = a * b;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -3712,14 +3707,14 @@
 <ul>
 <li>浅拷贝</li>
 </ul>
-<p><img src="/2020/10/30/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/shallow-copy.png"></p>
+<p><img src="/2020/10/30/06_old_backup/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/shallow-copy.png"></p>
 <h3 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h3><ul>
 <li>深拷贝</li>
 </ul>
-<p><img src="/2020/10/30/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/deep-copy.png"></p>
+<p><img src="/2020/10/30/06_old_backup/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/deep-copy.png"></p>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  A() : _n(<span class="number">0</span>), _p(<span class="literal">NULL</span>) &#123; &#125;</span><br><span class="line">  explicit A( int n ) : _n(n), _p(new int[n]) &#123; &#125;</span><br><span class="line">  A( <span class="keyword">int</span> n, <span class="keyword">int</span> * p ) : _n(n), _p(p) &#123; &#125;</span><br><span class="line">  A( <span class="keyword">const</span> A &amp; that );</span><br><span class="line">  A &amp; <span class="keyword">operator</span>=( <span class="keyword">const</span> A &amp; that );</span><br><span class="line">  <span class="keyword">virtual</span> ~A() &#123; <span class="keyword">if</span>(_p)&#123; <span class="keyword">delete</span>[] _p, _p = <span class="literal">NULL</span>; &#125; &#125;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="keyword">int</span> &amp; <span class="keyword">operator</span>[]( <span class="keyword">int</span> i );</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">int</span> &amp; <span class="keyword">operator</span>[]( <span class="keyword">int</span> i ) <span class="keyword">const</span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> _n;</span><br><span class="line">  <span class="keyword">int</span> * _p;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">A::A( <span class="keyword">const</span> A &amp; that )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">this</span>-&gt;_n = that._n;</span><br><span class="line">  _p = <span class="keyword">new</span> <span class="keyword">int</span>[_n];</span><br><span class="line">  <span class="keyword">for</span>( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _n; i++ )</span><br><span class="line">    _p[i] = that._p[i];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">A &amp; A::<span class="keyword">operator</span>=( <span class="keyword">const</span> A &amp; that )</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">this</span>-&gt;_n = that._n;</span><br><span class="line">  <span class="keyword">if</span>( _p )</span><br><span class="line">    <span class="keyword">delete</span>[] _p;</span><br><span class="line">  _p = <span class="keyword">new</span> <span class="keyword">int</span>[_n];</span><br><span class="line">  <span class="keyword">for</span>( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; _n; i++ )</span><br><span class="line">    _p[i] = that._p[i];</span><br><span class="line">  <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="移动语义-c-11"><a href="#移动语义-c-11" class="headerlink" title="移动语义 (c++ 11)"></a>移动语义 (c++ 11)</h2><p><img src="/2020/10/30/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/move-semantics.png"></p>
+<h2 id="移动语义-c-11"><a href="#移动语义-c-11" class="headerlink" title="移动语义 (c++ 11)"></a>移动语义 (c++ 11)</h2><p><img src="/2020/10/30/06_old_backup/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/move-semantics.png"></p>
 <h3 id="左值与右值"><a href="#左值与右值" class="headerlink" title="左值与右值"></a>左值与右值</h3><ul>
 <li>C原始定义<ul>
 <li>左值：可以出现在赋值号左边或右边</li>
@@ -3892,7 +3887,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="预定义操纵符"><a href="#预定义操纵符" class="headerlink" title="预定义操纵符"></a>预定义操纵符</h4><p><img src="/2020/10/30/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/manip-01.png"><br><img src="/2020/10/30/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/manip-02.png"><br><img src="/2020/10/30/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/manip-03.png"></p>
+<h4 id="预定义操纵符"><a href="#预定义操纵符" class="headerlink" title="预定义操纵符"></a>预定义操纵符</h4><p><img src="/2020/10/30/06_old_backup/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/manip-01.png"><br><img src="/2020/10/30/06_old_backup/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/manip-02.png"><br><img src="/2020/10/30/06_old_backup/ch10-%E6%93%8D%E4%BD%9C%E7%AC%A6%E9%87%8D%E8%BD%BD/manip-03.png"></p>
 <h3 id="文件流"><a href="#文件流" class="headerlink" title="文件流"></a>文件流</h3><ul>
 <li>文件特性<ul>
 <li>文件一般保存在外部存储设备上</li>
@@ -4064,7 +4059,7 @@
   </entry>
   <entry>
     <title>操作系统</title>
-    <url>/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</url>
+    <url>/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<h1 id="课程简介"><a href="#课程简介" class="headerlink" title="课程简介"></a>课程简介</h1><ul>
 <li><a href="https://github.com/chyyuu/mooc_os_lab">https://github.com/chyyuu/mooc_os_lab</a></li>
 </ul>
@@ -4093,7 +4088,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.png"></p>
+<p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F.png"></p>
 <h3 id="操作系统Kernel内部组件"><a href="#操作系统Kernel内部组件" class="headerlink" title="操作系统Kernel内部组件"></a>操作系统Kernel内部组件</h3><ul>
 <li>CPU调度器</li>
 <li>物理内存管理</li>
@@ -4195,11 +4190,11 @@
 </li>
 <li>多核多处理器</li>
 <li>网络快速发展，出现了分布式的操作系统 <ul>
-<li>松、紧耦合系统<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E5%B8%83%E5%BC%8F.png"></li>
+<li>松、紧耦合系统<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E5%B8%83%E5%BC%8F.png"></li>
 </ul>
 </li>
 </ul>
-<h3 id="操作系统的演变"><a href="#操作系统的演变" class="headerlink" title="操作系统的演变"></a>操作系统的演变</h3><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%BC%94%E5%8F%98.png"></p>
+<h3 id="操作系统的演变"><a href="#操作系统的演变" class="headerlink" title="操作系统的演变"></a>操作系统的演变</h3><p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%BC%94%E5%8F%98.png"></p>
 <h2 id="操作系统结构"><a href="#操作系统结构" class="headerlink" title="操作系统结构"></a>操作系统结构</h2><ul>
 <li>简单操作系统：MS-DOS(1981-1994)<ul>
 <li>不分模块的单体内核</li>
@@ -4214,13 +4209,13 @@
 </li>
 <li>微内核设计，尽可能把内核功能移到用户空间<ul>
 <li>更多的使用消息传递机制而不是函数调用机制</li>
-<li>代价是性能损失，用户空间到内核空间多次拷贝<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%BE%AE%E5%86%85%E6%A0%B8.png"></li>
+<li>代价是性能损失，用户空间到内核空间多次拷贝<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%BE%AE%E5%86%85%E6%A0%B8.png"></li>
 </ul>
 </li>
 <li>学术界存在另一种更加极端的架构，“外核”<ul>
 <li>lib os在外围和特定应用紧耦合，所以可以对应用进行特定设计，性能会较好</li>
 <li>外核仅仅实现硬件功能的复制</li>
-<li>产生于90年代<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%96%E6%A0%B8.png"></li>
+<li>产生于90年代<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%96%E6%A0%B8.png"></li>
 </ul>
 </li>
 </ul>
@@ -4229,14 +4224,14 @@
 <li>VMM将单独的机器接口转换成很多的幻象，每个这些接口（虚拟机）是一个原始的计算机系统的有效副本，并完成所有的处理器指令</li>
 <li>VM是操作系统，VM之下是VMM，VMM之下才是硬件</li>
 <li>硬件资源过剩，导致的必然发展结果</li>
-<li>VMM和无虚拟机的单操作系统对比<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AF%B9%E6%AF%94.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/VMM.png"></li>
+<li>VMM和无虚拟机的单操作系统对比<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AF%B9%E6%AF%94.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/VMM.png"></li>
 </ul>
 </li>
 </ul>
 <ul>
-<li>实验uCore操作系统<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/uCore.png"></li>
+<li>实验uCore操作系统<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/uCore.png"></li>
 </ul>
-<h1 id="操作系统的启动"><a href="#操作系统的启动" class="headerlink" title="操作系统的启动"></a>操作系统的启动</h1><h2 id="计算机体系结构概述"><a href="#计算机体系结构概述" class="headerlink" title="计算机体系结构概述"></a>计算机体系结构概述</h2><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png"></p>
+<h1 id="操作系统的启动"><a href="#操作系统的启动" class="headerlink" title="操作系统的启动"></a>操作系统的启动</h1><h2 id="计算机体系结构概述"><a href="#计算机体系结构概述" class="headerlink" title="计算机体系结构概述"></a>计算机体系结构概述</h2><p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png"></p>
 <ul>
 <li>DISK：存放OS<ul>
 <li>Bootloader: 加载OS</li>
@@ -4244,10 +4239,10 @@
 </li>
 <li>BIOS: 基本I/O处理系统</li>
 </ul>
-<h2 id="计算机内存和硬盘布局"><a href="#计算机内存和硬盘布局" class="headerlink" title="计算机内存和硬盘布局"></a>计算机内存和硬盘布局</h2><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png"></p>
+<h2 id="计算机内存和硬盘布局"><a href="#计算机内存和硬盘布局" class="headerlink" title="计算机内存和硬盘布局"></a>计算机内存和硬盘布局</h2><p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80.png"></p>
 <h2 id="开机顺序"><a href="#开机顺序" class="headerlink" title="开机顺序"></a>开机顺序</h2><ul>
 <li>POST（加电自检）</li>
-<li>寻找显卡和执行BIOS<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%90%AF%E5%8A%A8%E9%A1%BA%E5%BA%8F.png"></li>
+<li>寻找显卡和执行BIOS<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%90%AF%E5%8A%A8%E9%A1%BA%E5%BA%8F.png"></li>
 </ul>
 <h1 id="操作系统的中断、异常和系统调用"><a href="#操作系统的中断、异常和系统调用" class="headerlink" title="操作系统的中断、异常和系统调用"></a>操作系统的中断、异常和系统调用</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><ul>
 <li>概念定义<ul>
@@ -4557,7 +4552,7 @@
 </ul>
 </li>
 <li>实现方案<ul>
-<li>段寄存器+地址寄存器实现方案 x86<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E6%AE%B5%E6%98%A0%E5%B0%84%E6%9C%BA%E5%88%B6.png"></li>
+<li>段寄存器+地址寄存器实现方案 x86<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E6%AE%B5%E6%98%A0%E5%B0%84%E6%9C%BA%E5%88%B6.png"></li>
 <li>单地址实现方案 </li>
 </ul>
 </li>
@@ -4608,7 +4603,7 @@
 </li>
 </ul>
 </li>
-<li>实现方案<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E9%A1%B5%E6%98%A0%E5%B0%84%E6%9C%BA%E5%88%B6.png"></li>
+<li>实现方案<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E9%A1%B5%E6%98%A0%E5%B0%84%E6%9C%BA%E5%88%B6.png"></li>
 <li>页寻址机制<ul>
 <li>页映射到帧</li>
 <li>页是连续的虚拟内存</li>
@@ -4629,10 +4624,10 @@
 <li>页表概述<ul>
 <li>每个运行的程序都有一个页表<ul>
 <li>属于程序运行状态，会动态变化</li>
-<li>PTBR：页表基址寄存器<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E8%A1%A8%E7%BB%93%E6%9E%84.png"></li>
+<li>PTBR：页表基址寄存器<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E8%A1%A8%E7%BB%93%E6%9E%84.png"></li>
 </ul>
 </li>
-<li>地址转换实例<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E8%A1%A8%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2.png"></li>
+<li>地址转换实例<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E8%A1%A8%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2.png"></li>
 <li>分页机制的性能问题<ul>
 <li>访问一个内存单元需要2次内存访问<ul>
 <li>一次用于获取页表项</li>
@@ -4657,19 +4652,19 @@
 <li>缓存近期访问的页帧转换表项<ul>
 <li>TLB使用associative memory（关联内存）实现</li>
 <li>如果TLB命中，物理页号可以很快被获取</li>
-<li>如果TLB未命中，对应的表项被更新到TLB中<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/TLB.png"></li>
+<li>如果TLB未命中，对应的表项被更新到TLB中<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/TLB.png"></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>二级/多级页表<ul>
 <li>二级页表<ul>
-<li>一级页表查出来的页表项是二级页表的起始地址，这样在一级页表中那些不存在的表项也即驻留位为1的页表项对应的二级页表可以不用存储，节省的是这一部分的空间开销<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%8C%E7%BA%A7%E9%A1%B5%E8%A1%A8.png"></li>
+<li>一级页表查出来的页表项是二级页表的起始地址，这样在一级页表中那些不存在的表项也即驻留位为1的页表项对应的二级页表可以不用存储，节省的是这一部分的空间开销<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%8C%E7%BA%A7%E9%A1%B5%E8%A1%A8.png"></li>
 </ul>
 </li>
 <li>多级页表<ul>
 <li>通过把页号分为k个部分，来实现多级间接页表</li>
-<li>建立页表树<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8.png"></li>
+<li>建立页表树<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8.png"></li>
 <li>其实对于64位机，可以采取五级页表来实现，但是这样查页表所需的访存数量增加，但这点可以通过TLB来缓解</li>
 </ul>
 </li>
@@ -4685,7 +4680,7 @@
 <li>逻辑（虚拟）地址空间增长速度快于物理地址空间</li>
 </ul>
 </li>
-<li>基于页寄存器（Page Registers）的方案<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E5%AF%84%E5%AD%98%E5%99%A8%E6%96%B9%E6%A1%88.png"><ul>
+<li>基于页寄存器（Page Registers）的方案<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E5%AF%84%E5%AD%98%E5%99%A8%E6%96%B9%E6%A1%88.png"><ul>
 <li>每个帧和一个寄存器关联，寄存器内容包括：<ul>
 <li>Residence bit: 此帧是否被占用</li>
 <li>Occupier: 对应的页号p</li>
@@ -4723,7 +4718,7 @@
 </li>
 </ul>
 </li>
-<li>基于关联存储（associative memory）的方案<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%9F%BA%E4%BA%8E%E5%85%B3%E8%81%94%E5%AD%98%E5%82%A8%E5%8F%8D%E5%90%91%E9%A1%B5%E8%A1%A8.png"><ul>
+<li>基于关联存储（associative memory）的方案<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%9F%BA%E4%BA%8E%E5%85%B3%E8%81%94%E5%AD%98%E5%82%A8%E5%8F%8D%E5%90%91%E9%A1%B5%E8%A1%A8.png"><ul>
 <li>如果帧数较少，页寄存器可以被放置在关联内存中</li>
 <li>在关联内存中查找逻辑页号<ul>
 <li>成功：帧号被提取</li>
@@ -4740,7 +4735,7 @@
 </li>
 </ul>
 </li>
-<li>基于哈希(hash)查找的方案<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%9F%BA%E4%BA%8E%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE.png"><ul>
+<li>基于哈希(hash)查找的方案<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%9F%BA%E4%BA%8E%E5%93%88%E5%B8%8C%E6%9F%A5%E6%89%BE.png"><ul>
 <li>在反向页表中通过哈希算法来搜索一个页对应的帧号</li>
 <li>对页号做哈希计算，为了在帧表（每帧拥有一个表项）中获取对应的帧号</li>
 <li>页i被放置在表中f(i)位置，其中f是设定的哈希函数</li>
@@ -4772,7 +4767,7 @@
 <li>更大、更快、更便宜的非易失性存储器</li>
 </ul>
 </li>
-<li>实际存储器<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AE%9E%E9%99%85%E5%AD%98%E5%82%A8%E5%99%A8.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E5%90%AF.png"></li>
+<li>实际存储器<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AE%9E%E9%99%85%E5%AD%98%E5%82%A8%E5%99%A8.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E5%90%AF.png"></li>
 </ul>
 </li>
 <li><p>在计算机系统中，尤其是在多道程序运行的环境下，可能会出现<br>内存不够用的情况，怎么办？</p>
@@ -4797,7 +4792,7 @@
 <li>可选部分（不常用功能）在其他程序模块中实现，平时存放在外存中，在需要用到时才装入内存</li>
 <li>不存在调用关系的模块不必同时装入到内存，从而可以相互覆盖，即这些模块共用一个分区</li>
 </ul>
-<p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%A6%86%E7%9B%96.png"></p>
+<p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%A6%86%E7%9B%96.png"></p>
 </li>
 </ul>
 </li>
@@ -4819,7 +4814,7 @@
 </li>
 <li>方法<ul>
 <li>可将暂时不能运行的程序送到外存，从而获得空闲内存空间</li>
-<li>操作系统把一个进程的整个地址空间的内容保存到外存（换出swap out），而将外存中的某个进程的地址空间读入到内存中（换入swap in）。换入换出内容的大小为整个程序的地址空间<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF.png"></li>
+<li>操作系统把一个进程的整个地址空间的内容保存到外存（换出swap out），而将外存中的某个进程的地址空间读入到内存中（换入swap in）。换入换出内容的大小为整个程序的地址空间<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%A4%E6%8D%A2%E6%8A%80%E6%9C%AF.png"></li>
 </ul>
 </li>
 <li>交换技术实现中的几个问题<ul>
@@ -4846,7 +4841,7 @@
 </li>
 <li>“四海之内”的解决之道：虚拟内存管理技术——虚存技术</li>
 <li>像覆盖技术那样，不是把程序的所有内容都放在内存中，因而能够运行比当前的空闲内存空间还要大的程序。但做得更好，由操作系统自动来完成，无需程序员的干涉</li>
-<li>像交换技术那样，能够实现进程在内存与外存之间的交换，因而获得更多的空闲内存空间。但做得更好，只对进程的部分内容在内存和外存之间进行交换<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98.png"></li>
+<li>像交换技术那样，能够实现进程在内存与外存之间的交换，因而获得更多的空闲内存空间。但做得更好，只对进程的部分内容在内存和外存之间进行交换<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98.png"></li>
 </ul>
 </li>
 <li>程序局部性原理<ul>
@@ -4872,18 +4867,18 @@
 <li>不连续性：物理内存分配的不连续，虚拟地址空间使用的不连续（可能由于换出导致访问时存在缺页异常）</li>
 </ul>
 </li>
-<li>虚拟页式内存管理<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E6%8A%80%E6%9C%AF.png"><ul>
+<li>虚拟页式内存管理<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E6%8A%80%E6%9C%AF.png"><ul>
 <li>大部分虚拟存储系统都采用虚拟页式存储管理技术，即在页式存储管理的基础上，增加请求调页和页面置换功能。</li>
 <li>基本思路<ul>
 <li>当一个用户程序要调入内存运行时，不是将该程序的所有页面都装入内存，而是只装入部分的页面，就可启动程序运行</li>
 <li>在运行过程中，如果发现要运行的程序或要访问数据不在内存中，则向系统发出缺页中断请求，系统在处理这个中断时，将外存中相应的页面调入内存，使得该程序能够继续运行</li>
 </ul>
 </li>
-<li>虚拟页式内存管理页表表项<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E9%A1%B5%E8%A1%A8%E8%A1%A8%E9%A1%B9.png"><ul>
+<li>虚拟页式内存管理页表表项<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E9%A1%B5%E8%A1%A8%E8%A1%A8%E9%A1%B9.png"><ul>
 <li>驻留位：表示该页是在内存还是在外存。如果该为等于1，表示该页位于内存当中，即该页表项是有效的，可以使用；如果该位等于0，表示该页当前还在外存当中，如果访问该页表项，将导致缺页中断</li>
 <li>保护位：表示允许对该页做何种类型的访问，如只读、可读写、可执行等</li>
 <li>修改位：表明该页在内存中是否被修改过，当系统回收该物理页面时，根据此位来决定是否把它的内容写会外存</li>
-<li>访问位：如果该页面被访问过（包括读操作或写操作），则设置该位。用于页面置换算法<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E4%BE%8B%E5%AD%90.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E5%AE%8C%E6%95%B4%E4%BE%8B%E5%AD%90.png"></li>
+<li>访问位：如果该页面被访问过（包括读操作或写操作），则设置该位。用于页面置换算法<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E4%BE%8B%E5%AD%90.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E5%AD%98%E5%AE%8C%E6%95%B4%E4%BE%8B%E5%AD%90.png"></li>
 </ul>
 </li>
 </ul>
@@ -4928,25 +4923,25 @@
 <li><strong>页面锁定</strong>Frame locking：用于描述必须常驻内存的操作系统关键部分或时间关键time-critical的应用进程。实现的方法是：在页表中添加锁定标志位lock bit</li>
 </ul>
 </li>
-<li>实验设置与评价方法<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E5%AE%9E%E9%AA%8C.png"></li>
+<li>实验设置与评价方法<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E5%AE%9E%E9%AA%8C.png"></li>
 <li>局部页面置换算法<ul>
 <li>最优页面置换算法(OPT, optimal)<ul>
 <li>基本思路：当一个缺页中断发生时，对于保存在内存当中的每一个逻辑页面，计算它的下一次访问之前，还需等待多长时间，从中选择等待时间最长的那个，作为被置换的页面</li>
 <li>这只是一种理想的情况。在实际系统中是无法实现的，因为操作系统无从知道每一个页面要等待多长时间才会再次被访问</li>
-<li>可用作其他算法的性能评价依据（在一个模拟器上运行某个程序，并记录每一次的页面访问情况，在第二遍运行时即可使用最优算法）<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/opt%E7%BD%AE%E6%8D%A2.png"></li>
+<li>可用作其他算法的性能评价依据（在一个模拟器上运行某个程序，并记录每一次的页面访问情况，在第二遍运行时即可使用最优算法）<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/opt%E7%BD%AE%E6%8D%A2.png"></li>
 </ul>
 </li>
 <li>先进先出算法(FIFO)<ul>
 <li>基本思路：选择在内存中驻留时间最长的页面并淘汰之。具体来说，系统维护这一个链表，记录了所有位于内存当中的逻辑页面。从链表的排列顺序来看，链首页面的驻留时间最长，链尾页面的驻留时间最短。当发生一个缺页中断时，把链首页面淘汰出局，并把新的页面添加到链表末尾</li>
-<li>性能较差，调出的页面可能是经常需要访问的页面，并且有<strong>Belady现象</strong>。FIFO算法很少单独使用<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/FIFO%E7%BD%AE%E6%8D%A2.png"></li>
+<li>性能较差，调出的页面可能是经常需要访问的页面，并且有<strong>Belady现象</strong>。FIFO算法很少单独使用<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/FIFO%E7%BD%AE%E6%8D%A2.png"></li>
 </ul>
 </li>
 <li>最近最久未使用算法(LRU, Least Recently Used)<ul>
 <li>基本思路：当一个缺页中断发生时，选择最久未使用的那个页面，并淘汰之。</li>
-<li>它是对最优页面置换算法的一个近似，其依据是程序的局部性原理，即在最近一小段时间（最近几条指令）内，如果某些页面被频繁访问，那么在将来的一小段时间内，它们还可能会再一次被频繁访问。反过来说，如果再过去某些页面长时间未被访问，那么在将来它们还可能会长时间得不到访问<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LRU%E7%BD%AE%E6%8D%A2.png"></li>
+<li>它是对最优页面置换算法的一个近似，其依据是程序的局部性原理，即在最近一小段时间（最近几条指令）内，如果某些页面被频繁访问，那么在将来的一小段时间内，它们还可能会再一次被频繁访问。反过来说，如果再过去某些页面长时间未被访问，那么在将来它们还可能会长时间得不到访问<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LRU%E7%BD%AE%E6%8D%A2.png"></li>
 <li>开销比较大。两种可能的实现方法：<ul>
 <li>系统维护一个页面链表，最近刚刚使用过的页面作为首节点，最近未使用的页面作为尾结点。每一次访问内存时，找到相应的页面，把它从链表中摘下来，再移动到链表之首。每次缺页中断发生时，淘汰链表末尾的页面</li>
-<li>设置一个活动页面栈，当访问某页时，将此页号压入栈顶，然后，考察栈内是否有与此页面相同的页号，若有则抽出。当需要淘汰一个页面时，总是选择栈底的页面，它就是最久未使用的<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LRU%E6%A0%88.png"></li>
+<li>设置一个活动页面栈，当访问某页时，将此页号压入栈顶，然后，考察栈内是否有与此页面相同的页号，若有则抽出。当需要淘汰一个页面时，总是选择栈底的页面，它就是最久未使用的<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LRU%E6%A0%88.png"></li>
 </ul>
 </li>
 </ul>
@@ -4956,7 +4951,7 @@
 <li>基本思路：<ul>
 <li>需要用到页表项当中的访问位，当一个页面被装入内存时，把该位初始化为0，然后如果这个页面被访问(读/写),则把该位置为1</li>
 <li>把各个页面组织成环形链表（类似钟表面），把指针指向最老的页面（最先进来）</li>
-<li>当发生一个缺页中断时，考察指针所指向的最老页面，若它的访问位为0，立即淘汰；若访问位为1，则把该位置为0，然后指针往下移动一格。如此下去，直到找到被淘汰页面，然后把指针移动到它的下一格<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/clock%E8%AF%A6%E7%BB%86.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/clock%E7%BD%AE%E6%8D%A2.png"></li>
+<li>当发生一个缺页中断时，考察指针所指向的最老页面，若它的访问位为0，立即淘汰；若访问位为1，则把该位置为0，然后指针往下移动一格。如此下去，直到找到被淘汰页面，然后把指针移动到它的下一格<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/clock%E8%AF%A6%E7%BB%86.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/clock%E7%BD%AE%E6%8D%A2.png"></li>
 </ul>
 </li>
 </ul>
@@ -4964,7 +4959,7 @@
 <li>二次机会法<ul>
 <li>单纯时钟算法存在一个巨大的代价来替换脏页</li>
 <li>修改Clock算法，使它允许脏页总是在一次时钟头扫描中保留下来</li>
-<li>同时使用脏位和使用位来指导置换<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%8C%E6%AC%A1%E6%9C%BA%E4%BC%9A.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%8C%E6%AC%A1%E6%9C%BA%E4%BC%9A%E7%BD%AE%E6%8D%A2.png"></li>
+<li>同时使用脏位和使用位来指导置换<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%8C%E6%AC%A1%E6%9C%BA%E4%BC%9A.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%8C%E6%AC%A1%E6%9C%BA%E4%BC%9A%E7%BD%AE%E6%8D%A2.png"></li>
 </ul>
 </li>
 <li>最不常用算法(LFU, Least Frequently Used)<ul>
@@ -4989,7 +4984,7 @@
 </li>
 <li>全局页面置换算法<ul>
 <li>局部页替换算法的问题<ul>
-<li>如下图所示，使用FIFO页面置换算法，在分别给程序3个以及4个物理页帧时，最终该程序运行期间所引起的缺页异常数是不一样的，分别对应9次和1次，虽然只增加了一个物理页帧，但是缺页异常数却得到极大减少。之前我们所说的局部页面置换算法，没有动态调整物理页帧数目的过程，这会导致一定的问题，不满足程序执行的动态特性。所以，本小节是要站在全局的角度来看页面置换的过程，而不仅仅局限于一个进程，如果某个进程需要更多的物理页帧，而另外一个进程有多余的物理页帧，则将后者的多余物理页帧分配给前者，问题是不是得到了解决，系统整理缺页中断数是不是会得到减少？全局页面置换算法，就是要达到这个目的<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%8600.png"></li>
+<li>如下图所示，使用FIFO页面置换算法，在分别给程序3个以及4个物理页帧时，最终该程序运行期间所引起的缺页异常数是不一样的，分别对应9次和1次，虽然只增加了一个物理页帧，但是缺页异常数却得到极大减少。之前我们所说的局部页面置换算法，没有动态调整物理页帧数目的过程，这会导致一定的问题，不满足程序执行的动态特性。所以，本小节是要站在全局的角度来看页面置换的过程，而不仅仅局限于一个进程，如果某个进程需要更多的物理页帧，而另外一个进程有多余的物理页帧，则将后者的多余物理页帧分配给前者，问题是不是得到了解决，系统整理缺页中断数是不是会得到减少？全局页面置换算法，就是要达到这个目的<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%8600.png"></li>
 </ul>
 </li>
 <li>工作集模型<ul>
@@ -5000,7 +4995,7 @@
 <li>t是当前执行时刻</li>
 <li>δ称为工作集窗口working-set window，即一个定长页面访问时间窗口</li>
 <li>W(t,δ)=在当前时刻t之前的δ时间窗口当中所有页面所组成的集合，随着t的变化，该集合也在不断变化</li>
-<li>|W(t, δ)|指工作集的大小，即页面数<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%86%E4%BE%8B%E5%AD%90.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%86%E5%A4%A7%E5%B0%8F.png"></li>
+<li>|W(t, δ)|指工作集的大小，即页面数<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%86%E4%BE%8B%E5%AD%90.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%86%E5%A4%A7%E5%B0%8F.png"></li>
 </ul>
 </li>
 <li>常驻集：在当前时刻，进程实际驻留在内存当中的页面集合<ul>
@@ -5011,12 +5006,12 @@
 </li>
 </ul>
 </li>
-<li>工作集页置换算法<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%86%E7%BD%AE%E6%8D%A2.png"></li>
+<li>工作集页置换算法<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B7%A5%E4%BD%9C%E9%9B%86%E7%BD%AE%E6%8D%A2.png"></li>
 <li>缺页率置换算法<ul>
 <li>可变分配策略：常驻集大小可变。例如：每个进程在刚开始运行的时候，先根据程序大小给它分配一定数目的物理页面，然后在进程运行过程中，再动态地调整常驻集的大小</li>
 <li>可采用全局页面置换的方式，当发生一个缺页中断时，被置换的页面可以是在其它进程当中，各个并发进程竞争地使用物理页面。</li>
 <li>优缺点：性能较好，但增加了系统开销</li>
-<li>具体实现：可以使用缺页率算法（PFF, page fault frequency）来动态调整常驻集大小<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BC%BA%E9%A1%B5%E7%8E%87%E7%AE%97%E6%B3%95.png"></li>
+<li>具体实现：可以使用缺页率算法（PFF, page fault frequency）来动态调整常驻集大小<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BC%BA%E9%A1%B5%E7%8E%87%E7%AE%97%E6%B3%95.png"></li>
 <li>一个交替的工作集计算明确的试图最小化页缺失<ul>
 <li>当缺页率高的时候-增加工作集</li>
 <li>当缺页率低的时候-减少工作集</li>
@@ -5027,21 +5022,21 @@
 <li>如果发生页缺失之间的时间是大的，之后减少工作集</li>
 <li>如果t<sub>current</sub>-t<sub>last</sub>&gt;T，之后从内存中移除所有在[t<sub>last</sub>,t<sub>current</sub>]时间内没有被引用的页</li>
 <li>如果这个发生页缺失的时间是小的，之后增加工作集</li>
-<li>如果t<sub>current</sub>-t<sub>last</sub>&le;T，之后增加缺失页到工作集中<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BC%BA%E9%A1%B5%E7%8E%87%E7%BD%AE%E6%8D%A2.png"></li>
+<li>如果t<sub>current</sub>-t<sub>last</sub>&le;T，之后增加缺失页到工作集中<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BC%BA%E9%A1%B5%E7%8E%87%E7%BD%AE%E6%8D%A2.png"></li>
 </ul>
 </li>
 </ul>
 </li>
 <li>抖动问题<ul>
 <li>如果分配给一个进程的物理页面太少，不能包含整个工作集，即常驻集是工作集子集，那么进程将会造成很多缺页中断，需要频繁地在内存与外存之间替换页面，从而使进程的运行速度变得很慢，我们把这种状态称为“抖动”</li>
-<li>产生抖动的原因：随着驻留内存的进程数目增加，分配给每个进程的物理页面数不断减少，缺页率不断上升。所以OS要选择一个适当的进程数目和进程需要的帧数，以便在并发水平和缺页率之间达到一个平衡<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%8A%96%E5%8A%A8.png"></li>
+<li>产生抖动的原因：随着驻留内存的进程数目增加，分配给每个进程的物理页面数不断减少，缺页率不断上升。所以OS要选择一个适当的进程数目和进程需要的帧数，以便在并发水平和缺页率之间达到一个平衡<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%8A%96%E5%8A%A8.png"></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><h2 id="进程定义"><a href="#进程定义" class="headerlink" title="进程定义"></a>进程定义</h2><ul>
-<li>进程：一个具有一定独立功能的程序在一个数据集合上的一次动态执行过程<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/process.png"></li>
+<li>进程：一个具有一定独立功能的程序在一个数据集合上的一次动态执行过程<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/process.png"></li>
 </ul>
 <h3 id="进程组成"><a href="#进程组成" class="headerlink" title="进程组成"></a>进程组成</h3><ul>
 <li>一个进程应该包括<ul>
@@ -5063,7 +5058,7 @@
 <li>进程与程序的区别<ul>
 <li>进程是动态的，程序是静态的：程序是有序代码的集合；进程是程序的执行，进程有核心态/用户态</li>
 <li>进程是暂时的，程序是永久的：进程是一个状态变化的过程，程序可以长久保存</li>
-<li>进程与程序的组成不同：进程的组成包含程序、数据和进程控制块(即进程状态信息)<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%A8%8B%E5%BA%8F.png"></li>
+<li>进程与程序的组成不同：进程的组成包含程序、数据和进程控制块(即进程状态信息)<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%A8%8B%E5%BA%8F.png"></li>
 </ul>
 </li>
 </ul>
@@ -5074,7 +5069,7 @@
 </li>
 <li><p>独立性：不同进程的工作不相互影响</p>
 </li>
-<li><p>制约性：因访问共享数据/资源或进程间同步而产生制约<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%89%B9%E7%82%B9.png"></p>
+<li><p>制约性：因访问共享数据/资源或进程间同步而产生制约<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%89%B9%E7%82%B9.png"></p>
 </li>
 <li><p>如何设计一个OS</p>
 <ul>
@@ -5116,7 +5111,7 @@
 <li><p>PCB的组织方式</p>
 <ul>
 <li>链表：同一状态的进程其PCB成一链表，多个状态对应多个不同的链表。各状态的进程形成不同的链表：就绪链表、阻塞链表</li>
-<li>索引表：同一状态的进程归入一个index表（由index指向PCB），多个状态对应多个不同的index表。各状态的进程形成不同的索引表：就绪索引表、阻塞索引表<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/PCB%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F.png"></li>
+<li>索引表：同一状态的进程归入一个index表（由index指向PCB），多个状态对应多个不同的index表。各状态的进程形成不同的索引表：就绪索引表、阻塞索引表<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/PCB%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F.png"></li>
 </ul>
 </li>
 </ul>
@@ -5161,7 +5156,7 @@
 <li><p>致命错误（强制性的）</p>
 </li>
 <li><p>被其他进程所杀（强制性的）</p>
-<p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81.png"></p>
+<p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E7%8A%B6%E6%80%81.png"></p>
 </li>
 </ul>
 </li>
@@ -5176,12 +5171,12 @@
 <li>不同系统设置的进程状态数目不同<ul>
 <li>运行状态（running）：当一个进程正在处理机上运行时</li>
 <li>就绪状态（ready）：一个进程获得了处处理机之外的一切所需资源，一旦得到处理机即可运行</li>
-<li>等待状态（阻塞状态blocked）：一个进程正在等待某一事件而暂停运行时。如等待某资源，等待输入/输出完成<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81.png"></li>
+<li>等待状态（阻塞状态blocked）：一个进程正在等待某一事件而暂停运行时。如等待某资源，等待输入/输出完成<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%89%E7%A7%8D%E7%8A%B6%E6%80%81.png"></li>
 </ul>
 </li>
 <li>进程的其他状态<ul>
 <li>创建状态（new）：一个进程正在被创建，还没被转到就绪状态之前的状态</li>
-<li>结束状态（exit）：一个进程正在从系统中消失时的状态，这是因为进程结束或由于其他原因所导致的<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%94%E7%8A%B6%E6%80%81.png"></li>
+<li>结束状态（exit）：一个进程正在从系统中消失时的状态，这是因为进程结束或由于其他原因所导致的<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BA%94%E7%8A%B6%E6%80%81.png"></li>
 </ul>
 </li>
 <li>可能的状态变化如下<ul>
@@ -5199,7 +5194,7 @@
 <li><p>进程挂起模型</p>
 <ul>
 <li>合理且充分地利用系统资源</li>
-<li>进程在挂起状态时，意味着进程没有占用内存空间。处在挂起状态的进程映像在磁盘上<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E6%8C%82%E8%B5%B7.png"></li>
+<li>进程在挂起状态时，意味着进程没有占用内存空间。处在挂起状态的进程映像在磁盘上<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E6%8C%82%E8%B5%B7.png"></li>
 <li>挂起状态<ul>
 <li>阻塞挂起状态（Blocked-suspend）:进程在外存并等待某事件的出现</li>
 <li>就绪挂起状态（Ready-suspend）:进程在外存，但只要进入内存，即可运行</li>
@@ -5224,11 +5219,11 @@
 </ul>
 </li>
 <li>问题：OS怎么通过PCB和定义的进程状态来管理PCB，帮助完成进程的调度过程？<ul>
-<li>用进程的观看来看OS：用户进程、磁盘管理进程、终端进程…<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/os%E8%BF%9B%E7%A8%8B%E8%A7%86%E8%A7%92.png"></li>
+<li>用进程的观看来看OS：用户进程、磁盘管理进程、终端进程…<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/os%E8%BF%9B%E7%A8%8B%E8%A7%86%E8%A7%92.png"></li>
 <li>状态队列<ul>
 <li>由操作系统来维护一组队列，用来表示系统当中所有进程的当前状态</li>
 <li>不同的状态分别用不同的队列来表示（就绪队列、各种类型的阻塞队列）</li>
-<li>每个进程的PCB都根据它的状态加入到相应的队列当中，当一个进程状态发生变化时，它的PCB从一个状态队列中脱离出来，加入到另外一个队列<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%8A%B6%E6%80%81%E9%98%9F%E5%88%97.png"></li>
+<li>每个进程的PCB都根据它的状态加入到相应的队列当中，当一个进程状态发生变化时，它的PCB从一个状态队列中脱离出来，加入到另外一个队列<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%8A%B6%E6%80%81%E9%98%9F%E5%88%97.png"></li>
 </ul>
 </li>
 </ul>
@@ -5240,7 +5235,7 @@
 <ul>
 <li><p>为什么使用线程</p>
 <ul>
-<li>一个MP3播放软件。核心功能模块有三个：1）从MP3音频文件中读取数据 2）对数据进行解压缩 3）把解压缩后的音频数据播放出来<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/mp3%E5%8D%95%E8%BF%9B%E7%A8%8B.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/mp3%E5%A4%9A%E8%BF%9B%E7%A8%8B.png"></li>
+<li>一个MP3播放软件。核心功能模块有三个：1）从MP3音频文件中读取数据 2）对数据进行解压缩 3）把解压缩后的音频数据播放出来<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/mp3%E5%8D%95%E8%BF%9B%E7%A8%8B.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/mp3%E5%A4%9A%E8%BF%9B%E7%A8%8B.png"></li>
 <li>怎么来解决这些问题？</li>
 <li>需要提出一种新的实体，满足以下特性：<ul>
 <li>实体之间可以并发地执行</li>
@@ -5255,7 +5250,7 @@
 <li>进程当中的一条执行流程</li>
 <li>从两个方面来重新理解进程<ul>
 <li>从资源组合的角度：进程把一组相关的资源组合起来，构成了一个资源平台（环境），包括地址空间（代码段、数据段），打开的文件等各种资源</li>
-<li>从运行的角度：代码在这个资源平台上的一条执行流程（线程）<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BA%BF%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4.png"></li>
+<li>从运行的角度：代码在这个资源平台上的一条执行流程（线程）<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BA%BF%E7%A8%8B%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4.png"></li>
 </ul>
 </li>
 <li>线程 = 进程 - 共享资源</li>
@@ -5269,8 +5264,8 @@
 <li>一个线程崩溃，会导致其所属进程的所有线程崩溃</li>
 </ul>
 </li>
-<li>不同的操作系统对线程的支持<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BA%BF%E7%A8%8B%E6%94%AF%E6%8C%81.png"></li>
-<li>线程所需的资源<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BA%BF%E7%A8%8B%E6%89%80%E9%9C%80%E8%B5%84%E6%BA%90.png"></li>
+<li>不同的操作系统对线程的支持<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%BA%BF%E7%A8%8B%E6%94%AF%E6%8C%81.png"></li>
+<li>线程所需的资源<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%BA%BF%E7%A8%8B%E6%89%80%E9%9C%80%E8%B5%84%E6%BA%90.png"></li>
 <li>线程与进程的比较<ul>
 <li>进程是资源分配单位，线程是CPU调度单位</li>
 <li>进程拥有一个完整的资源平台，而线程只独享必不可少的资源，如寄存器和栈</li>
@@ -5301,7 +5296,7 @@
 <li><p>一对一</p>
 </li>
 <li><p>多对多</p>
-<p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B.png"></p>
+<p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%94%A8%E6%88%B7%E7%BA%BF%E7%A8%8B.png"></p>
 </li>
 </ul>
 </li>
@@ -5326,7 +5321,7 @@
 </li>
 <li><p>内核线程：在内核中实现</p>
 <ul>
-<li>Windows, Solaris, Linux<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B.png"></li>
+<li>Windows, Solaris, Linux<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%85%E6%A0%B8%E7%BA%BF%E7%A8%8B.png"></li>
 <li>是指在操作系统的内核当中实现的一种线程机制，由操作系统的内核来完成线程的创建、终止和管理</li>
 <li>在支持内核线程的操作系统中，由内核来维护进程和线程的上下文信息（PCB和TCB）</li>
 <li>线程的创建、终止和切换都是通过系统调用/内核函数的方式来进行，由内核来完成，因此系统开销较大</li>
@@ -5338,7 +5333,7 @@
 <li><p>轻量级进程：在内核中实现，支持用户线程</p>
 <ul>
 <li>Solaris (LightWeight Process)</li>
-<li>它是内核支持的用户线程。一个进程可有一个或多个轻量级进程，每个轻量级进程由一个单独的内核线程来支持。（Solaris/Linux）<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LWP.png"></li>
+<li>它是内核支持的用户线程。一个进程可有一个或多个轻量级进程，每个轻量级进程由一个单独的内核线程来支持。（Solaris/Linux）<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/LWP.png"></li>
 </ul>
 </li>
 </ul>
@@ -5353,14 +5348,14 @@
 </li>
 <li>需要存储什么上下文<ul>
 <li>寄存器(PC,SP,…)，CPU状态，…</li>
-<li>一些时候可能会费时，所以我们应该尽可能避免<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2.png"></li>
+<li>一些时候可能会费时，所以我们应该尽可能避免<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2.png"></li>
 </ul>
 </li>
 <li>操作系统为活跃进程准备了进程控制块(PCB)</li>
 <li>操作系统将进程控制块（PCB）放置在一个合适的队列里<ul>
 <li>就绪队列</li>
 <li>等待I/O队列（每个设备的队列）</li>
-<li>僵尸队列<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E9%98%9F%E5%88%97.png"></li>
+<li>僵尸队列<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9B%E7%A8%8B%E9%98%9F%E5%88%97.png"></li>
 </ul>
 </li>
 </ul>
@@ -5405,7 +5400,7 @@
 </ul>
 </li>
 <li>清理所有等待的僵尸进程</li>
-<li>进程终止是最终的垃圾收集（资源回收）<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%83%B5%E5%B0%B8%E6%80%81.png"></li>
+<li>进程终止是最终的垃圾收集（资源回收）<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%83%B5%E5%B0%B8%E6%80%81.png"></li>
 </ul>
 </li>
 </ul>
@@ -5446,7 +5441,7 @@
 <h3 id="调度准则"><a href="#调度准则" class="headerlink" title="调度准则"></a>调度准则</h3><ul>
 <li><p>调度策略</p>
 </li>
-<li><p>程序执行模型<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%89%A7%E8%A1%8C%E6%A8%A1%E5%9E%8B.png"></p>
+<li><p>程序执行模型<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%89%A7%E8%A1%8C%E6%A8%A1%E5%9E%8B.png"></p>
 </li>
 <li><p>执行模型：程序在CPU突发和I/O中交替</p>
 <ul>
@@ -5540,7 +5535,7 @@
 <ul>
 <li>First Come, First Served</li>
 <li>FIFO队列的规定<ul>
-<li>如果进程在执行中阻塞，队列中的下一个会得到CPU<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/fcfs.png"></li>
+<li>如果进程在执行中阻塞，队列中的下一个会得到CPU<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/fcfs.png"></li>
 </ul>
 </li>
 <li>优点<ul>
@@ -5561,13 +5556,13 @@
 <li><p>SPN(SJF) SRT 短进程优先 短作业优先 短剩余时间优先</p>
 <ul>
 <li>shortest process next, shortest job first, shortest remaining time</li>
-<li>按照预测的完成时间来将任务入队<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/sjf.png"></li>
+<li>按照预测的完成时间来将任务入队<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/sjf.png"></li>
 <li>可以是可抢占的或者不可抢占的<ul>
 <li>可抢占：又叫shortest-remaining-time srt 最短剩余时间</li>
 </ul>
 </li>
 <li>最优平均等待时间 平均周转时间<ul>
-<li>考虑一组进程的spn执行<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/spn.png"></li>
+<li>考虑一组进程的spn执行<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/spn.png"></li>
 </ul>
 </li>
 <li>缺点<ul>
@@ -5580,7 +5575,7 @@
 <li>怎么预估下一个CPU突发的持续时间</li>
 <li>简单的解决办法——询问用户</li>
 <li>如果用户欺骗就杀死进程</li>
-<li>如果用户不知道怎么办<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%B0%E8%AE%A1%E6%A8%A1%E5%9E%8B.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%B0%E8%AE%A1%E6%A8%A1%E5%9E%8B%E6%95%88%E6%9E%9C.png"></li>
+<li>如果用户不知道怎么办<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%B0%E8%AE%A1%E6%A8%A1%E5%9E%8B.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%B0%E8%AE%A1%E6%A8%A1%E5%9E%8B%E6%95%88%E6%9E%9C.png"></li>
 </ul>
 </li>
 </ul>
@@ -5605,7 +5600,7 @@
 <li>使用时间切片和抢占来轮流执行任务</li>
 <li>在叫做量子(或时间切片)的离散单元中分配处理器</li>
 <li>时间片结束时，切换到下一个准备好的进程<ul>
-<li>processes execute every (n-1)q time units<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin01.png"></li>
+<li>processes execute every (n-1)q time units<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin01.png"></li>
 </ul>
 </li>
 <li>RR 花销：额外的上下文切换</li>
@@ -5621,7 +5616,7 @@
 </li>
 <li>目标<ul>
 <li>选择一个合适的时间量子</li>
-<li>经验规则：维持上下文切换开销处于1%以内<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin-02.png"></li>
+<li>经验规则：维持上下文切换开销处于1%以内<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin-02.png"></li>
 </ul>
 </li>
 </ul>
@@ -5653,7 +5648,7 @@
 <li>一个进程可以在不同的队列中移动</li>
 <li>例如：n级优先级——优先级调度在所有级别中，RR在每个级别中<ul>
 <li>时间量子大小随优先级级别增加而增加</li>
-<li>如果任务在当前的时间量子中没有完成，则降到下一个优先级<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin-03.png"></li>
+<li>如果任务在当前的时间量子中没有完成，则降到下一个优先级<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/round-robin-03.png"></li>
 </ul>
 </li>
 </ul>
@@ -5666,7 +5661,7 @@
 <li>未使用的资源按照每个组所分配的资源的比例来分配</li>
 </ul>
 <ul>
-<li>没有达到资源使用率目标的组获得更高的优先级<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/fss.png"></li>
+<li>没有达到资源使用率目标的组获得更高的优先级<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/fss.png"></li>
 </ul>
 </li>
 </ul>
@@ -5683,13 +5678,13 @@
 </li>
 <li>实现/模拟<ul>
 <li>建立一个允许算法运行实际数据的系统</li>
-<li>最灵活/具有一般性<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E6%A8%A1%E6%8B%9F.png"></li>
+<li>最灵活/具有一般性<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E6%A8%A1%E6%8B%9F.png"></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><p>小结</p>
-<p>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E5%B0%8F%E7%BB%93.png"></p>
+<p>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95%E5%B0%8F%E7%BB%93.png"></p>
 </li>
 </ul>
 <h3 id="实时调度"><a href="#实时调度" class="headerlink" title="实时调度"></a>实时调度</h3><ul>
@@ -5722,14 +5717,14 @@
 </li>
 <li>属性<ul>
 <li>取得进展所需要的的资源</li>
-<li>定时参数<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AE%9E%E6%97%B6%E7%B3%BB%E7%BB%9F-time.png"></li>
+<li>定时参数<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AE%9E%E6%97%B6%E7%B3%BB%E7%BB%9F-time.png"></li>
 </ul>
 </li>
 <li>周期任务<ul>
 <li>任务有规律地重复</li>
 <li>周期p = inter-release time (0 &lt; p)</li>
 <li>执行时间e = 最大执行时间(0 &lt; e &lt; p)</li>
-<li>使用率U = e/p<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%91%A8%E6%9C%9F%E4%BB%BB%E5%8A%A1.png"></li>
+<li>使用率U = e/p<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%91%A8%E6%9C%9F%E4%BB%BB%E5%8A%A1.png"></li>
 </ul>
 </li>
 <li>硬时限<ul>
@@ -5746,7 +5741,7 @@
 <li>表示一个实时系统是否能够满足deadline要求<ul>
 <li>决定实时任务执行的顺序</li>
 <li>静态优先级调度</li>
-<li>动态优先级调度<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AE%9E%E6%97%B6%E8%B0%83%E5%BA%A6.png"></li>
+<li>动态优先级调度<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%AE%9E%E6%97%B6%E8%B0%83%E5%BA%A6.png"></li>
 </ul>
 </li>
 </ul>
@@ -5777,15 +5772,15 @@
 </li>
 <li>对称多处理机<ul>
 <li>每个处理器运行自己的调度程序</li>
-<li>需要在调度程序中同步<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%9A%E5%A4%84%E7%90%86%E5%99%A8.png"></li>
+<li>需要在调度程序中同步<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%9A%E5%A4%84%E7%90%86%E5%99%A8.png"></li>
 </ul>
 </li>
 <li>优先级反转<ul>
 <li>可以发生在任何基于优先级的可抢占的调度机制中</li>
 <li>当系统内的环境强制使高优先级任务等待低优先级任务时发生</li>
-<li>优先级反转的持续时间取决于其他不相关任务的不可预测的行为<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%98%E5%85%88%E7%BA%A7%E5%8F%8D%E8%BD%AC.png"></li>
+<li>优先级反转的持续时间取决于其他不相关任务的不可预测的行为<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%98%E5%85%88%E7%BA%A7%E5%8F%8D%E8%BD%AC.png"></li>
 <li>解决办法<ul>
-<li>低优先级任务继承高优先级任务的优先级依赖于他们共享的资源<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%98%E5%85%88%E7%BA%A7%E5%8F%8D%E8%BD%AC02.png"></li>
+<li>低优先级任务继承高优先级任务的优先级依赖于他们共享的资源<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BC%98%E5%85%88%E7%BA%A7%E5%8F%8D%E8%BD%AC02.png"></li>
 <li>优先级天花板<ul>
 <li>资源的优先级和所有可以锁定该资源的任务中优先级最高的那个任务的优先级相同</li>
 <li>除非优先级高于系统中所有被锁定的资源的优先级上限，否则任务尝试执行临界区的时候会被阻塞</li>
@@ -5939,13 +5934,13 @@
 <li>多CPU场景，需要屏蔽所有CPU中断；临界区代码执行时间较短时，还好说，一旦临界区代码执行时间很久，关闭中断很影响系统性能，对于外设和网络IO都会有极大影响</li>
 </ul>
 <h3 id="方法2：基于软件的解决方法"><a href="#方法2：基于软件的解决方法" class="headerlink" title="方法2：基于软件的解决方法"></a>方法2：基于软件的解决方法</h3><ul>
-<li><p>假设模型描述<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E6%96%B9%E6%B3%95%E5%90%8C%E6%AD%A5.png"></p>
+<li><p>假设模型描述<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E6%96%B9%E6%B3%95%E5%90%8C%E6%AD%A5.png"></p>
 </li>
 <li><p>朴素的思考与Peterson算法  </p>
 <ul>
-<li><p>朴素思考<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A501.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A502.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A503.png"></p>
+<li><p>朴素思考<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A501.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A502.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A503.png"></p>
 </li>
-<li><p>Peterson算法 可以使用反证法证明<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A504.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A505.png"></p>
+<li><p>Peterson算法 可以使用反证法证明<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A504.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A505.png"></p>
 <ul>
 <li>假定现在线程T<sub>i</sub>、T<sub>j</sub>同时进入临界区执行，则二者均跳过了while循环的忙等待，此时从T<sub>i</sub>看来，turn = i; 从T<sub>j</sub>看来，turn = j;但是turn要么等于i要么等于j，不可能存在同时为i、j的情况。故假设不成立，原结论成立，得证。</li>
 </ul>
@@ -5954,13 +5949,13 @@
 </li>
 </ul>
 <ul>
-<li><p>Dekker算法<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/dekker%E7%AE%97%E6%B3%95.png"></p>
+<li><p>Dekker算法<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/dekker%E7%AE%97%E6%B3%95.png"></p>
 </li>
-<li><p>Eisenberg and McGuire’s Algorithm<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/n%E8%BF%9B%E7%A8%8B%E4%BA%92%E6%96%A5.png"></p>
+<li><p>Eisenberg and McGuire’s Algorithm<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/n%E8%BF%9B%E7%A8%8B%E4%BA%92%E6%96%A5.png"></p>
 </li>
-<li><p>Bakery算法<br>  <img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/bakery%E7%AE%97%E6%B3%95.png"></p>
+<li><p>Bakery算法<br>  <img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/bakery%E7%AE%97%E6%B3%95.png"></p>
 </li>
-<li><p>小结<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A5%E5%B0%8F%E7%BB%93.png"></p>
+<li><p>小结<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BD%AF%E4%BB%B6%E5%90%8C%E6%AD%A5%E5%B0%8F%E7%BB%93.png"></p>
 </li>
 </ul>
 <h3 id="方法3：更高级的抽象"><a href="#方法3：更高级的抽象" class="headerlink" title="方法3：更高级的抽象"></a>方法3：更高级的抽象</h3><ul>
@@ -5997,23 +5992,23 @@
 <li>Test-and-Set 测试和置位<ul>
 <li>从内存中读取值</li>
 <li>测试该值是否为1（然后返回真或假）</li>
-<li>内存值设置为1<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/test-and-set.png"></li>
+<li>内存值设置为1<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/test-and-set.png"></li>
 </ul>
 </li>
 <li>交换<ul>
-<li>交换内存中的两个值<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/exchange.png"></li>
+<li>交换内存中的两个值<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/exchange.png"></li>
 </ul>
 </li>
 </ul>
 <h3 id="锁-Lock"><a href="#锁-Lock" class="headerlink" title="锁 Lock"></a>锁 Lock</h3><ul>
-<li>基于test-and-set原子操作指令实现lock<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/lock%E5%AE%9E%E7%8E%B001.png"></li>
+<li>基于test-and-set原子操作指令实现lock<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/lock%E5%AE%9E%E7%8E%B001.png"></li>
 <li>使用忙等待的锁<ul>
 <li>就像上面使用test-and-set实现的锁一样</li>
 <li>线程在等待的时候消耗CPU周期</li>
 </ul>
 </li>
-<li>可以做的更好吗？<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/lock%E5%AE%9E%E7%8E%B002.png"></li>
-<li>基于exchange原子操作指令实现lock<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/exchange-lock.png"></li>
+<li>可以做的更好吗？<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/lock%E5%AE%9E%E7%8E%B002.png"></li>
+<li>基于exchange原子操作指令实现lock<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/exchange-lock.png"></li>
 <li>优点<ul>
 <li>适合于单处理器或者共享主存的多处理器中任意数量的进程</li>
 <li>简单并且容易证明</li>
@@ -6065,7 +6060,7 @@
 <li><p>确保同步正确很难</p>
 <ul>
 <li>需要高层次的编程抽象（如：锁）</li>
-<li>从底层硬件支持编译<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%94%81.png"></li>
+<li>从底层硬件支持编译<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%94%81.png"></li>
 </ul>
 </li>
 <li><p>抽象数据类型</p>
@@ -6117,8 +6112,8 @@
 <li>条件同步（调度约束——一个线程等待另一个线程的事情发生）</li>
 </ul>
 </li>
-<li>用二进制信号量实现的互斥 初值为1<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E9%94%81.png"></li>
-<li>用二进制信号量实现的调度约束  初值为0<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E8%B0%83%E5%BA%A6%E7%BA%A6%E6%9D%9F.png"></li>
+<li>用二进制信号量实现的互斥 初值为1<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E9%94%81.png"></li>
+<li>用二进制信号量实现的调度约束  初值为0<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E8%B0%83%E5%BA%A6%E7%BA%A6%E6%9D%9F.png"></li>
 <li>一个线程等待另一个线程处理事情<ul>
 <li>比如生产东西或消费东西</li>
 <li>互斥（锁机制）是不够的</li>
@@ -6127,7 +6122,7 @@
 <li>例如：有界缓冲区的生产者-消费者问题<ul>
 <li>一个或多个生产者产生数据将数据放在一个缓冲区里</li>
 <li>单个消费者每次从缓冲区取出数据</li>
-<li>在任何一个时间只有一个生产者或消费者可以访问该缓冲区<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85.png"></li>
+<li>在任何一个时间只有一个生产者或消费者可以访问该缓冲区<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85.png"></li>
 </ul>
 </li>
 <li>正确性要求<ul>
@@ -6139,11 +6134,11 @@
 <li>每个约束用一个单独的信号量<ul>
 <li>二进制信号量互斥</li>
 <li>一般信号量fullBuffers</li>
-<li>一般信号量emptyBuffers<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8Fpc%E5%BA%94%E7%94%A8.png"></li>
+<li>一般信号量emptyBuffers<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8Fpc%E5%BA%94%E7%94%A8.png"></li>
 </ul>
 </li>
 </ul>
-<h3 id="信号量实现"><a href="#信号量实现" class="headerlink" title="信号量实现"></a>信号量实现</h3><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E5%AE%9E%E7%8E%B0.png"></p>
+<h3 id="信号量实现"><a href="#信号量实现" class="headerlink" title="信号量实现"></a>信号量实现</h3><p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E5%AE%9E%E7%8E%B0.png"></p>
 <ul>
 <li>信号量的双用途<ul>
 <li>互斥和条件同步</li>
@@ -6174,7 +6169,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B.png"></p>
+<p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B.png"></p>
 <ul>
 <li>Lock<ul>
 <li>Lock::Acquire() - 等待直到锁可用，然后抢占锁</li>
@@ -6197,15 +6192,15 @@
 </li>
 <li>实现<ul>
 <li>需要维持每个条件队列</li>
-<li>线程等待的条件等待signal()<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F.png"></li>
+<li>线程等待的条件等待signal()<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F.png"></li>
 </ul>
 </li>
 </ul>
 </li>
-<li>使用管程解决生产者消费者问题<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E5%AE%9E%E7%8E%B0.png"></li>
-<li>两种不同的signal操作<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B01.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B02.png"></li>
+<li>使用管程解决生产者消费者问题<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B-%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E5%AE%9E%E7%8E%B0.png"></li>
+<li>两种不同的signal操作<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B01.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E7%A8%8B02.png"></li>
 </ul>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E7%AE%A1%E7%A8%8B.png"></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7%E9%87%8F%E7%AE%A1%E7%A8%8B.png"></p>
 <ul>
 <li>开发/调试并行程序很难<ul>
 <li>非确定性的交叉指令</li>
@@ -6257,25 +6252,25 @@
 <li>整数Rcount初始化为0</li>
 </ul>
 </li>
-<li><p>信号量实现读者优先<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%AF%BB%E8%80%85%E4%BC%98%E5%85%88.png"></p>
+<li><p>信号量实现读者优先<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%AF%BB%E8%80%85%E4%BC%98%E5%85%88.png"></p>
 </li>
 <li><p>基于读者优先策略的方法，只要有一个读者处于活动状态，后来的读者都会被接纳。如果读者源源不断地出现的话，那么写者就始终处于阻塞状态。</p>
 </li>
 <li><p>基于写者优先策略的方法，一旦写者就绪，那么写者会尽可能快地执行写操作。如果写者源源不断地出现的话，那么读者就始终处于阻塞状态。</p>
 </li>
-<li><p>管程实现写者优先<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%99%E8%80%85%E4%BC%98%E5%85%8801.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%99%E8%80%85%E4%BC%98%E5%85%8802.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%99%E8%80%85%E4%BC%98%E5%85%8803.png"></p>
+<li><p>管程实现写者优先<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%99%E8%80%85%E4%BC%98%E5%85%8801.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%99%E8%80%85%E4%BC%98%E5%85%8802.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%86%99%E8%80%85%E4%BC%98%E5%85%8803.png"></p>
 </li>
 </ul>
 <p>哲学家就餐问题</p>
 <ul>
-<li><p>从人的角度看 - 指导思想<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9001.png"></p>
+<li><p>从人的角度看 - 指导思想<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9001.png"></p>
 </li>
-<li><p>从计算机角度看 - 指导思想<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9002.png"></p>
+<li><p>从计算机角度看 - 指导思想<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9002.png"></p>
 </li>
-<li><p>使用信号量实现哲学家就餐问题<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9003.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9004.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9005.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9006.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9007.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9008.png"></p>
+<li><p>使用信号量实现哲学家就餐问题<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9003.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9004.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9005.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9006.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9007.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%93%B2%E5%AD%A6%E5%AE%B6%E5%B0%B1%E9%A4%9008.png"></p>
 </li>
 </ul>
-<h2 id="死锁-deadlock"><a href="#死锁-deadlock" class="headerlink" title="死锁 deadlock"></a>死锁 deadlock</h2><h3 id="死锁问题"><a href="#死锁问题" class="headerlink" title="死锁问题"></a>死锁问题</h3><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%AD%BB%E9%94%81.png"></p>
+<h2 id="死锁-deadlock"><a href="#死锁-deadlock" class="headerlink" title="死锁 deadlock"></a>死锁 deadlock</h2><h3 id="死锁问题"><a href="#死锁问题" class="headerlink" title="死锁问题"></a>死锁问题</h3><p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%AD%BB%E9%94%81.png"></p>
 <ul>
 <li>流量只在一个方向</li>
 <li>桥的每一个部分都可以看作一个资源</li>
@@ -6323,10 +6318,10 @@
 </ul>
 </li>
 <li>requesting/claiming edge - directed edge P<sub>i</sub> &rarr; R<sub>j</sub> </li>
-<li>assignment/holding edge - directed edge R<sub>j</sub> &rarr; P<sub>i</sub><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE.png"></li>
+<li>assignment/holding edge - directed edge R<sub>j</sub> &rarr; P<sub>i</sub><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE.png"></li>
 </ul>
 </li>
-<li>资源分配图例子<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE01.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE02.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE03.png">  </li>
+<li>资源分配图例子<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE01.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE02.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE03.png">  </li>
 <li>基本结论<ul>
 <li>如果图中不包含循环 &rarr; 没有死锁</li>
 <li>如果图中包含循环 &rarr; <ul>
@@ -6368,7 +6363,7 @@
 </li>
 <li>通信链路的实现<ul>
 <li>物理（例如，共享内存、硬件总线）</li>
-<li>逻辑（例如，逻辑属性）<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/IPC01.png"></li>
+<li>逻辑（例如，逻辑属性）<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/IPC01.png"></li>
 </ul>
 </li>
 </ul>
@@ -6459,7 +6454,7 @@
 </ul>
 </li>
 <li>不足<ul>
-<li>不能传输要交换的任何数据<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7.png"></li>
+<li>不能传输要交换的任何数据<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E4%BF%A1%E5%8F%B7.png"></li>
 </ul>
 </li>
 </ul>
@@ -6470,7 +6465,7 @@
 <li>file descriptor 0 stdin, 1 stdout, 2 stderr</li>
 </ul>
 </li>
-<li>进程不知道（或不关心）从键盘，文件，程序读取或写入到终端、文件、程序<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E9%81%93.png"></li>
+<li>进程不知道（或不关心）从键盘，文件，程序读取或写入到终端、文件、程序<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%AE%A1%E9%81%93.png"></li>
 </ul>
 </li>
 <li><p>消息队列</p>
@@ -6478,7 +6473,7 @@
 <li>消息队列按FIFO来管理消息<ul>
 <li>message：作为一个字节序列存储</li>
 <li>message queue：消息数组</li>
-<li>FIFO &amp; FILO configuration<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97.png"></li>
+<li>FIFO &amp; FILO configuration<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97.png"></li>
 </ul>
 </li>
 </ul>
@@ -6495,7 +6490,7 @@
 </ul>
 </li>
 <li>不足<ul>
-<li>必须同步数据访问<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98.png"></li>
+<li>必须同步数据访问<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98.png"></li>
 </ul>
 </li>
 </ul>
@@ -6552,7 +6547,7 @@
 <li>使用程序必须在使用前先“打开”文件  <figure class="highlight c"><table><tr><td class="code"><pre><span class="line">f = open(name, flag);</span><br><span class="line">...</span><br><span class="line">... = read(f, ...);</span><br><span class="line">...</span><br><span class="line">close(f);</span><br></pre></td></tr></table></figure></li>
 <li>内核跟踪每个进程打开的文件<ul>
 <li>操作系统为每个进程维护了一个打开文件表</li>
-<li>一个打开文件描述符是这个表中的索引<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6.png"></li>
+<li>一个打开文件描述符是这个表中的索引<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6.png"></li>
 </ul>
 </li>
 </ul>
@@ -6607,7 +6602,7 @@
 </ul>
 </li>
 <li>基于内容访问：通过特征<ul>
-<li>许多系统不提供此种访问方式，相反，数据库是建立在索引内容的磁盘访问上（需要高效的随机访问）<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AE%B9%E8%AE%BF%E9%97%AE-%E6%95%B0%E6%8D%AE%E5%BA%93.png"></li>
+<li>许多系统不提供此种访问方式，相反，数据库是建立在索引内容的磁盘访问上（需要高效的随机访问）<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AE%B9%E8%AE%BF%E9%97%AE-%E6%95%B0%E6%8D%AE%E5%BA%93.png"></li>
 </ul>
 </li>
 <li>文件内部结构<ul>
@@ -6674,7 +6669,7 @@
 <li>早期的文件系统是扁平的（只有一层目录）</li>
 </ul>
 </li>
-<li>层次名称空间<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B1%82%E6%AC%A1%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4.png"></li>
+<li>层次名称空间<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%B1%82%E6%AC%A1%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4.png"></li>
 </ul>
 </li>
 <li>目录典型操作<ul>
@@ -6728,12 +6723,12 @@
 </li>
 <li>文件系统挂载<ul>
 <li>一个文件系统需要先挂载才能被访问</li>
-<li>一个未挂载的文件系统被挂载在挂载点上<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%8C%82%E8%BD%BD.png"></li>
+<li>一个未挂载的文件系统被挂载在挂载点上<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%8C%82%E8%BD%BD.png"></li>
 </ul>
 </li>
 </ul>
 <h3 id="文件别名"><a href="#文件别名" class="headerlink" title="文件别名"></a>文件别名</h3><ul>
-<li>两个或多个文件名关联同一个文件<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E5%88%AB%E5%90%8D.png"></li>
+<li>两个或多个文件名关联同一个文件<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E5%88%AB%E5%90%8D.png"></li>
 <li>硬链接：多个文件项指向一个文件</li>
 <li>软链接：以“快捷方式”指向其他文件<ul>
 <li>通过存储真实文件的逻辑名称（路径名）来实现</li>
@@ -6753,7 +6748,7 @@
 </li>
 </ul>
 </li>
-<li>别名机制的潜在问题 - 循环<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%AB%E5%90%8D%E5%BE%AA%E7%8E%AF.png"><ul>
+<li>别名机制的潜在问题 - 循环<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%AB%E5%90%8D%E5%BE%AA%E7%8E%AF.png"><ul>
 <li>如何保证没有循环？<ul>
 <li>只允许到文件的链接，不允许在子目录的链接</li>
 <li>每增加一个新的链接都用循环检测算法确定是否合理</li>
@@ -6809,7 +6804,7 @@
 <h2 id="虚拟文件系统"><a href="#虚拟文件系统" class="headerlink" title="虚拟文件系统"></a>虚拟文件系统</h2><ul>
 <li>分层结构<ul>
 <li>上层：虚拟（逻辑）文件系统</li>
-<li>底层：特定文件系统模块<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.png"></li>
+<li>底层：特定文件系统模块<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%99%9A%E6%8B%9F%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F.png"></li>
 </ul>
 </li>
 <li>目的<ul>
@@ -6838,7 +6833,7 @@
 <li>目录节点(Linux: dentry)<ul>
 <li>每个目录项一个(目录和文件)</li>
 <li>将目录项数据结构及树型布局编码成树型数据结构</li>
-<li>指向文件控制块、父节点、项目列表等<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%8A%BD%E8%B1%A1%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84.png"></li>
+<li>指向文件控制块、父节点、项目列表等<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%8A%BD%E8%B1%A1%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84.png"></li>
 </ul>
 </li>
 <li>文件系统数据结构<ul>
@@ -6854,11 +6849,11 @@
 <li>当需要时加载进内存<ul>
 <li>卷控制模块：当文件系统挂载时进入内存</li>
 <li>文件控制块：当文件被访问时进入每次</li>
-<li>目录节点：在遍历一个文件路径时进入内存<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%A3%81%E7%9B%98.png"></li>
+<li>目录节点：在遍历一个文件路径时进入内存<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%A3%81%E7%9B%98.png"></li>
 </ul>
 </li>
 </ul>
-<h2 id="数据块缓存"><a href="#数据块缓存" class="headerlink" title="数据块缓存"></a>数据块缓存</h2><p><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E5%9D%97%E7%BC%93%E5%86%B2.png"></p>
+<h2 id="数据块缓存"><a href="#数据块缓存" class="headerlink" title="数据块缓存"></a>数据块缓存</h2><p><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%95%B0%E6%8D%AE%E5%9D%97%E7%BC%93%E5%86%B2.png"></p>
 <ul>
 <li><p>数据块按需读入内存</p>
 <ul>
@@ -6885,7 +6880,7 @@
 </li>
 <li><p>支持存储</p>
 <ul>
-<li>一个页（在虚拟地址空间中）可以被映射到一个本地文件中（在二级存储中）<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%94%AF%E6%8C%81%E5%AD%98%E5%82%A8.png"></li>
+<li>一个页（在虚拟地址空间中）可以被映射到一个本地文件中（在二级存储中）<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%94%AF%E6%8C%81%E5%AD%98%E5%82%A8.png"></li>
 </ul>
 </li>
 <li><p>文件数据块的页缓存</p>
@@ -6893,7 +6888,7 @@
 <li>在虚拟内存中文件数据块被映射成页</li>
 <li>文件的读/写操作被转换成对内存的访问</li>
 <li>可能导致缺页 设置为脏页</li>
-<li>问题：页置换 - 从进程或文件页缓存中？<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E7%BC%93%E5%AD%98.png"></li>
+<li>问题：页置换 - 从进程或文件页缓存中？<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%A1%B5%E7%BC%93%E5%AD%98.png"></li>
 </ul>
 </li>
 </ul>
@@ -6908,7 +6903,7 @@
 <li>一个进程一个</li>
 <li>一个系统级的</li>
 <li>每个卷控制块也会保存一个列表</li>
-<li>所以如果有文件被打开将不能被卸载<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E8%A1%A8.png"></li>
+<li>所以如果有文件被打开将不能被卸载<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6%E8%A1%A8.png"></li>
 </ul>
 </li>
 <li>一些操作系统和文件系统提供该功能<ul>
@@ -6944,7 +6939,7 @@
 <li>表现：如访问速度</li>
 </ul>
 </li>
-<li>连续分配<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D.png"><ul>
+<li>连续分配<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E8%BF%9E%E7%BB%AD%E5%88%86%E9%85%8D.png"><ul>
 <li>文件头指定起始块和长度</li>
 <li>位置/分配策略<ul>
 <li>最先匹配、最佳匹配…</li>
@@ -6967,7 +6962,7 @@
 <li>CDROM一般不会动态增长，可以使用连续分配，但需要动态添加删除效率会很低</li>
 </ul>
 </li>
-<li>链式分配<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%93%BE%E5%BC%8F%E5%88%86%E9%85%8D.png"><ul>
+<li>链式分配<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%93%BE%E5%BC%8F%E5%88%86%E9%85%8D.png"><ul>
 <li>文件以数据块链表方式存储</li>
 <li>文件头包含了第一块和最后一块的指针</li>
 <li>优势<ul>
@@ -6986,7 +6981,7 @@
 </li>
 </ul>
 </li>
-<li>索引分配<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%B4%A2%E5%BC%95%E5%88%86%E9%85%8D.png"><ul>
+<li>索引分配<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%B4%A2%E5%BC%95%E5%88%86%E9%85%8D.png"><ul>
 <li>为每个文件创建一个名为索引数据块的非数据数据块<ul>
 <li>到文件数据块的指针列表</li>
 </ul>
@@ -7004,8 +6999,8 @@
 </ul>
 </li>
 <li>针对大文件的处理办法<ul>
-<li>链式索引块(IB + IB + …)<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%93%BE%E5%BC%8F%E7%B4%A2%E5%BC%95%E5%9D%97.png"></li>
-<li>多级索引块(IB * IB * …)  对比多级页表<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%9A%E7%BA%A7%E7%B4%A2%E5%BC%95%E5%9D%97.png"><br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/unix%E5%A4%9A%E7%BA%A7%E7%B4%A2%E5%BC%95%E5%9D%97.png"></li>
+<li>链式索引块(IB + IB + …)<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%93%BE%E5%BC%8F%E7%B4%A2%E5%BC%95%E5%9D%97.png"></li>
+<li>多级索引块(IB * IB * …)  对比多级页表<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A4%9A%E7%BA%A7%E7%B4%A2%E5%BC%95%E5%9D%97.png"><br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/unix%E5%A4%9A%E7%BA%A7%E7%B4%A2%E5%BC%95%E5%9D%97.png"></li>
 </ul>
 </li>
 <li>大文件的问题<ul>
@@ -7069,20 +7064,20 @@
 </li>
 <li>空闲空间列表存储在哪里？</li>
 <li>空闲空间列表的最佳数据结构是什么样的？<ul>
-<li>链式链表<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%93%BE%E5%BC%8F%E5%88%97%E8%A1%A8.png"></li>
-<li>分组列表<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E7%BB%84%E5%88%97%E8%A1%A8.png"></li>
+<li>链式链表<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E9%93%BE%E5%BC%8F%E5%88%97%E8%A1%A8.png"></li>
+<li>分组列表<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E7%BB%84%E5%88%97%E8%A1%A8.png"></li>
 </ul>
 </li>
 </ul>
 <h2 id="多磁盘管理-RAID"><a href="#多磁盘管理-RAID" class="headerlink" title="多磁盘管理 - RAID"></a>多磁盘管理 - RAID</h2><ul>
 <li>通常磁盘通过分区来最大限度减小寻道时间<ul>
 <li>一个分区是一个柱面的集合</li>
-<li>每个分区都是逻辑上独立的磁盘<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98.png"></li>
+<li>每个分区都是逻辑上独立的磁盘<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98.png"></li>
 </ul>
 </li>
 <li>分区：硬件磁盘的一种适合操作系统指定格式的划分</li>
 <li>卷：一个拥有一个文件系统实例的可访问的存储空间<ul>
-<li>通常常驻在磁盘的单个分区上<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA.png"></li>
+<li>通常常驻在磁盘的单个分区上<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA.png"></li>
 </ul>
 </li>
 <li>使用多个并行磁盘来增加<ul>
@@ -7104,25 +7099,25 @@
 <li>和内存交叉相似</li>
 </ul>
 </li>
-<li>通过更大的有效块大小来提供更大的磁盘带宽  RAID0提高吞吐方式<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID.png"> </li>
+<li>通过更大的有效块大小来提供更大的磁盘带宽  RAID0提高吞吐方式<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID.png"> </li>
 <li>可靠性成倍增长</li>
 <li>读取性能线性增加 RAID1提高可靠性方式<ul>
-<li>向两个磁盘写入，从任何一个读取<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID-%E8%AF%BB.png"></li>
+<li>向两个磁盘写入，从任何一个读取<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID-%E8%AF%BB.png"></li>
 </ul>
 </li>
 <li>数据块级磁带配有专用奇偶校验磁盘 RAID4既可以提高吞吐也能提高可靠性<ul>
 <li>允许从任意一个故障磁盘中恢复</li>
-<li>例如：存储8,9,10,11,12,13,14,15,0,1,2,3<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID%E6%A0%A1%E9%AA%8C.png"></li>
+<li>例如：存储8,9,10,11,12,13,14,15,0,1,2,3<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID%E6%A0%A1%E9%AA%8C.png"></li>
 </ul>
 </li>
-<li>每次在任意数据盘写入数据，都需要对奇偶校验盘做写操作，导致奇偶校验盘读写十分频繁，容易成为整个系统的瓶颈，为了缓解RAID4的这种缺点，提出了RAID5，均匀分散奇偶校验功能至每个数据盘，使得每个disk的访问时并行的，校验开销是均匀的<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID5.png"></li>
+<li>每次在任意数据盘写入数据，都需要对奇偶校验盘做写操作，导致奇偶校验盘读写十分频繁，容易成为整个系统的瓶颈，为了缓解RAID4的这种缺点，提出了RAID5，均匀分散奇偶校验功能至每个数据盘，使得每个disk的访问时并行的，校验开销是均匀的<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/RAID5.png"></li>
 <li>上面的只能进行一个盘的纠错</li>
 <li>条带化和奇偶校验按byte-by-byte或者bit-by-bit<ul>
 <li>RAID-0/4/5：block-wise</li>
 <li>RAID-3: bit-wise</li>
 </ul>
 <ul>
-<li>例如：在RAID-3系统中存储bit-string 101<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E5%8D%95%E4%BD%8D.png"></li>
+<li>例如：在RAID-3系统中存储bit-string 101<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C%E5%8D%95%E4%BD%8D.png"></li>
 </ul>
 </li>
 <li>RAID-5：每个条带块有一个奇偶校验块<ul>
@@ -7134,12 +7129,12 @@
 <li>允许有两个磁盘错误</li>
 </ul>
 </li>
-<li>分层方式组织，完成吞吐和可靠性要求，比RAID5实现简单些<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E5%B1%82%E7%BB%84%E7%BB%87RAID01.png"></li>
+<li>分层方式组织，完成吞吐和可靠性要求，比RAID5实现简单些<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E5%88%86%E5%B1%82%E7%BB%84%E7%BB%87RAID01.png"></li>
 </ul>
 <h2 id="磁盘调度"><a href="#磁盘调度" class="headerlink" title="磁盘调度"></a>磁盘调度</h2><ul>
 <li>磁盘结构  <ul>
 <li>旋转移动</li>
-<li>水平前后移动<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98%E7%BB%93%E6%9E%84.png"></li>
+<li>水平前后移动<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98%E7%BB%93%E6%9E%84.png"></li>
 </ul>
 </li>
 <li>读取或写入时，磁头必须被定位在期望的磁道，并从所期望的扇区开始<ul>
@@ -7154,7 +7149,7 @@
 <li>平均旋转延迟时间 = 磁盘旋转一周时间的一半</li>
 </ul>
 </li>
-<li>磁盘I/O时间<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98IO%E6%97%B6%E9%97%B4.png"><ul>
+<li>磁盘I/O时间<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/%E7%A3%81%E7%9B%98IO%E6%97%B6%E9%97%B4.png"><ul>
 <li>寻道时间是性能上区别的原因</li>
 <li>对单个磁盘，会有一个I/O请求数目</li>
 <li>如果请求时随机的，那么会表现很差</li>
@@ -7170,7 +7165,7 @@
 </li>
 <li>最短寻道时间优先 SSTF<ul>
 <li>选择从磁臂当前位置需要移动最少的I/O请求</li>
-<li>总是虚增最短寻道时间<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/SSTF.png"></li>
+<li>总是虚增最短寻道时间<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/SSTF.png"></li>
 <li>存在的不足之处<ul>
 <li>如果持续的有磁头附近的读写请求，那么磁头会持续在这块区域移动，而远离磁头位置的访问请求会一直得不到访问，产生饥饿现象。不公平，不均匀</li>
 </ul>
@@ -7179,16 +7174,16 @@
 </li>
 <li>SCAN算法 也叫 电梯调度算法 elevator algorithm <ul>
 <li>磁臂在一个方向上移动，满足所有未完成的请求，直到磁臂到达该方向上最后的磁道</li>
-<li>调换方向<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/SCAN.png"></li>
+<li>调换方向<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/SCAN.png"></li>
 </ul>
 </li>
 <li>CSCAN算法<ul>
 <li>限制了仅在一个方向上扫描</li>
-<li>当最后一个磁道也被访问过了后，磁臂返回到磁盘的另外一段再次进行扫描<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CSCAN.png"></li>
+<li>当最后一个磁道也被访问过了后，磁臂返回到磁盘的另外一段再次进行扫描<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CSCAN.png"></li>
 </ul>
 </li>
 <li>CSCAN改进版 CLOOK<ul>
-<li>磁臂先到达该方向上最后一个请求处，然后立即反转<br><img src="/2020/11/26/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CLOOK.png"></li>
+<li>磁臂先到达该方向上最后一个请求处，然后立即反转<br><img src="/2020/11/26/06_old_backup/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/CLOOK.png"></li>
 </ul>
 </li>
 <li>在SSTF、SCAN以及CSCAN几种调度算法中，都可能会出现磁臂停留在某处不动的情况，例如进程反复请求对某一磁道的IO操作，我们把这一现象称为“磁道粘着(arm stickiness)”</li>
