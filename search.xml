@@ -252,179 +252,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux系统管理-管理用户</title>
-    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7/</url>
-    <content><![CDATA[<h1 id="用户和用户组"><a href="#用户和用户组" class="headerlink" title="用户和用户组"></a>用户和用户组</h1><p>用户使用用户名登录使用linux系统，但是linux系统内部使用uid来管理用户账户，linux中用户可以分为三类：</p>
-<ul>
-<li>管理员用户 根用户 root uid为0</li>
-<li>虚拟用户，不可用来登录系统，但却是系统运行不可或缺的<ul>
-<li>bin, daemon, ftp, mail, nobody等</li>
-<li>提供给系统中的程序使用，比如浏览器就是nobody用户</li>
-<li>centos, uid 1-499预留给虚拟用户使用</li>
-</ul>
-</li>
-<li>普通用户，最常用的用户，可以登录系统，拥有有限的权限、<ul>
-<li>centos, 普通用户uid 500及以后</li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-
-<p>用户组，具有相同特征的用户的一个集合体，Linux系统通过gid识别用户组</p>
-<ul>
-<li>用户组和用户之间是多对多的关系，一个用户可以从属于多个用户组，一个用户组也可以包含多个用户</li>
-<li>主用户组，只能有一个，主用户组影响用户创建文件时，文件的<code>从属用户组</code>的这个属性，从属用户组包含主用户组以及其他用户加入的用户组</li>
-</ul>
-<h1 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h1><p>可以使用id和finger命令查看用户信息，这两个命令各有侧重，id命令侧重查看用户UID，用户所归属的用户组GID信息；finger侧重查看用户家目录，登录shell类型以及用户备注信息</p>
-<p>id命令</p>
-<ul>
-<li>id 用户名</li>
-<li>根用户至属于root根用户组，不从属于其他任何用户组</li>
-<li>不加用户名参数，查看当前登录用户信息，特别注意多出来的环境=之后的内容，这部分内容是SELinux，SELinux是centos中的一个附加安全机制</li>
-</ul>
-<p>finge命令</p>
-<ul>
-<li>finger 用户名<ul>
-<li>Login 表示登录用户名</li>
-<li>Name 对用户的一些说明和备注</li>
-<li>Directory 用户家目录</li>
-<li>shell 显示用户所使用的默认shell类型</li>
-<li>last 上次在何时何处登录本主机</li>
-<li>新邮件数目</li>
-<li>用户家目录中隐藏文件.plan的内容，改文件一般放置用户的个人工作计划</li>
-</ul>
-</li>
-</ul>
-<h1 id="切换用户身份"><a href="#切换用户身份" class="headerlink" title="切换用户身份"></a>切换用户身份</h1><p>su命令</p>
-<ul>
-<li>switch user</li>
-<li><code>su -l 用户名</code><br>选项-l表示加切换用户shell运行环境，强烈建议加上-l选项，该选项可以简化为-，切换到root用户需要密码，从root切换为普通用户不需要密码</li>
-</ul>
-<h1 id="创建、修改和删除用户"><a href="#创建、修改和删除用户" class="headerlink" title="创建、修改和删除用户"></a>创建、修改和删除用户</h1><p>创建用户 只有根用户才有这个权限</p>
-<ul>
-<li><code>useradd 新用户名</code></li>
-<li>设置密码，只有根用户才可以使用passwd命令设置其他用户的密码，普通用户仅可设置自己的密码<br><code>passwd 需要设置密码的用户名</code><br>需要注意设置密码时，如果密码过于简单，会有警告，但是仍旧可以这样设置，并且可以设置成功，但强烈不建议这样做，至少大于9位，并包括数字和字符的组合</li>
-</ul>
-<p>基本上在创建用户是只要设置用户名和密码即可，其他信息由系统帮助默认设置。默认设置如下：</p>
-<ul>
-<li>UID，上一个新建用户UID加1</li>
-<li>家目录，/home/用户名</li>
-<li>用户备注，无</li>
-<li>主用户组，新建与用户同名用户组</li>
-<li>从属用户组，无</li>
-<li>shell类型，bash</li>
-</ul>
-<p>实战</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建用户名为nbstu01的用户，用户指定如下信息：</span></span><br><span class="line"><span class="comment"># UID 601</span></span><br><span class="line"><span class="comment"># 家目录 /tmp/stu01</span></span><br><span class="line"><span class="comment"># 用户备注 linux服务器管理慕课用户01</span></span><br><span class="line"><span class="comment"># 主用户组 moocers</span></span><br><span class="line"><span class="comment"># 从属用户组 stu,s_group01</span></span><br><span class="line"><span class="comment"># shell类型 tcsh</span></span><br><span class="line">useradd -C linux服务器管理慕课用户01 -u 601 -d /tmp/stu01 -g moocers -G stu,s_group01 -s /bin/tcsh nbstu01</span><br><span class="line">passwd nbstu01</span><br><span class="line">id nbstu01</span><br><span class="line">finger nbstu01</span><br></pre></td></tr></table></figure>
-
-<p>注意：<br>创建用户，指定uid必须是未被占用的，-g -G 指定主用户组和从属用户组必须是存在的，否则会报错</p>
-<p>修改用户</p>
-<ul>
-<li>usermod</li>
-<li>可以修改创建用户时所指定的几乎所有的信息，选项几乎一样</li>
-<li>-l 和 -u 选项用来修改用户的用户名和UID  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -c 慕课用户02 -d /tmp/stu02 -g stu -G nblecturer -s /bin/bash nbstu01</span><br><span class="line">usermod -u 602 -l nbstu02 nbstu01</span><br><span class="line">id nbstu01</span><br><span class="line">finger nbstu01</span><br><span class="line">id nbstu02</span><br><span class="line">finger nbstu02</span><br></pre></td></tr></table></figure></li>
-<li>注意：用户登录系统时是无法修改用户名和uid的</li>
-</ul>
-<p>删除用户</p>
-<ul>
-<li>userdel</li>
-<li><code>userdel nbstu02</code></li>
-<li><code>finger nbstu02</code></li>
-<li>注意：用户虽然删除了，但是其家目录还存在，可以在确认没有重要文件之后，<code>rm -rf /home/nbstu02</code>，手动删除</li>
-<li><code>userdel -r nbstu01</code>，删除用户同时一并删除用户家目录，虽然这样做很方便，但是强烈建议系统管理员不要轻易使用-r选项，很容易误删用户文件</li>
-<li>正在登录系统的用户是无法删除的</li>
-</ul>
-<h1 id="创建、修改和删除用户组"><a href="#创建、修改和删除用户组" class="headerlink" title="创建、修改和删除用户组"></a>创建、修改和删除用户组</h1><p>创建用户组</p>
-<ul>
-<li><code>groupadd nbmoocers</code></li>
-<li>只有根用户才能创建新用户组</li>
-<li>linux 中没有专门查看用户组的命令，可以尝试将一个用户加入到nbmoocers用户组中去</li>
-<li><code>usermod -G nbmoocers stu</code></li>
-<li><code>id stu</code></li>
-<li>创建用户组的gid默认是前一个新建用户组gid加1</li>
-<li>-g 选项指定用户组<code>gid groupadd -g 508 nomoocers01</code></li>
-</ul>
-<p>修改用户组</p>
-<ul>
-<li>groupmod</li>
-<li>修改用户组的名称，gid等属性</li>
-<li><code>groupmod -g 8888 -n moocers nbmoocers</code></li>
-<li><code>id stu</code></li>
-<li>不要随意更改用户组的gid，很容易造成系统混乱</li>
-</ul>
-<p>删除用户组</p>
-<ul>
-<li>groupdel</li>
-<li><code>groupdel moocers</code></li>
-<li>只要有一个用户将某用户组作为其主用户组的话，那么该用户组就无法删除</li>
-</ul>
-<h1 id="部分让渡根用户权限"><a href="#部分让渡根用户权限" class="headerlink" title="部分让渡根用户权限"></a>部分让渡根用户权限</h1><p>sudo </p>
-<ul>
-<li>无需根用户密码也能共享部分根用户权限</li>
-<li>一开始系统只有root用户可以执行sudo命令，通过修改/etc/sudoers配置文件来让别的用户也可以执行sudo命令，但该文件只有root用户可以修改<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root   ALL=(ALL)   ALL</span><br><span class="line">stu    mooc=(root) NOPASSWD:/sbin/shutdown -h 5</span><br><span class="line">%group_p mooc=(root) /sbin/shutdown -h 5 <span class="comment">#从属于group_p用户组的用户在mooc主机登录时，可以以root用户身份，执行后面的关机指令</span></span><br></pre></td></tr></table></figure></li>
-<li><code>sudo -u root passwd</code> 可以省略-u选项和参数root，命令默认是转换为root身份执行的</li>
-</ul>
-<h1 id="用户管理配置文件"><a href="#用户管理配置文件" class="headerlink" title="用户管理配置文件"></a>用户管理配置文件</h1><p>linux用户管理中所涉及的四个重要配置文件，他们是用户管理的核心，系统中用户以及用户组的任何操作，最终的落脚点都是这四个配置文件</p>
-<p>这四个配置文件可以分为两组</p>
-<ul>
-<li>用户相关配置数据<ul>
-<li>/etc/passwd</li>
-<li>/etc/shadow</li>
-</ul>
-</li>
-<li>用户组相关配置数据<ul>
-<li>/etc/group</li>
-<li>/etc/gshadow</li>
-</ul>
-</li>
-</ul>
-<p>/etc/passwd</p>
-<ul>
-<li>系统用户花名册，系统所有用户都在文件中有记录</li>
-<li>一行有7个字段，字段之间用冒号分割<br><code>用户名：密码：uid：主用户组gid：用户描述（可选）：家目录：用户shell</code></li>
-</ul>
-<p>/etc/shadow</p>
-<ul>
-<li>是/etc/passwd的影子文件</li>
-<li>正常情况下，该文件与/etc/passwd文件的行数一样多，每行也存放一个用户的一些信息</li>
-<li>shadow文件和passwd文件互为补充，二者一起描述系统中的用户</li>
-</ul>
-<p>为什么要分成两个文件？</p>
-<ul>
-<li>因为出于系统需求，/etc/passwd对于所有用户都是可读的，因此用户的一些需要保护的信息，如登录密码就不能存放在passwd中了，这部分信息就放在shadow文件中，shadow文件只有root用户才有权限查看和修改，相对更加安全</li>
-<li>shadow文件一行有9个字段<br><code>用户名：加密后的密码：密码最后一次修改时间：密码修改最小时间间隔：密码修改最大时间间隔：密码失效警告时间：最长不活动时间：用户失效时间：保留字段</code></li>
-<li>加密后的密码 是 * 或 ！表示该用户不能作为普通用户正常登录系统</li>
-<li>密码最后一次修改时间是指，最后一次密码修改距1970.01.01天数</li>
-<li>密码修改最小时间间隔, 默认是0，表示两次密码修改之间没有时间间隔，可随时修改</li>
-<li>密码修改最大时间间隔，用户密码保持有效的最大天数，默认99999，273年，表示密码不强制定期修改的意思</li>
-<li>密码失效警告时间, 表示从系统警告用户到用户密码正式失效的天数，默认是7，表示不启用该功能</li>
-<li>最长不活动时间，表示用户口令作废多少天后，系统会禁用此用户，禁用后将不允许此用户登录，也不会提示用户过期，该字段模式为空，表示不使用这个功能</li>
-<li>用户失效时间，字段给出的是一个绝对天数，如果使用了这个字段，那么相当于规定了相应用户的生存期，期满后，该用户不再是一个合法用户，也就不能登录了，默认为空，表示此用户永久可用，这个天数也是距离1970-1-1</li>
-<li>保留字段，目前为空</li>
-<li>初学者不会用到第3-8字段，可初步了解，用时再查资料</li>
-</ul>
-<p>/etc/group</p>
-<ul>
-<li>系统用户组的花名册</li>
-<li>每行4个字段，字段间冒号分割<br><code>用户组名：用户组密码：用户组gid：从属该组的用户列表</code></li>
-<li>用户组密码，对于初学者来说很少用到，只有在大型服务器上针对很多用户和组定制一些关系结构比较复杂的权限模型时，设置用户组密码才有必要，真的密码也不会放在这里，而是放在gshadow文件中</li>
-<li>从属该用户组的用户列表，每个用户名之间用逗号分隔，注意这个字段为空，并不一定表示用户组中没有用户，如果该用户组是某个用户的主用户组，那么这个用户是不会显示在该字段列表中的</li>
-</ul>
-<p>/etc/gshadow</p>
-<ul>
-<li>与group的关系，类似passwd和shadow的关系</li>
-<li>每行4个字段<br><code>用户组名：用户组加密后的密码：组管理者：从属该组的用户列表</code></li>
-<li>组管理者，这个字段可以为空，如果有多个组管理者，用逗号分隔</li>
-</ul>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>用户，用户组</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux系统管理-管理硬盘</title>
     <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%A1%AC%E7%9B%98/</url>
     <content><![CDATA[<h1 id="查看硬盘"><a href="#查看硬盘" class="headerlink" title="查看硬盘"></a>查看硬盘</h1><p>硬盘命名规则</p>
@@ -629,6 +456,269 @@
       </categories>
       <tags>
         <tag>linux网络配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-管理用户</title>
+    <url>/2020/10/13/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%94%A8%E6%88%B7/</url>
+    <content><![CDATA[<h1 id="用户和用户组"><a href="#用户和用户组" class="headerlink" title="用户和用户组"></a>用户和用户组</h1><p>用户使用用户名登录使用linux系统，但是linux系统内部使用uid来管理用户账户，linux中用户可以分为三类：</p>
+<ul>
+<li>管理员用户 根用户 root uid为0</li>
+<li>虚拟用户，不可用来登录系统，但却是系统运行不可或缺的<ul>
+<li>bin, daemon, ftp, mail, nobody等</li>
+<li>提供给系统中的程序使用，比如浏览器就是nobody用户</li>
+<li>centos, uid 1-499预留给虚拟用户使用</li>
+</ul>
+</li>
+<li>普通用户，最常用的用户，可以登录系统，拥有有限的权限、<ul>
+<li>centos, 普通用户uid 500及以后</li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+
+<p>用户组，具有相同特征的用户的一个集合体，Linux系统通过gid识别用户组</p>
+<ul>
+<li>用户组和用户之间是多对多的关系，一个用户可以从属于多个用户组，一个用户组也可以包含多个用户</li>
+<li>主用户组，只能有一个，主用户组影响用户创建文件时，文件的<code>从属用户组</code>的这个属性，从属用户组包含主用户组以及其他用户加入的用户组</li>
+</ul>
+<h1 id="查看用户"><a href="#查看用户" class="headerlink" title="查看用户"></a>查看用户</h1><p>可以使用id和finger命令查看用户信息，这两个命令各有侧重，id命令侧重查看用户UID，用户所归属的用户组GID信息；finger侧重查看用户家目录，登录shell类型以及用户备注信息</p>
+<p>id命令</p>
+<ul>
+<li>id 用户名</li>
+<li>根用户至属于root根用户组，不从属于其他任何用户组</li>
+<li>不加用户名参数，查看当前登录用户信息，特别注意多出来的环境=之后的内容，这部分内容是SELinux，SELinux是centos中的一个附加安全机制</li>
+</ul>
+<p>finge命令</p>
+<ul>
+<li>finger 用户名<ul>
+<li>Login 表示登录用户名</li>
+<li>Name 对用户的一些说明和备注</li>
+<li>Directory 用户家目录</li>
+<li>shell 显示用户所使用的默认shell类型</li>
+<li>last 上次在何时何处登录本主机</li>
+<li>新邮件数目</li>
+<li>用户家目录中隐藏文件.plan的内容，改文件一般放置用户的个人工作计划</li>
+</ul>
+</li>
+</ul>
+<h1 id="切换用户身份"><a href="#切换用户身份" class="headerlink" title="切换用户身份"></a>切换用户身份</h1><p>su命令</p>
+<ul>
+<li>switch user</li>
+<li><code>su -l 用户名</code><br>选项-l表示加切换用户shell运行环境，强烈建议加上-l选项，该选项可以简化为-，切换到root用户需要密码，从root切换为普通用户不需要密码</li>
+</ul>
+<h1 id="创建、修改和删除用户"><a href="#创建、修改和删除用户" class="headerlink" title="创建、修改和删除用户"></a>创建、修改和删除用户</h1><p>创建用户 只有根用户才有这个权限</p>
+<ul>
+<li><code>useradd 新用户名</code></li>
+<li>设置密码，只有根用户才可以使用passwd命令设置其他用户的密码，普通用户仅可设置自己的密码<br><code>passwd 需要设置密码的用户名</code><br>需要注意设置密码时，如果密码过于简单，会有警告，但是仍旧可以这样设置，并且可以设置成功，但强烈不建议这样做，至少大于9位，并包括数字和字符的组合</li>
+</ul>
+<p>基本上在创建用户是只要设置用户名和密码即可，其他信息由系统帮助默认设置。默认设置如下：</p>
+<ul>
+<li>UID，上一个新建用户UID加1</li>
+<li>家目录，/home/用户名</li>
+<li>用户备注，无</li>
+<li>主用户组，新建与用户同名用户组</li>
+<li>从属用户组，无</li>
+<li>shell类型，bash</li>
+</ul>
+<p>实战</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建用户名为nbstu01的用户，用户指定如下信息：</span></span><br><span class="line"><span class="comment"># UID 601</span></span><br><span class="line"><span class="comment"># 家目录 /tmp/stu01</span></span><br><span class="line"><span class="comment"># 用户备注 linux服务器管理慕课用户01</span></span><br><span class="line"><span class="comment"># 主用户组 moocers</span></span><br><span class="line"><span class="comment"># 从属用户组 stu,s_group01</span></span><br><span class="line"><span class="comment"># shell类型 tcsh</span></span><br><span class="line">useradd -C linux服务器管理慕课用户01 -u 601 -d /tmp/stu01 -g moocers -G stu,s_group01 -s /bin/tcsh nbstu01</span><br><span class="line">passwd nbstu01</span><br><span class="line">id nbstu01</span><br><span class="line">finger nbstu01</span><br></pre></td></tr></table></figure>
+
+<p>注意：<br>创建用户，指定uid必须是未被占用的，-g -G 指定主用户组和从属用户组必须是存在的，否则会报错</p>
+<p>修改用户</p>
+<ul>
+<li>usermod</li>
+<li>可以修改创建用户时所指定的几乎所有的信息，选项几乎一样</li>
+<li>-l 和 -u 选项用来修改用户的用户名和UID  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -c 慕课用户02 -d /tmp/stu02 -g stu -G nblecturer -s /bin/bash nbstu01</span><br><span class="line">usermod -u 602 -l nbstu02 nbstu01</span><br><span class="line">id nbstu01</span><br><span class="line">finger nbstu01</span><br><span class="line">id nbstu02</span><br><span class="line">finger nbstu02</span><br></pre></td></tr></table></figure></li>
+<li>注意：用户登录系统时是无法修改用户名和uid的</li>
+</ul>
+<p>删除用户</p>
+<ul>
+<li>userdel</li>
+<li><code>userdel nbstu02</code></li>
+<li><code>finger nbstu02</code></li>
+<li>注意：用户虽然删除了，但是其家目录还存在，可以在确认没有重要文件之后，<code>rm -rf /home/nbstu02</code>，手动删除</li>
+<li><code>userdel -r nbstu01</code>，删除用户同时一并删除用户家目录，虽然这样做很方便，但是强烈建议系统管理员不要轻易使用-r选项，很容易误删用户文件</li>
+<li>正在登录系统的用户是无法删除的</li>
+</ul>
+<h1 id="创建、修改和删除用户组"><a href="#创建、修改和删除用户组" class="headerlink" title="创建、修改和删除用户组"></a>创建、修改和删除用户组</h1><p>创建用户组</p>
+<ul>
+<li><code>groupadd nbmoocers</code></li>
+<li>只有根用户才能创建新用户组</li>
+<li>linux 中没有专门查看用户组的命令，可以尝试将一个用户加入到nbmoocers用户组中去</li>
+<li><code>usermod -G nbmoocers stu</code></li>
+<li><code>id stu</code></li>
+<li>创建用户组的gid默认是前一个新建用户组gid加1</li>
+<li>-g 选项指定用户组<code>gid groupadd -g 508 nomoocers01</code></li>
+</ul>
+<p>修改用户组</p>
+<ul>
+<li>groupmod</li>
+<li>修改用户组的名称，gid等属性</li>
+<li><code>groupmod -g 8888 -n moocers nbmoocers</code></li>
+<li><code>id stu</code></li>
+<li>不要随意更改用户组的gid，很容易造成系统混乱</li>
+</ul>
+<p>删除用户组</p>
+<ul>
+<li>groupdel</li>
+<li><code>groupdel moocers</code></li>
+<li>只要有一个用户将某用户组作为其主用户组的话，那么该用户组就无法删除</li>
+</ul>
+<h1 id="部分让渡根用户权限"><a href="#部分让渡根用户权限" class="headerlink" title="部分让渡根用户权限"></a>部分让渡根用户权限</h1><p>sudo </p>
+<ul>
+<li>无需根用户密码也能共享部分根用户权限</li>
+<li>一开始系统只有root用户可以执行sudo命令，通过修改/etc/sudoers配置文件来让别的用户也可以执行sudo命令，但该文件只有root用户可以修改<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">root   ALL=(ALL)   ALL</span><br><span class="line">stu    mooc=(root) NOPASSWD:/sbin/shutdown -h 5</span><br><span class="line">%group_p mooc=(root) /sbin/shutdown -h 5 <span class="comment">#从属于group_p用户组的用户在mooc主机登录时，可以以root用户身份，执行后面的关机指令</span></span><br></pre></td></tr></table></figure></li>
+<li><code>sudo -u root passwd</code> 可以省略-u选项和参数root，命令默认是转换为root身份执行的</li>
+</ul>
+<h1 id="用户管理配置文件"><a href="#用户管理配置文件" class="headerlink" title="用户管理配置文件"></a>用户管理配置文件</h1><p>linux用户管理中所涉及的四个重要配置文件，他们是用户管理的核心，系统中用户以及用户组的任何操作，最终的落脚点都是这四个配置文件</p>
+<p>这四个配置文件可以分为两组</p>
+<ul>
+<li>用户相关配置数据<ul>
+<li>/etc/passwd</li>
+<li>/etc/shadow</li>
+</ul>
+</li>
+<li>用户组相关配置数据<ul>
+<li>/etc/group</li>
+<li>/etc/gshadow</li>
+</ul>
+</li>
+</ul>
+<p>/etc/passwd</p>
+<ul>
+<li>系统用户花名册，系统所有用户都在文件中有记录</li>
+<li>一行有7个字段，字段之间用冒号分割<br><code>用户名：密码：uid：主用户组gid：用户描述（可选）：家目录：用户shell</code></li>
+</ul>
+<p>/etc/shadow</p>
+<ul>
+<li>是/etc/passwd的影子文件</li>
+<li>正常情况下，该文件与/etc/passwd文件的行数一样多，每行也存放一个用户的一些信息</li>
+<li>shadow文件和passwd文件互为补充，二者一起描述系统中的用户</li>
+</ul>
+<p>为什么要分成两个文件？</p>
+<ul>
+<li>因为出于系统需求，/etc/passwd对于所有用户都是可读的，因此用户的一些需要保护的信息，如登录密码就不能存放在passwd中了，这部分信息就放在shadow文件中，shadow文件只有root用户才有权限查看和修改，相对更加安全</li>
+<li>shadow文件一行有9个字段<br><code>用户名：加密后的密码：密码最后一次修改时间：密码修改最小时间间隔：密码修改最大时间间隔：密码失效警告时间：最长不活动时间：用户失效时间：保留字段</code></li>
+<li>加密后的密码 是 * 或 ！表示该用户不能作为普通用户正常登录系统</li>
+<li>密码最后一次修改时间是指，最后一次密码修改距1970.01.01天数</li>
+<li>密码修改最小时间间隔, 默认是0，表示两次密码修改之间没有时间间隔，可随时修改</li>
+<li>密码修改最大时间间隔，用户密码保持有效的最大天数，默认99999，273年，表示密码不强制定期修改的意思</li>
+<li>密码失效警告时间, 表示从系统警告用户到用户密码正式失效的天数，默认是7，表示不启用该功能</li>
+<li>最长不活动时间，表示用户口令作废多少天后，系统会禁用此用户，禁用后将不允许此用户登录，也不会提示用户过期，该字段模式为空，表示不使用这个功能</li>
+<li>用户失效时间，字段给出的是一个绝对天数，如果使用了这个字段，那么相当于规定了相应用户的生存期，期满后，该用户不再是一个合法用户，也就不能登录了，默认为空，表示此用户永久可用，这个天数也是距离1970-1-1</li>
+<li>保留字段，目前为空</li>
+<li>初学者不会用到第3-8字段，可初步了解，用时再查资料</li>
+</ul>
+<p>/etc/group</p>
+<ul>
+<li>系统用户组的花名册</li>
+<li>每行4个字段，字段间冒号分割<br><code>用户组名：用户组密码：用户组gid：从属该组的用户列表</code></li>
+<li>用户组密码，对于初学者来说很少用到，只有在大型服务器上针对很多用户和组定制一些关系结构比较复杂的权限模型时，设置用户组密码才有必要，真的密码也不会放在这里，而是放在gshadow文件中</li>
+<li>从属该用户组的用户列表，每个用户名之间用逗号分隔，注意这个字段为空，并不一定表示用户组中没有用户，如果该用户组是某个用户的主用户组，那么这个用户是不会显示在该字段列表中的</li>
+</ul>
+<p>/etc/gshadow</p>
+<ul>
+<li>与group的关系，类似passwd和shadow的关系</li>
+<li>每行4个字段<br><code>用户组名：用户组加密后的密码：组管理者：从属该组的用户列表</code></li>
+<li>组管理者，这个字段可以为空，如果有多个组管理者，用逗号分隔</li>
+</ul>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>用户，用户组</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>c-拾遗</title>
+    <url>/2020/11/04/c-%E6%8B%BE%E9%81%97/</url>
+    <content><![CDATA[<h1 id="格式化输入输出"><a href="#格式化输入输出" class="headerlink" title="格式化输入输出"></a>格式化输入输出</h1><ul>
+<li><p>printf<br><code>%[flags][width][.prec][hlL]type</code></p>
+<ul>
+<li>flags<ul>
+<li><code>-</code> 左对齐</li>
+<li><code>+</code> 在前面放 + 或 -</li>
+<li><code>&amp;nhsp;</code> 正数留空</li>
+<li><code>0</code> 0 填充</li>
+</ul>
+</li>
+<li>width 或 prec<ul>
+<li><code>number</code> 最小字符数</li>
+<li><code>*</code> 下一个参数是字符数</li>
+<li><code>.number</code>小数点后的位数</li>
+<li><code>.*</code> 下一个参数是小数点后的位数</li>
+</ul>
+</li>
+<li>hlL<ul>
+<li><code>hh</code> 单个字节</li>
+<li><code>h</code> short</li>
+<li><code>l</code> long</li>
+<li><code>ll</code> long long</li>
+<li><code>L</code> long double</li>
+</ul>
+</li>
+<li>type<ul>
+<li><code>i或d</code> int</li>
+<li><code>u</code> unsigned int</li>
+<li><code>o</code> 八进制</li>
+<li><code>x</code> 十六进制</li>
+<li><code>X</code> 字母大写的十六进制</li>
+<li><code>f或F</code> float,6</li>
+<li><code>e或E</code> 指数</li>
+<li><code>g</code> float</li>
+<li><code>G</code> float</li>
+<li><code>a或A</code> 十六进制浮点</li>
+<li><code>c</code> char</li>
+<li><code>s</code> 字符串</li>
+<li><code>p</code> 指针</li>
+<li><code>n</code> 读入/写出字符个数</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>scanf<br><code>%[flag]type</code></p>
+<ul>
+<li>flag<ul>
+<li><code>*</code> 跳过</li>
+<li><code>数字</code> 最大字符数</li>
+<li><code>hh</code> char</li>
+<li><code>h</code> short</li>
+<li><code>l</code> long, double</li>
+<li><code>ll</code> long long</li>
+<li><code>L</code> long double</li>
+</ul>
+</li>
+<li>type<ul>
+<li><code>d</code> int</li>
+<li><code>i</code> 整数，可能为十六进制或八进制</li>
+<li><code>u</code> unsigned int</li>
+<li><code>o</code> 八进制</li>
+<li><code>x</code> 十六进制</li>
+<li><code>a,e,f,g</code> float</li>
+<li><code>c</code> char</li>
+<li><code>s</code> 字符串（单词）</li>
+<li><code>[...]</code> 所允许的字符</li>
+<li><code>p</code> 指针</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>printf 和 scanf的返回值</p>
+<ul>
+<li>输出的字符数</li>
+<li>读入的项目数</li>
+<li>严格的程序中应该判断每次调用scanf或printf的返回值，了解程序运行中是否存在问题</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>c</category>
+      </categories>
+      <tags>
+        <tag>c</tag>
       </tags>
   </entry>
   <entry>
@@ -965,96 +1055,6 @@
       </categories>
       <tags>
         <tag>基础语法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>c-拾遗</title>
-    <url>/2020/11/04/c-%E6%8B%BE%E9%81%97/</url>
-    <content><![CDATA[<h1 id="格式化输入输出"><a href="#格式化输入输出" class="headerlink" title="格式化输入输出"></a>格式化输入输出</h1><ul>
-<li><p>printf<br><code>%[flags][width][.prec][hlL]type</code></p>
-<ul>
-<li>flags<ul>
-<li><code>-</code> 左对齐</li>
-<li><code>+</code> 在前面放 + 或 -</li>
-<li><code>&amp;nhsp;</code> 正数留空</li>
-<li><code>0</code> 0 填充</li>
-</ul>
-</li>
-<li>width 或 prec<ul>
-<li><code>number</code> 最小字符数</li>
-<li><code>*</code> 下一个参数是字符数</li>
-<li><code>.number</code>小数点后的位数</li>
-<li><code>.*</code> 下一个参数是小数点后的位数</li>
-</ul>
-</li>
-<li>hlL<ul>
-<li><code>hh</code> 单个字节</li>
-<li><code>h</code> short</li>
-<li><code>l</code> long</li>
-<li><code>ll</code> long long</li>
-<li><code>L</code> long double</li>
-</ul>
-</li>
-<li>type<ul>
-<li><code>i或d</code> int</li>
-<li><code>u</code> unsigned int</li>
-<li><code>o</code> 八进制</li>
-<li><code>x</code> 十六进制</li>
-<li><code>X</code> 字母大写的十六进制</li>
-<li><code>f或F</code> float,6</li>
-<li><code>e或E</code> 指数</li>
-<li><code>g</code> float</li>
-<li><code>G</code> float</li>
-<li><code>a或A</code> 十六进制浮点</li>
-<li><code>c</code> char</li>
-<li><code>s</code> 字符串</li>
-<li><code>p</code> 指针</li>
-<li><code>n</code> 读入/写出字符个数</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>scanf<br><code>%[flag]type</code></p>
-<ul>
-<li>flag<ul>
-<li><code>*</code> 跳过</li>
-<li><code>数字</code> 最大字符数</li>
-<li><code>hh</code> char</li>
-<li><code>h</code> short</li>
-<li><code>l</code> long, double</li>
-<li><code>ll</code> long long</li>
-<li><code>L</code> long double</li>
-</ul>
-</li>
-<li>type<ul>
-<li><code>d</code> int</li>
-<li><code>i</code> 整数，可能为十六进制或八进制</li>
-<li><code>u</code> unsigned int</li>
-<li><code>o</code> 八进制</li>
-<li><code>x</code> 十六进制</li>
-<li><code>a,e,f,g</code> float</li>
-<li><code>c</code> char</li>
-<li><code>s</code> 字符串（单词）</li>
-<li><code>[...]</code> 所允许的字符</li>
-<li><code>p</code> 指针</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>printf 和 scanf的返回值</p>
-<ul>
-<li>输出的字符数</li>
-<li>读入的项目数</li>
-<li>严格的程序中应该判断每次调用scanf或printf的返回值，了解程序运行中是否存在问题</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>c</category>
-      </categories>
-      <tags>
-        <tag>c</tag>
       </tags>
   </entry>
   <entry>
@@ -1542,6 +1542,23 @@
 </ul>
 </li>
 </ul>
+<h1 id="信号集设定"><a href="#信号集设定" class="headerlink" title="信号集设定"></a>信号集设定</h1><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">sigset_t</span> <span class="built_in">set</span>; <span class="comment">// typedef unsigned long sigset_t;</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigemptyset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>)</span></span>; <span class="comment">// 信号集清0</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigfillset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>)</span></span>; <span class="comment">// 全部置1</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigaddset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">int</span> signum)</span></span>; <span class="comment">// 将一个信号添加到集合中</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigdelset</span><span class="params">(<span class="keyword">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">int</span> signum)</span></span>; <span class="comment">// 将一个信号从集合中移除</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sigismember</span><span class="params">(<span class="keyword">const</span> <span class="keyword">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">int</span> signum)</span></span>; <span class="comment">// 判断一个信号是否在集合中。在return 1，不在return 0</span></span><br><span class="line"><span class="keyword">sigset_t</span> 类型的本质是位图，但不应该直接使用位操作，而应该使用上述函数，保证跨系统操作有效</span><br></pre></td></tr></table></figure>
+<p>sigprocmask 函数<br>用来屏蔽信号、解除屏蔽，本质是读取或修改进程的信号屏蔽字（PCB中）。<br>注意：屏蔽信号：只是将信号处理延后执行（延后至解除屏蔽）；而忽略表示将信号丢弃不处理</p>
+<ul>
+<li><code>int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);</code><ul>
+<li>how：假设当前的信号屏蔽字为mask<ul>
+<li>SIG_BLOCK: mask = mask | set</li>
+<li>SIG_UNBLOCK: mask = mask &amp; ~set</li>
+<li>SIG_SETMASK: mask = set  </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>sigpending 函数<br>读取当前进程的未决信号集  </p>
+<ul>
+<li><code>int sigpending(sigset_t set);</code></li>
+</ul>
 ]]></content>
       <categories>
         <category>linux系统编程</category>
@@ -1937,6 +1954,23 @@
       <categories>
         <category>感悟</category>
       </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2021/05/30/01_%E5%A4%9A%E5%AA%92%E4%BD%93%E7%9F%A5%E8%AF%86/01_%E5%9B%BE%E5%83%8F/%E5%9B%BE%E5%83%8F/</url>
+    <content><![CDATA[<h1 id="数字图像压缩技术"><a href="#数字图像压缩技术" class="headerlink" title="数字图像压缩技术"></a>数字图像压缩技术</h1>]]></content>
+  </entry>
+  <entry>
+    <title>test</title>
+    <url>/2021/08/23/02_%E5%B5%8C%E5%85%A5%E5%BC%8F/c-%E6%8B%BE%E9%81%97/</url>
+    <content><![CDATA[<p>this page for nothing but test.</p>
+]]></content>
+      <categories>
+        <category>test</category>
+      </categories>
+      <tags>
+        <tag>test</tag>
+      </tags>
   </entry>
   <entry>
     <title>Linux系统管理-安装 &amp; 管理文件</title>
