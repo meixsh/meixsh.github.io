@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>test</title>
-    <url>/2021/08/23/02_%E5%B5%8C%E5%85%A5%E5%BC%8F/c-%E6%8B%BE%E9%81%97/</url>
-    <content><![CDATA[<p>this page for nothing but test.</p>
-]]></content>
-      <categories>
-        <category>test</category>
-      </categories>
-      <tags>
-        <tag>test</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux系统管理-vi&amp;vim使用方法</title>
     <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-vi%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<h1 id="vi-入门"><a href="#vi-入门" class="headerlink" title="vi 入门"></a>vi 入门</h1><ul>
