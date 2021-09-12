@@ -456,7 +456,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-09-10 23:03:38" itemprop="dateModified" datetime="2021-09-10T23:03:38+08:00">2021-09-10</time>
+        <time title="修改时间：2021-09-12 17:03:05" itemprop="dateModified" datetime="2021-09-12T17:03:05+08:00">2021-09-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -476,14 +476,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -502,10 +502,9 @@
 <li>搜索<code>gnu make 于凤昌</code></li>
 <li>官方文档: <a target="_blank" rel="noopener" href="http://www.gnu.org/software/make/manual/">http://www.gnu.org/software/make/manual/</a></li>
 </ul>
-<h1 id="2-Makefile-语法"><a href="#2-Makefile-语法" class="headerlink" title="2. Makefile 语法"></a>2. Makefile 语法</h1><h2 id="2-1-通配符：-o"><a href="#2-1-通配符：-o" class="headerlink" title="2.1 通配符：%.o"></a>2.1 通配符：%.o</h2><pre><code>\$@ 表示目标  
-\$&lt; 表示第一个依赖文件  
-\$^ 表示所有依赖文件
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">test: a.o b.o c.o</span></span><br><span class="line">    gcc -o test <span class="variable">$^</span></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line">    gcc -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure></code></pre>
+<h1 id="2-Makefile-语法"><a href="#2-Makefile-语法" class="headerlink" title="2. Makefile 语法"></a>2. Makefile 语法</h1><h2 id="2-1-通配符：-o"><a href="#2-1-通配符：-o" class="headerlink" title="2.1 通配符：%.o"></a>2.1 通配符：%.o</h2><p>$@ 表示目标<br>$&lt; 表示第一个依赖文件<br>$^ 表示所有依赖文件</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">test: a.o b.o c.o</span></span><br><span class="line">    gcc -o test <span class="variable">$^</span></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line">    gcc -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure>
+
 <h2 id="2-2-使用Makefile"><a href="#2-2-使用Makefile" class="headerlink" title="2.2 使用Makefile"></a>2.2 使用Makefile</h2><pre><code>make [目标]
 若无目标，默认执行第一个目标</code></pre>
 <h2 id="2-3-假想目标-PHONY"><a href="#2-3-假想目标-PHONY" class="headerlink" title="2.3 假想目标 .PHONY"></a>2.3 假想目标 .PHONY</h2><h2 id="2-4-变量"><a href="#2-4-变量" class="headerlink" title="2.4 变量"></a>2.4 变量</h2><ul>
@@ -532,10 +531,43 @@
 </li>
 <li><p><code>$(patsubst pattern, replacement, text)</code><br>寻找<code>text</code>中符合格式<code>pattern</code>的字，用<code>replacement</code>替换它们。<code>pattern</code>和<code>replacement</code>中可以使用通配符。<br>比如：<code>$(patsubst %.c, %.o, x.c.c bar.c)</code><br>结果为：<code>x.c.o bar.o</code></p>
 </li>
-<li><p>$(strip string)<br>去掉前导和结尾空格，并将</p>
+<li><p><code>$(strip string)</code><br>去掉前导和结尾空格，并将中间的多个空格压缩为单个空格。<br>比如：<code>$(strip a  b c)</code><br>结果为：<code>a b c</code></p>
+</li>
+<li><p><code>$(findstring find, in)</code><br>在字符串<code>in</code>中搜寻<code>find</code>,如果找到，则返回值是<code>find</code>,否则返回值为空。<br>比如:</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(findstring a,a b c)</span><br><span class="line">$(findstring a,b c)</span><br><span class="line">将分别产生值&#96;a&#96;和空字符串</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>$(filter pattern..., text)</code><br>返回在<code>text</code>中由空格隔开且匹配格式<code>pattern...</code>的字，去除不符合格式<code>pattern...</code>的字。<br>比如：<code>$(filter %.c %.s, foo.c bar.c baz.s ugh.h)</code><br>结果为：<code>foo.c bar.c baz.s</code></p>
+</li>
+<li><p><code>$(filter-out pattern..., text)</code><br>返回在<code>text</code>中由空格隔开且不匹配格式<code>pattern...</code>的字，去除符合格式<code>pattern...</code>的字。<br>比如：<code>$(filter-out %.c %.s,foo.c bar.c baz.s ugh.h)</code><br>结果为：<code>ugh.h</code></p>
+</li>
+<li><p><code>$(sort list)</code><br>将list中的字按字母顺序排序，并去掉重复的字。输出由单个空格隔开的字的列表。<br>比如：<code>$(sort foo bar lose)</code><br>结果为：<code>bar foo lose</code></p>
 </li>
 </ol>
-<h3 id="2-5-2-文件名函数"><a href="#2-5-2-文件名函数" class="headerlink" title="2.5.2 文件名函数"></a>2.5.2 文件名函数</h3><h3 id="2-5-3-其它函数"><a href="#2-5-3-其它函数" class="headerlink" title="2.5.3 其它函数"></a>2.5.3 其它函数</h3>
+<h3 id="2-5-2-文件名函数"><a href="#2-5-2-文件名函数" class="headerlink" title="2.5.2 文件名函数"></a>2.5.2 文件名函数</h3><ol>
+<li><p><code>$(dir names...)</code><br>抽取<code>names...</code>中每一个文件名的路径部分，文件名的路径部分包括从文件名的首字符到最后一个斜杠（含斜杠）之前的一切字符。<br>比如: <code>$(dir src/foo.c hacks)</code><br>结果为：<code>src/ ./</code></p>
+</li>
+<li><p><code>$(notdir names...)</code><br>抽取<code>names...</code>中每一个文件名中除路径部分外一切字符（真正的文件名）<br>比如：<code>$(notdir src/foo.c hacks)</code><br>结果为：<code>foo.c hacks</code></p>
+</li>
+<li><p><code>$(suffix names...)</code><br>抽取<code>names...</code>中每一个文件名后缀<br>比如：<code>$(suffix src/foo.c src-1.0/bar.c hacks)</code><br>结果为:<code>.c .c</code></p>
+</li>
+<li><p><code>$(basename names...)</code><br>抽取<code>names...</code>中每一个文件名中除后缀外一切字符<br>比如：<code>$(basename src/foo.c src-1.0/bar hacks)</code><br>结果为：<code>src/foo src-1.0/bar hacks</code></p>
+</li>
+<li><p><code>$(addsuffix suffix, names...)</code><br>比如：<code>$(addsuffix .c, foo bar)</code><br>结果为：<code>foo.c bar.c</code></p>
+</li>
+<li><p><code>$(addprefix prefix, names...)</code><br>比如：<code>$(addprefix src/, foo bar)</code><br>结果为：<code>src/foo src/bar</code></p>
+</li>
+<li><p><code>$(wildcard pattern)</code><br>参数<code>pattern</code>是一个文件名格式，包含有通配符（通配符和shell中的用法一样）。函数wildcard的结果是和格式匹配的且真实存在的文件的名称，文件名之间用一个空格隔开。<br>比如当前目录下有文件1.c 2.c 1.h 2.h，则：<br>c_src := $(wildcard *.c)<br>结果为<code>1.c 2.c</code></p>
+</li>
+</ol>
+<h3 id="2-5-3-其它函数"><a href="#2-5-3-其它函数" class="headerlink" title="2.5.3 其它函数"></a>2.5.3 其它函数</h3><ol>
+<li><p><code>$(foreach var, list, text)</code><br>for each var in list, change it to text。对list中的每一个元素，取出来赋值给var，然后把var改为text所描述的形式。<br>比如：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">objs :&#x3D; a.o b.o</span><br><span class="line">dep_files :&#x3D; $(foreach f, $(objs), .$(f).d)</span><br></pre></td></tr></table></figure>
+<p> 结果为：dep_files := .a.o.d .b.o.d</p>
+</li>
+<li><p><code>$(shell command arguments)</code><br>函数shell是make与外部环境的通讯工具。函数shell的执行结果和在控制台上执行<code>command arguments</code>的结果类似。不过如果<code>command arguments</code>的结果含有换行符（回车符），则在函数shell的返回结果中将把它们处理为单个空格，若返回结果最后是换行符（和回车符）则被去掉。<br>比如当前目录下有文件 1.c 2.c 1.h 2.h<br><code>c_src := $(shell ls *.c)</code><br>结果为：<code>1.c 2.c</code></p>
+</li>
+</ol>
+
       
     </div>
 
@@ -1604,14 +1636,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">155k</span>
+    <span title="站点总字数">156k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:21</span>
+    <span title="站点阅读时长">2:22</span>
   </span>
 </div>
 <div class="busuanzi-count">
