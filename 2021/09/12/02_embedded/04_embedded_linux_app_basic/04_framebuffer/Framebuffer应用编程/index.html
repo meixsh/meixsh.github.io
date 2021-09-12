@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"meixsh.github.io","root":"/","scheme":"Mist","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="1 LCD操作原理在Linux系统中通过Framebuffer驱动程序来控制LCD。Frame是帧的意思，buffer是缓冲的意思，这意味着Framebuffer就是一块内存，里面保存着一帧图像。Framebuffer中保存着一帧图像的每一个像素颜色值，假设LCD的分辨率是1024x768，每一个像素的颜色用32位来表示，那么Framebuffer的大小就是：1024x768x32&#x2F;8&#x3D;31457">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Framebuffer应用编程">
+<meta property="og:url" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/index.html">
+<meta property="og:site_name" content="melvin&#39;s blog">
+<meta property="og:description" content="1 LCD操作原理在Linux系统中通过Framebuffer驱动程序来控制LCD。Frame是帧的意思，buffer是缓冲的意思，这意味着Framebuffer就是一块内存，里面保存着一帧图像。Framebuffer中保存着一帧图像的每一个像素颜色值，假设LCD的分辨率是1024x768，每一个像素的颜色用32位来表示，那么Framebuffer的大小就是：1024x768x32&#x2F;8&#x3D;31457">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/01_LCD%E5%8E%9F%E7%90%86.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/02_framebuffer%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/03_rgb.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/04_lcd%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/05_LCD%E5%9B%BA%E5%AE%9A%E5%8F%82%E6%95%B0.png">
+<meta property="article:published_time" content="2021-09-12T15:55:19.000Z">
+<meta property="article:modified_time" content="2021-09-12T16:48:24.765Z">
+<meta property="article:author" content="melvin">
+<meta property="article:tag" content="framebuffer">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/01_LCD%E5%8E%9F%E7%90%86.png">
+
+
+<link rel="canonical" href="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Framebuffer应用编程 | melvin's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">melvin's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">脚踏实地，仰望星空</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-LCD%E6%93%8D%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">1 LCD操作原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%B6%89%E5%8F%8A%E7%9A%84API%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">2 涉及的API函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-open%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 open函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-ioctl%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 ioctl函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-mmap%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 mmap函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-Framebuffer%E7%A8%8B%E5%BA%8F%E5%88%86%E6%9E%90"><span class="nav-number">3.</span> <span class="nav-text">3 Framebuffer程序分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%89%93%E5%BC%80%E8%AE%BE%E5%A4%87"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 打开设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E8%8E%B7%E5%8F%96LCD%E5%8F%82%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 获取LCD参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%98%A0%E5%B0%84Framebuffer"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 映射Framebuffer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-4-%E6%8F%8F%E7%82%B9%E5%87%BD%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 描点函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-5-%E6%8F%8F%E7%82%B9"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 描点</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%8A%E6%9C%BA%E5%AE%9E%E9%AA%8C"><span class="nav-number">4.</span> <span class="nav-text">上机实验</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="melvin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">melvin</p>
+  <div class="site-description" itemprop="description">Life is fantastic!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meixsh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meixsh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:meixsh@qq.com" title="E-Mail → mailto:meixsh@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="melvin">
+      <meta itemprop="description" content="Life is fantastic!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="melvin's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Framebuffer应用编程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-12 23:55:19" itemprop="dateCreated datePublished" datetime="2021-09-12T23:55:19+08:00">2021-09-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-13 00:48:24" itemprop="dateModified" datetime="2021-09-13T00:48:24+08:00">2021-09-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-LCD操作原理"><a href="#1-LCD操作原理" class="headerlink" title="1 LCD操作原理"></a>1 LCD操作原理</h1><p>在Linux系统中通过Framebuffer驱动程序来控制LCD。Frame是帧的意思，buffer是缓冲的意思，这意味着Framebuffer就是一块内存，里面保存着一帧图像。Framebuffer中保存着一帧图像的每一个像素颜色值，假设LCD的分辨率是1024x768，每一个像素的颜色用32位来表示，那么Framebuffer的大小就是：1024x768x32/8=3145728字节。</p>
+<a id="more"></a>
+<p>简单介绍LCD的操作原理：</p>
+<ol>
+<li>驱动程序设置好LCD控制器：<br>根据LCD的参数设置LCD控制器的时序、信号极性；<br>根据LCD分辨率、BPP分配Framebuffer。</li>
+<li>APP使用ioctl获得LCD分辨率、BPP</li>
+<li>APP通过mmap映射Framebuffer，在Framebuffer中写入数据</li>
+</ol>
+<p><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/01_LCD%E5%8E%9F%E7%90%86.png"></p>
+<p>假设需要设置LCD中坐标(x,y)处像素的颜色，首要要找到这个像素对应的内存，然后根据它的BPP值设置颜色。假设fb_base是APP执行mmap后得到的Framebuffer地址，如下图所示：</p>
+<p><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/02_framebuffer%E5%9C%B0%E5%9D%80%E8%AE%A1%E7%AE%97.png"><br>可以用以下公式算出(x,y)坐标处像素对应的Framebuffer地址：<code>(x，y)像素起始地址=fb_base+(xres*bpp/8)*y + x*bpp/8</code></p>
+<p>最后一个要解决的问题就是像素的颜色怎么表示？它是用RGB三原色(红、绿、蓝)来表示的，在不同的BPP格式中，用不同的位来分别表示R、G、B，如下图所示：<br><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/03_rgb.png"><br>对于32BPP，一般只设置其中的低24位，高8位表示透明度，一般的LCD都不支持。<br>对于24BPP，硬件上为了方便处理，在Framebuffer中也是用32位来表示，效果跟32BPP是一样的。<br>对于16BPP，常用的是RGB565；很少的场合会用到RGB555，这可以通过ioctl读取驱动程序中的RGB位偏移来确定使用哪一种格式。  </p>
+<h1 id="2-涉及的API函数"><a href="#2-涉及的API函数" class="headerlink" title="2 涉及的API函数"></a>2 涉及的API函数</h1><p>本节程序的目的是：打开LCD设备节点，获取分辨率等参数，映射Framebuffer，最后实现描点函数。</p>
+<h2 id="2-1-open函数"><a href="#2-1-open函数" class="headerlink" title="2.1 open函数"></a>2.1 open函数</h2><p>man 2 open<br>头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;types.h&gt;</span><br><span class="line">#include &lt;sys&#x2F;stat.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br></pre></td></tr></table></figure>
+<p>函数原型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int open(const char *pathname, int flags);</span><br><span class="line">int open(const char *pathname, int flags, mode_t mode);</span><br></pre></td></tr></table></figure>
+<p>函数说明：</p>
+<ol>
+<li>pathname 表示打开文件的路径；</li>
+<li>Flags表示打开文件的方式，常用的有以下6种，<ul>
+<li>O_RDWR表示可读可写方式打开;</li>
+<li>O_RDONLY表示只读方式打开;</li>
+<li>O_WRONLY表示只写方式打开;</li>
+<li>O_APPEND 表示如果这个文件中本来是有内容的，则新写入的内容会接续到原来内容的后面;</li>
+<li>O_TRUNC表示如果这个文件中本来是有内容的，则原来的内容会被丢弃，截断；</li>
+<li>O_CREAT表示当前打开文件不存在，我们创建它并打开它，通常与O_EXCL结合使用，当没有文件时创建文件，有这个文件时会报错提醒我们；</li>
+</ul>
+</li>
+<li>Mode表示创建文件的权限，只有在flags中使用了O_CREAT时才有效，否则忽略。</li>
+<li>返回值：打开成功返回文件描述符，失败将返回-1。</li>
+</ol>
+<h2 id="2-2-ioctl函数"><a href="#2-2-ioctl函数" class="headerlink" title="2.2 ioctl函数"></a>2.2 ioctl函数</h2><p>头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;ioctl.h&gt;</span><br></pre></td></tr></table></figure>
+<p>函数原型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int ioctl(int fd, unsigned long request, ...);</span><br></pre></td></tr></table></figure>
+
+<p>函数说明：</p>
+<ol>
+<li>fd 表示文件描述符；</li>
+<li>request表示与驱动程序交互的命令，用不同的命令控制驱动程序输出我们需要的数据；</li>
+<li>… 表示可变参数arg，根据request命令，设备驱动程序返回输出的数据。</li>
+<li>返回值：打开成功返回0，失败将返回-1。</li>
+</ol>
+<p>ioctl的作用非常强大、灵活。不同的驱动程序内部会实现不同的ioctl，APP可以使用各种ioctl跟驱动程序交互：可以传数据给驱动程序，也可以从驱动程序中读出数据。</p>
+<h2 id="2-3-mmap函数"><a href="#2-3-mmap函数" class="headerlink" title="2.3 mmap函数"></a>2.3 mmap函数</h2><p>头文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;mman.h&gt;</span><br></pre></td></tr></table></figure>
+<p>函数原型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void *mmap(void *addr, size_t length, int prot, int flags,int fd, off_t offset);</span><br></pre></td></tr></table></figure>
+
+<p>函数说明：</p>
+<ol>
+<li>addr表示指定映射的內存起始地址，通常设为 NULL表示让系统自动选定地址，并在成功映射后返回该地址；</li>
+<li>length表示将文件中多大的内容映射到内存中；</li>
+<li>prot 表示映射区域的保护方式，可以为以下4种方式的组合<ul>
+<li>PROT_EXEC 映射区域可被执行</li>
+<li>PROT_READ 映射区域可被读出</li>
+<li>PROT_WRITE 映射区域可被写入</li>
+<li>PROT_NONE 映射区域不能存取</li>
+</ul>
+</li>
+<li>Flags 表示影响映射区域的不同特性，常用的有以下两种<ul>
+<li>MAP_SHARED 表示对映射区域写入的数据会复制回文件内，原来的文件会改变。</li>
+<li>MAP_PRIVATE 表示对映射区域的操作会产生一个映射文件的复制，对此区域的任何修改都不会写回原来的文件内容中。</li>
+</ul>
+</li>
+<li>返回值：若成功映射，将返回指向映射的区域的指针，失败将返回-1。</li>
+</ol>
+<h1 id="3-Framebuffer程序分析"><a href="#3-Framebuffer程序分析" class="headerlink" title="3 Framebuffer程序分析"></a>3 Framebuffer程序分析</h1><h2 id="3-1-打开设备"><a href="#3-1-打开设备" class="headerlink" title="3.1 打开设备"></a>3.1 打开设备</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">fd_fb = open(<span class="string">&quot;/dev/fb0&quot;</span>, O_RDWR);</span><br><span class="line"><span class="keyword">if</span> (fd_fb &lt; <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;can&#x27;t open /dev/fb0\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-2-获取LCD参数"><a href="#3-2-获取LCD参数" class="headerlink" title="3.2 获取LCD参数"></a>3.2 获取LCD参数</h2><p>LCD驱动程序给APP提供2类参数：可变的参数fb_var_screeninfo、固定的参数fb_fix_screeninfo。编写应用程序时主要关心可变参数，它的结构体定义如下(#include &lt;linux/fb.h&gt;)：<br><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/04_lcd%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0.png"><br>可以使用以下代码获取fb_var_screeninfo:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">fb_var_screeninfo</span> <span class="title">var</span>;</span> <span class="comment">/* Current var */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (ioctl(fd_fb, FBIOGET_VSCREENINFO, &amp;var))</span><br><span class="line">&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;can&#x27;t get var\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意到ioctl里用的参数是：FBIOGET_VSCREENINFO，它表示get var screen info，获得屏幕的可变信息；当然也可以使用FBIOPUT_VSCREENINFO来调整这些参数，但是很少用到。</p>
+<p>对于固定的参数fb_fix_screeninfo，在应用编程中很少用到。它的结构体定义如下：<br><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/05_LCD%E5%9B%BA%E5%AE%9A%E5%8F%82%E6%95%B0.png"><br>可以使用ioctl FBIOGET_FSCREENINFO来读出这些信息，但是很少用到。</p>
+<h2 id="3-3-映射Framebuffer"><a href="#3-3-映射Framebuffer" class="headerlink" title="3.3 映射Framebuffer"></a>3.3 映射Framebuffer</h2><p>要映射一块内存，需要知道它的地址──这由驱动程序来设置，需要知道它的大小──这由应用程序决定。代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">line_width  = var.xres * var.bits_per_pixel / <span class="number">8</span>;</span><br><span class="line">pixel_width = var.bits_per_pixel / <span class="number">8</span>;</span><br><span class="line">screen_size = var.xres * var.yres * var.bits_per_pixel / <span class="number">8</span>;</span><br><span class="line">fb_base = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)mmap(<span class="literal">NULL</span> , screen_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd_fb, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (fb_base == (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)<span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;can&#x27;t mmap\n&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-描点函数"><a href="#3-4-描点函数" class="headerlink" title="3.4 描点函数"></a>3.4 描点函数</h2><p>能够在LCD上描绘指定像素后，就可以写字、画图，描点函数是基础。代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">28</span> <span class="function"><span class="keyword">void</span> <span class="title">lcd_put_pixel</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">unsigned</span> <span class="keyword">int</span> color)</span></span></span><br><span class="line"><span class="function">29 </span>&#123;</span><br><span class="line"><span class="number">30</span>      <span class="keyword">unsigned</span> <span class="keyword">char</span> *pen_8 = fb_base+y*line_width+x*pixel_width;</span><br><span class="line"><span class="number">31</span>      <span class="keyword">unsigned</span> <span class="keyword">short</span> *pen_16;</span><br><span class="line"><span class="number">32</span>      <span class="keyword">unsigned</span> <span class="keyword">int</span> *pen_32;</span><br><span class="line"><span class="number">33</span></span><br><span class="line"><span class="number">34</span>      <span class="keyword">unsigned</span> <span class="keyword">int</span> red, green, blue;</span><br><span class="line"><span class="number">35</span></span><br><span class="line"><span class="number">36</span>      pen_16 = (<span class="keyword">unsigned</span> <span class="keyword">short</span> *)pen_8;</span><br><span class="line"><span class="number">37</span>      pen_32 = (<span class="keyword">unsigned</span> <span class="keyword">int</span> *)pen_8;</span><br><span class="line"><span class="number">38</span></span><br><span class="line"><span class="number">39</span>      <span class="keyword">switch</span> (var.bits_per_pixel)</span><br><span class="line"><span class="number">40</span>      &#123;</span><br><span class="line"><span class="number">41</span>              <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line"><span class="number">42</span>              &#123;</span><br><span class="line"><span class="number">43</span>                      *pen_8 = color;</span><br><span class="line"><span class="number">44</span>                      <span class="keyword">break</span>;</span><br><span class="line"><span class="number">45</span>              &#125;</span><br><span class="line"><span class="number">46</span>              <span class="keyword">case</span> <span class="number">16</span>:</span><br><span class="line"><span class="number">47</span>              &#123;</span><br><span class="line"><span class="number">48</span>                      <span class="comment">/* 565 */</span></span><br><span class="line"><span class="number">49</span>                      red   = (color &gt;&gt; <span class="number">16</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line"><span class="number">50</span>                      green = (color &gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line"><span class="number">51</span>                      blue  = (color &gt;&gt; <span class="number">0</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line"><span class="number">52</span>                      color = ((red &gt;&gt; <span class="number">3</span>) &lt;&lt; <span class="number">11</span>) | ((green &gt;&gt; <span class="number">2</span>) &lt;&lt; <span class="number">5</span>) | (blue &gt;&gt; <span class="number">3</span>);</span><br><span class="line"><span class="number">53</span>                      *pen_16 = color;</span><br><span class="line"><span class="number">54</span>                      <span class="keyword">break</span>;</span><br><span class="line"><span class="number">55</span>              &#125;</span><br><span class="line"><span class="number">56</span>              <span class="keyword">case</span> <span class="number">32</span>:</span><br><span class="line"><span class="number">57</span>              &#123;</span><br><span class="line"><span class="number">58</span>                      *pen_32 = color;</span><br><span class="line"><span class="number">59</span>                      <span class="keyword">break</span>;</span><br><span class="line"><span class="number">60</span>              &#125;</span><br><span class="line"><span class="number">61</span>              <span class="keyword">default</span>:</span><br><span class="line"><span class="number">62</span>              &#123;</span><br><span class="line"><span class="number">63</span>                      <span class="built_in">printf</span>(<span class="string">&quot;can&#x27;t surport %dbpp\n&quot;</span>, var.bits_per_pixel);</span><br><span class="line"><span class="number">64</span>                      <span class="keyword">break</span>;</span><br><span class="line"><span class="number">65</span>              &#125;</span><br><span class="line"><span class="number">66</span>      &#125;</span><br><span class="line"><span class="number">67</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>第28行中传入的color表示颜色，它的格式永远是0x00RRGGBB，即RGB888。当LCD是16bpp时，要把color变量中的R、G、B抽出来再合并成RGB565格式。</p>
+<p>第30行计算(x,y)坐标上像素对应的Framebuffer地址。</p>
+<p>第43行，对于8bpp，color就不再表示RBG三原色了，这涉及调色板的概念，color是调色板的值。</p>
+<p>第49～51行，先从color变量中把R、G、B抽出来。</p>
+<p>第52行，把red、green、blue这三种8位颜色值，根据RGB565的格式，只保留red中的高5位、green中的高6位、blue中的高5位，组合成一个新的16位颜色值。</p>
+<p>第53行，把新的16位颜色值写入Framebuffer。</p>
+<p>第58行，对于32bpp，颜色格式跟color参数一致，可以直接写入Framebuffer。</p>
+<h2 id="3-5-描点"><a href="#3-5-描点" class="headerlink" title="3.5 描点"></a>3.5 描点</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">95</span>      <span class="comment">/* 清屏: 全部设为白色 */</span></span><br><span class="line"><span class="number">96</span>      <span class="built_in">memset</span>(fbmem, <span class="number">0xff</span>, screen_size);</span><br><span class="line"><span class="number">97</span></span><br><span class="line"><span class="number">98</span>      <span class="comment">/* 随便设置出100个为红色 */</span></span><br><span class="line"><span class="number">99</span>      <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line"><span class="number">100</span>             lcd_put_pixel(var.xres/<span class="number">2</span>+i, var.yres/<span class="number">2</span>, <span class="number">0xFF0000</span>);</span><br></pre></td></tr></table></figure>
+
+<h1 id="上机实验"><a href="#上机实验" class="headerlink" title="上机实验"></a>上机实验</h1><p>在Ubuntu中编译程序，先设置交叉编译工具链，再执行以下命令：<br><code>arm-linux-gnueabihf-gcc -o show_pixel show_pixel.c</code><br>然后在开发板上执行show_pixel程序。</p>
+<p>注意：板子的出厂程序中一般都有GUI，所以可能需要把GUI程序禁止掉。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="melvin 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="melvin 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>melvin
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/" title="Framebuffer应用编程">https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer应用编程/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/framebuffer/" rel="tag"># framebuffer</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/" rel="prev" title="文件IO">
+                  <i class="fa fa-chevron-left"></i> 文件IO
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">melvin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">166k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:31</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
