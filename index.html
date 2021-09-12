@@ -456,7 +456,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-09-12 17:03:05" itemprop="dateModified" datetime="2021-09-12T17:03:05+08:00">2021-09-12</time>
+        <time title="修改时间：2021-09-12 21:21:27" itemprop="dateModified" datetime="2021-09-12T21:21:27+08:00">2021-09-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -476,14 +476,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3k</span>
+      <span>5k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>5 分钟</span>
     </span>
 </div>
 
@@ -567,6 +567,44 @@
 <li><p><code>$(shell command arguments)</code><br>函数shell是make与外部环境的通讯工具。函数shell的执行结果和在控制台上执行<code>command arguments</code>的结果类似。不过如果<code>command arguments</code>的结果含有换行符（回车符），则在函数shell的返回结果中将把它们处理为单个空格，若返回结果最后是换行符（和回车符）则被去掉。<br>比如当前目录下有文件 1.c 2.c 1.h 2.h<br><code>c_src := $(shell ls *.c)</code><br>结果为：<code>1.c 2.c</code></p>
 </li>
 </ol>
+<h2 id="2-6-Makefile实例"><a href="#2-6-Makefile实例" class="headerlink" title="2.6 Makefile实例"></a>2.6 Makefile实例</h2><h3 id="2-6-1-支持头文件依赖"><a href="#2-6-1-支持头文件依赖" class="headerlink" title="2.6.1 支持头文件依赖"></a>2.6.1 支持头文件依赖</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq1452008/article/details/50855810">https://blog.csdn.net/qq1452008/article/details/50855810</a></p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -M c.c // 打印出依赖</span><br><span class="line">gcc -M -MF c.d c.c // 把依赖写入文件c.d</span><br><span class="line">gcc -c -o c.o c.c -MD -MF c.d // 编译c.o,把依赖写入文件c.d</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">objs = a.o b.o c.o</span><br><span class="line">dep_files := <span class="variable">$(<span class="built_in">patsubst</span> %, .%.d, <span class="variable">$(objs)</span>)</span></span><br><span class="line">dep_files := <span class="variable">$(<span class="built_in">wildcard</span> <span class="variable">$(dep_files)</span>)</span></span><br><span class="line"><span class="section">test: <span class="variable">$(objs)</span></span></span><br><span class="line">    gcc -o test <span class="variable">$^</span></span><br><span class="line">    @echo dep_files = <span class="variable">$(dep_files)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(dep_files)</span>,)</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(dep_files)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line">    gcc -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span> -MD -MF .<span class="variable">$@</span>.d</span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm *.o test</span><br><span class="line"></span><br><span class="line"><span class="section">distclean:</span></span><br><span class="line">    rm <span class="variable">$(dep_files)</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6-2-添加CLFAGS"><a href="#2-6-2-添加CLFAGS" class="headerlink" title="2.6.2 添加CLFAGS"></a>2.6.2 添加CLFAGS</h3><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">objs = a.o b.o c.o</span><br><span class="line">dep_files := <span class="variable">$(<span class="built_in">patsubst</span> %, .%.d, <span class="variable">$(objs)</span>)</span></span><br><span class="line">dep_files := <span class="variable">$(<span class="built_in">wildcard</span> <span class="variable">$(dep_files)</span>)</span></span><br><span class="line"></span><br><span class="line">CFLAGS = -Werror -Iinclude</span><br><span class="line"></span><br><span class="line"><span class="section">test: <span class="variable">$(objs)</span></span></span><br><span class="line">    gcc -o test <span class="variable">$^</span></span><br><span class="line">    @echo dep_files = <span class="variable">$(dep_files)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (<span class="variable">$(dep_files)</span>,)</span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(dep_files)</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line">    gcc <span class="variable">$(CFLAGS)</span> -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span> -MD -MF .<span class="variable">$@</span>.d</span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm *.o test</span><br><span class="line"></span><br><span class="line"><span class="section">distclean:</span></span><br><span class="line">    rm <span class="variable">$(dep_files)</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-通用Makefile"><a href="#3-通用Makefile" class="headerlink" title="3 通用Makefile"></a>3 通用Makefile</h1><p>参考Linux内核的Makefile编写了一个通用的Makefile，它可以用来编译应用程序：<br>① 支持多个目录、多层目录、多个文件；<br>② 支持给所有文件设置编译选项；<br>③ 支持给某个目录设置编译选项；<br>④ 支持给某个文件单独设置编译选项；<br>⑤ 简单、好用。</p>
+<h2 id="3-1-make命令的使用"><a href="#3-1-make命令的使用" class="headerlink" title="3.1 make命令的使用"></a>3.1 make命令的使用</h2><p>执行make命令时，它会去当前目录下查找名为<code>Makefile</code>的文件，并根据它的指示去执行操作，生成第一个目标。<br>我们可以使用<code>-f</code>选项指定文件，不再使用名为<code>Makefile</code>的文件，比如：<br><code>make -f Makefile.build</code> </p>
+<p>我们可以使用<code>-C</code>选项指定目录，切换到其他目录里去，比如：<br><code>make -C a/ -f Makefile.build</code></p>
+<p>我们可以指定目标，不再默认生成第一个目标：<br><code>make -C a/ -f Makefile.build other_target</code></p>
+<h2 id="3-2-变量的导出-export"><a href="#3-2-变量的导出-export" class="headerlink" title="3.2 变量的导出(export)"></a>3.2 变量的导出(export)</h2><p>在编译程序时，我们会不断地使用<code>make -C dir</code>切换到其他目录，执行其他目录里的Makefile。如果想让某个变量的值在所有目录中都可见，要把它export出来。<br>比如<code>CC    = $(CROSS_COMPILE)gcc</code>，这个CC变量表示编译器，在整个过程中都是一样的。定义它之后，要使用<code>export CC</code>把它导出来。</p>
+<h2 id="3-3-Makefile中怎么放置第1个目标"><a href="#3-3-Makefile中怎么放置第1个目标" class="headerlink" title="3.3 Makefile中怎么放置第1个目标"></a>3.3 Makefile中怎么放置第1个目标</h2><p>执行make命令时如果不指定目标，那么它默认是去生成第1个目标。<br>所以<code>第1个目标</code>，位置很重要。有时候不太方便把第1个目标完整地放在文件前面，这时可以在文件的前面直接放置目标，在后面再完善它的依赖与命令。比如：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">First_target:   // 这句话放在前面</span></span><br><span class="line">......          // 其他代码，比如<span class="keyword">include</span>其他文件得到后面的xxx变量</span><br><span class="line">First_target : <span class="variable">$(xxx)</span>   <span class="variable">$(yyy)</span>   // 在文件的后面再来完善</span><br><span class="line">    command</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-4-通用Makefile的设计思想"><a href="#3-4-通用Makefile的设计思想" class="headerlink" title="3.4 通用Makefile的设计思想"></a>3.4 通用Makefile的设计思想</h2><ol>
+<li><p>在Makefile文件中确定要编译的文件、目录，比如：<br>obj-y += main.o<br>obj-y += a/<br><code>Makefile</code>文件总是被<code>Makefile.build</code>包含的。</p>
+</li>
+<li><p>在Makefile.build中设置编译规则，有3条编译规则：</p>
+</li>
+</ol>
+<ul>
+<li><p>怎么编译子目录？ 进入子目录编译：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">$(subdir-y):</span></span><br><span class="line">	make -C <span class="variable">$@</span> -f <span class="variable">$(TOPDIR)</span>/Makefile.build</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>怎么编译当前目录中的文件？</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">%.o : %.c</span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(CFLAGS)</span> <span class="variable">$(EXTRA_CFLAGS)</span> $(CFLAGS_<span class="variable">$@</span>) -Wp,-MD,<span class="variable">$(dep_file)</span> -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当前目录下的.o和子目录下的built-in.o要打包起来：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">built-in.o : <span class="variable">$(cur_objs)</span> <span class="variable">$(subdir_objs)</span></span><br><span class="line">	<span class="variable">$(LD)</span> -r -o <span class="variable">$@</span> <span class="variable">$^</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol start="3">
+<li>顶层Makefile中把顶层目录的built-in.o链接成APP：<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(TARGET)</span> : built-in.o</span><br><span class="line">	<span class="variable">$(CC)</span> <span class="variable">$(LDFLAGS)</span> -o <span class="variable">$(TARGET)</span> built-in.o</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="3-5-情景演绎"><a href="#3-5-情景演绎" class="headerlink" title="3.5 情景演绎"></a>3.5 情景演绎</h2><p><img src="/2021/09/03/02_embedded/04_embedded_linux_app_basic/02_makefile/makefile/00_Makefile%E7%9A%84%E4%BD%BF%E7%94%A8.tif"><br><img src="/2021/09/03/02_embedded/04_embedded_linux_app_basic/02_makefile/makefile/01_Makefile%E7%9A%84%E4%BD%BF%E7%94%A8.png"></p>
 
       
     </div>
@@ -1636,14 +1674,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">156k</span>
+    <span title="站点总字数">158k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:22</span>
+    <span title="站点阅读时长">2:24</span>
   </span>
 </div>
 <div class="busuanzi-count">
