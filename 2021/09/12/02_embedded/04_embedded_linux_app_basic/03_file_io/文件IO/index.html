@@ -22,17 +22,23 @@
     var CONFIG = {"hostname":"meixsh.github.io","root":"/","scheme":"Mist","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 
-  <meta name="description" content="cat &#x2F;proc&#x2F;mountsmount &#x2F;dev&#x2F;sda1 &#x2F;mnt">
+  <meta name="description" content="cat &#x2F;proc&#x2F;mountsmount &#x2F;dev&#x2F;sda1 &#x2F;mnt在Linux系统中，一切都是“文件”：普通文件、驱动程序、网络通信等等。所有的操作，都是通过“文件IO”来操作的。所以，很有必要掌握文件操作的常用接口。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文件IO">
 <meta property="og:url" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/index.html">
 <meta property="og:site_name" content="melvin&#39;s blog">
-<meta property="og:description" content="cat &#x2F;proc&#x2F;mountsmount &#x2F;dev&#x2F;sda1 &#x2F;mnt">
+<meta property="og:description" content="cat &#x2F;proc&#x2F;mountsmount &#x2F;dev&#x2F;sda1 &#x2F;mnt在Linux系统中，一切都是“文件”：普通文件、驱动程序、网络通信等等。所有的操作，都是通过“文件IO”来操作的。所以，很有必要掌握文件操作的常用接口。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E4%BB%8E%E5%93%AA%E6%9D%A5.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E8%BF%9B%E5%85%A5%E5%86%85%E6%A0%B8.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E5%86%85%E6%A0%B8%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8.png">
 <meta property="article:published_time" content="2021-09-12T14:22:49.000Z">
-<meta property="article:modified_time" content="2021-09-12T15:01:01.109Z">
+<meta property="article:modified_time" content="2021-09-12T15:25:52.006Z">
 <meta property="article:author" content="melvin">
+<meta property="article:tag" content="文件IO">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8.png">
 
 
 <link rel="canonical" href="https://meixsh.github.io/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/">
@@ -197,7 +203,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -209,6 +215,7 @@
 
       <!--noindex-->
       <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%96%87%E4%BB%B6%E4%BB%8E%E5%93%AA%E6%9D%A5%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">1 文件从哪来？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E6%80%8E%E4%B9%88%E8%AE%BF%E9%97%AE%E6%96%87%E4%BB%B6%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">2 怎么访问文件？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-1-%E9%80%9A%E7%94%A8%E7%9A%84IO%E6%A8%A1%E5%9E%8B%EF%BC%9Aopen-read-write-lseek-close"><span class="nav-number">3.</span> <span class="nav-text">2.1 通用的IO模型：open&#x2F;read&#x2F;write&#x2F;lseek&#x2F;close</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E9%9D%9E%E9%80%9A%E7%94%A8%E5%87%BD%E6%95%B0%EF%BC%9Aioctl-mmap"><span class="nav-number">3.1.</span> <span class="nav-text">2.2 非通用函数：ioctl&#x2F;mmap</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-man%E6%89%8B%E5%86%8C%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%94%A8%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">3 man手册查看系统调用用法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%A6%82%E4%BD%95%E8%BF%9B%E5%85%A5%E5%86%85%E6%A0%B8%EF%BC%9F"><span class="nav-number">5.</span> <span class="nav-text">4 系统调用如何进入内核？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E5%86%85%E6%A0%B8%E7%9A%84sys-open-sys-read%E4%BC%9A%E5%81%9A%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">5 内核的sys_open, sys_read会做什么？</span></a></li></ol></div>
       </section>
       <!--/noindex-->
 
@@ -237,7 +244,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -313,7 +320,16 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2021-09-12 22:22:49 / 修改时间：23:01:01" itemprop="dateCreated datePublished" datetime="2021-09-12T22:22:49+08:00">2021-09-12</time>
+      <time title="创建时间：2021-09-12 22:22:49 / 修改时间：23:25:52" itemprop="dateCreated datePublished" datetime="2021-09-12T22:22:49+08:00">2021-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式</span></a>
+        </span>
     </span>
 
   
@@ -331,14 +347,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>33</span>
+      <span>3.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -349,7 +365,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>cat /proc/mounts<br>mount /dev/sda1 /mnt</p>
+        <p>cat /proc/mounts<br>mount /dev/sda1 /mnt<br>在Linux系统中，一切都是“文件”：普通文件、驱动程序、网络通信等等。所有的操作，都是通过“文件IO”来操作的。所以，很有必要掌握文件操作的常用接口。</p>
+<a id="more"></a>
+
+<p><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E8%AE%BE%E5%A4%87%E9%A9%B1%E5%8A%A8.png" alt="设备文件"></p>
+<h1 id="1-文件从哪来？"><a href="#1-文件从哪来？" class="headerlink" title="1 文件从哪来？"></a>1 文件从哪来？</h1><p><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E6%96%87%E4%BB%B6%E4%BB%8E%E5%93%AA%E6%9D%A5.png"></p>
+<h1 id="2-怎么访问文件？"><a href="#2-怎么访问文件？" class="headerlink" title="2 怎么访问文件？"></a>2 怎么访问文件？</h1><h1 id="2-1-通用的IO模型：open-read-write-lseek-close"><a href="#2-1-通用的IO模型：open-read-write-lseek-close" class="headerlink" title="2.1 通用的IO模型：open/read/write/lseek/close"></a>2.1 通用的IO模型：open/read/write/lseek/close</h1><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * ./copy 1.txt 2.txt</span></span><br><span class="line"><span class="comment"> * argc    = 3</span></span><br><span class="line"><span class="comment"> * argv[0] = &quot;./copy&quot;</span></span><br><span class="line"><span class="comment"> * argv[1] = &quot;1.txt&quot;</span></span><br><span class="line"><span class="comment"> * argv[2] = &quot;2.txt&quot;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> fd_old, fd_new;</span><br><span class="line">	<span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">	<span class="keyword">int</span> len;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* 1. 判断参数 */</span></span><br><span class="line">	<span class="keyword">if</span> (argc != <span class="number">3</span>) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Usage: %s &lt;old-file&gt; &lt;new-file&gt;\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 2. 打开老文件 */</span></span><br><span class="line">	fd_old = open(argv[<span class="number">1</span>], O_RDONLY);</span><br><span class="line">	<span class="keyword">if</span> (fd_old == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;can not open file %s\n&quot;</span>, argv[<span class="number">1</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 3. 创建新文件 */</span></span><br><span class="line">	fd_new = open(argv[<span class="number">2</span>], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);</span><br><span class="line">	<span class="keyword">if</span> (fd_new == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;can not creat file %s\n&quot;</span>, argv[<span class="number">2</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 4. 循环： 读老文件-写新文件 */</span></span><br><span class="line">	<span class="keyword">while</span> ((len = read(fd_old, buf, <span class="number">1024</span>)) &gt; <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (write(fd_new, buf, len) != len)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;can not write %s\n&quot;</span>, argv[<span class="number">2</span>]);</span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 5. 关闭文件 */</span></span><br><span class="line">	close(fd_old);</span><br><span class="line">	close(fd_new);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-非通用函数：ioctl-mmap"><a href="#2-2-非通用函数：ioctl-mmap" class="headerlink" title="2.2 非通用函数：ioctl/mmap"></a>2.2 非通用函数：ioctl/mmap</h2><p>在linux中，还可以把一个文件的所有内容映射到内存，然后直接读写内存即可读写文件。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy_mmap.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/mman.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * ./copy 1.txt 2.txt</span></span><br><span class="line"><span class="comment"> * argc    = 3</span></span><br><span class="line"><span class="comment"> * argv[0] = &quot;./copy&quot;</span></span><br><span class="line"><span class="comment"> * argv[1] = &quot;1.txt&quot;</span></span><br><span class="line"><span class="comment"> * argv[2] = &quot;2.txt&quot;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> fd_old, fd_new;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">stat</span>;</span></span><br><span class="line">	<span class="keyword">char</span> *buf;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">/* 1. 判断参数 */</span></span><br><span class="line">	<span class="keyword">if</span> (argc != <span class="number">3</span>) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;Usage: %s &lt;old-file&gt; &lt;new-file&gt;\n&quot;</span>, argv[<span class="number">0</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 2. 打开老文件 */</span></span><br><span class="line">	fd_old = open(argv[<span class="number">1</span>], O_RDONLY);</span><br><span class="line">	<span class="keyword">if</span> (fd_old == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;can not open file %s\n&quot;</span>, argv[<span class="number">1</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 3. 确定老文件的大小 */</span></span><br><span class="line">	<span class="keyword">if</span> (fstat(fd_old, &amp;stat) == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;can not get stat of file %s\n&quot;</span>, argv[<span class="number">1</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 4. 映射老文件 */</span></span><br><span class="line">	buf = mmap(<span class="literal">NULL</span>, stat.st_size, PROT_READ, MAP_SHARED, fd_old, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (buf == MAP_FAILED)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;can not mmap file %s\n&quot;</span>, argv[<span class="number">1</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 5. 创建新文件 */</span></span><br><span class="line">	fd_new = open(argv[<span class="number">2</span>], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);</span><br><span class="line">	<span class="keyword">if</span> (fd_new == <span class="number">-1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;can not creat file %s\n&quot;</span>, argv[<span class="number">2</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 6. 写新文件 */</span></span><br><span class="line">	<span class="keyword">if</span> (write(fd_new, buf, stat.st_size) != stat.st_size)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;can not write %s\n&quot;</span>, argv[<span class="number">2</span>]);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* 5. 关闭文件 */</span></span><br><span class="line">	close(fd_old);</span><br><span class="line">	close(fd_new);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-man手册查看系统调用用法"><a href="#3-man手册查看系统调用用法" class="headerlink" title="3 man手册查看系统调用用法"></a>3 man手册查看系统调用用法</h1><p>man手册分为9类：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1   Executable programs or shell commands       // 命令</span><br><span class="line">2   System calls (functions provided by the kernel)  // 系统调用，比如 man 2 open</span><br><span class="line">3   Library calls (functions within program libraries)  // 函数库调用</span><br><span class="line">4   Special files (usually found in /dev)             // 特殊文件, 比如 man 4 tty </span><br><span class="line">5   File formats and conventions eg /etc/passwd  // 文件格式和约定, 比如man 5 passwd</span><br><span class="line">6   Games  // 游戏</span><br><span class="line">7   Miscellaneous (including macro packages and conventions), e.g. man(7), groff(7) //杂项</span><br><span class="line">8   System administration commands (usually only for root) // 系统管理命令</span><br><span class="line">9   Kernel routines [Non standard]  // 内核例程</span><br></pre></td></tr></table></figure>
+
+<p>比如想查看open函数的用法时，可以直接执行“man open”，发现这不是想要内容时再执行“man 2 open”。<br>在man命令中可以及时按“h”查看帮助信息了解快捷键。<br>常用快捷键：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f  往前翻一页</span><br><span class="line">b  往后翻一页</span><br><span class="line">&#x2F;patten 往前搜</span><br><span class="line">?patten 往后搜</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-系统调用如何进入内核？"><a href="#4-系统调用如何进入内核？" class="headerlink" title="4 系统调用如何进入内核？"></a>4 系统调用如何进入内核？</h1><p><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E8%BF%9B%E5%85%A5%E5%86%85%E6%A0%B8.png"></p>
+<h1 id="5-内核的sys-open-sys-read会做什么？"><a href="#5-内核的sys-open-sys-read会做什么？" class="headerlink" title="5 内核的sys_open, sys_read会做什么？"></a>5 内核的sys_open, sys_read会做什么？</h1><p><img src="/2021/09/12/02_embedded/04_embedded_linux_app_basic/03_file_io/%E6%96%87%E4%BB%B6IO/%E5%86%85%E6%A0%B8%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8.png"></p>
 
     </div>
 
@@ -393,6 +426,9 @@
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/%E6%96%87%E4%BB%B6IO/" rel="tag"># 文件IO</a>
+          </div>
 
         
 
@@ -462,14 +498,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">158k</span>
+    <span title="站点总字数">162k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:24</span>
+    <span title="站点阅读时长">2:27</span>
   </span>
 </div>
 <div class="busuanzi-count">
