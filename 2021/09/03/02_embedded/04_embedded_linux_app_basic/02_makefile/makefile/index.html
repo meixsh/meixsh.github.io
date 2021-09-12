@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"meixsh.github.io","root":"/","scheme":"Mist","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="1. 概述在linux中使用make命令来编译程序，特别是大程序；而make命令所执行的动作依赖于Makefile文件。最简单的Makefile文件如下： 12345hello: hello.c    gcc -o hello hello.c.PHONY: cleanclean:    rm -f hello 注意：必须以Tab键缩进第2、4行，不能以空格缩进。make命令根据文件更新的时间戳来决">
+<meta property="og:type" content="article">
+<meta property="og:title" content="makefile">
+<meta property="og:url" content="https://meixsh.github.io/2021/09/03/02_embedded/04_embedded_linux_app_basic/02_makefile/makefile/index.html">
+<meta property="og:site_name" content="melvin&#39;s blog">
+<meta property="og:description" content="1. 概述在linux中使用make命令来编译程序，特别是大程序；而make命令所执行的动作依赖于Makefile文件。最简单的Makefile文件如下： 12345hello: hello.c    gcc -o hello hello.c.PHONY: cleanclean:    rm -f hello 注意：必须以Tab键缩进第2、4行，不能以空格缩进。make命令根据文件更新的时间戳来决">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-09-03T15:05:03.000Z">
+<meta property="article:modified_time" content="2021-09-10T15:03:38.129Z">
+<meta property="article:author" content="melvin">
+<meta property="article:tag" content="makefile">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://meixsh.github.io/2021/09/03/02_embedded/04_embedded_linux_app_basic/02_makefile/makefile/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>makefile | melvin's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">melvin's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">脚踏实地，仰望星空</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">1. 概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-Makefile-%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">2. Makefile 语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E9%80%9A%E9%85%8D%E7%AC%A6%EF%BC%9A-o"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 通配符：%.o</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E4%BD%BF%E7%94%A8Makefile"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 使用Makefile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-%E5%81%87%E6%83%B3%E7%9B%AE%E6%A0%87-PHONY"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 假想目标 .PHONY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-%E5%8F%98%E9%87%8F"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-5-%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text">2.5 函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-1-%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%9B%BF%E6%8D%A2%E5%92%8C%E5%88%86%E6%9E%90%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.1.</span> <span class="nav-text">2.5.1 字符串替换和分析函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-2-%E6%96%87%E4%BB%B6%E5%90%8D%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.2.</span> <span class="nav-text">2.5.2 文件名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-3-%E5%85%B6%E5%AE%83%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.3.</span> <span class="nav-text">2.5.3 其它函数</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="melvin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">melvin</p>
+  <div class="site-description" itemprop="description">Life is fantastic!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meixsh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meixsh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:meixsh@qq.com" title="E-Mail → mailto:meixsh@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meixsh.github.io/2021/09/03/02_embedded/04_embedded_linux_app_basic/02_makefile/makefile/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="melvin">
+      <meta itemprop="description" content="Life is fantastic!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="melvin's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          makefile
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-03 23:05:03" itemprop="dateCreated datePublished" datetime="2021-09-03T23:05:03+08:00">2021-09-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-10 23:03:38" itemprop="dateModified" datetime="2021-09-10T23:03:38+08:00">2021-09-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h1><p>在linux中使用make命令来编译程序，特别是大程序；而make命令所执行的动作依赖于Makefile文件。最简单的Makefile文件如下：</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">hello: hello.c</span></span><br><span class="line">    gcc -o hello hello.c</span><br><span class="line"><span class="meta"><span class="meta-keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm -f hello</span><br></pre></td></tr></table></figure>
+<p>注意：必须以Tab键缩进第2、4行，不能以空格缩进。make命令根据文件更新的时间戳来决定哪些文件需要重新编译，这可以避免编译已经编译过的、没有变化的程序，可以大大提高编译效率。</p>
+<p>参考文档：</p>
+<ul>
+<li>搜索<code>gnu make 于凤昌</code></li>
+<li>官方文档: <a target="_blank" rel="noopener" href="http://www.gnu.org/software/make/manual/">http://www.gnu.org/software/make/manual/</a></li>
+</ul>
+<h1 id="2-Makefile-语法"><a href="#2-Makefile-语法" class="headerlink" title="2. Makefile 语法"></a>2. Makefile 语法</h1><h2 id="2-1-通配符：-o"><a href="#2-1-通配符：-o" class="headerlink" title="2.1 通配符：%.o"></a>2.1 通配符：%.o</h2><pre><code>\$@ 表示目标  
+\$&lt; 表示第一个依赖文件  
+\$^ 表示所有依赖文件
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">test: a.o b.o c.o</span></span><br><span class="line">    gcc -o test <span class="variable">$^</span></span><br><span class="line"><span class="section">%.o: %.c</span></span><br><span class="line">    gcc -c -o <span class="variable">$@</span> <span class="variable">$&lt;</span></span><br></pre></td></tr></table></figure></code></pre>
+<h2 id="2-2-使用Makefile"><a href="#2-2-使用Makefile" class="headerlink" title="2.2 使用Makefile"></a>2.2 使用Makefile</h2><pre><code>make [目标]
+若无目标，默认执行第一个目标</code></pre>
+<h2 id="2-3-假想目标-PHONY"><a href="#2-3-假想目标-PHONY" class="headerlink" title="2.3 假想目标 .PHONY"></a>2.3 假想目标 .PHONY</h2><h2 id="2-4-变量"><a href="#2-4-变量" class="headerlink" title="2.4 变量"></a>2.4 变量</h2><ul>
+<li>简单变量（即时变量）：<ul>
+<li>A := xxx # A的值即刻确定，在定义时即确定</li>
+</ul>
+</li>
+<li>延时变量<ul>
+<li>B = xxx # B的值使用到时才确定</li>
+<li>?= ， 如果是第一次定义才起效，如果在前面该变量已定义则忽略这句</li>
+<li>+= ，附加, 它是即时变量还是延时变量取决于前面的定义<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A := abc</span><br><span class="line">B = 123</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(A)</span> <span class="comment"># @符号可以帮助执行Makefile时不显示执行命令</span></span><br><span class="line">    @echo <span class="variable">$(B)</span></span><br><span class="line">执行结果：</span><br><span class="line">abc</span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">A := <span class="variable">$(C)</span></span><br><span class="line">B = <span class="variable">$(C)</span></span><br><span class="line">C = abc</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo A = <span class="variable">$(A)</span> <span class="comment"># @符号可以帮助执行Makefile时不显示执行命令</span></span><br><span class="line">    @echo B = <span class="variable">$(B)</span></span><br><span class="line">执行结果：即时变量定义时即确定，A定义时，C未定义，故A为空。B是延时变量，Makefile会先被解析，所以即使C定义在后面，B也能被C赋值。</span><br><span class="line">A = </span><br><span class="line">B = abc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">A := <span class="variable">$(C)</span></span><br><span class="line">B = <span class="variable">$(C)</span></span><br><span class="line">C = abc</span><br><span class="line">D = 999</span><br><span class="line">D ?= 1000 <span class="comment"># 并不是第一次定义，不生效</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">    @echo A = <span class="variable">$(A)</span></span><br><span class="line">    @echo B = <span class="variable">$(B)</span></span><br><span class="line">    @echo C = <span class="variable">$(C)</span></span><br><span class="line">    @echo D = <span class="variable">$(D)</span></span><br><span class="line">C += 123</span><br><span class="line">执行结果：</span><br><span class="line">A = </span><br><span class="line">B = abc 123</span><br><span class="line">C = abc 123</span><br><span class="line">D = 999</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-5-函数"><a href="#2-5-函数" class="headerlink" title="2.5 函数"></a>2.5 函数</h2><p>函数调用格式如下：<br><code>$(function arguments)</code><br><code>function</code>指定函数名，<code>arguments</code>指定函数参数。函数名和参数之间用空格或tab隔开，如果有多个参数，它们之间用逗号隔开。这些空格和逗号不是参数值的一部分。</p>
+<h3 id="2-5-1-字符串替换和分析函数"><a href="#2-5-1-字符串替换和分析函数" class="headerlink" title="2.5.1 字符串替换和分析函数"></a>2.5.1 字符串替换和分析函数</h3><ol>
+<li><p><code>$(subst from, to, text)</code><br>在文本<code>text</code>中使用<code>to</code>替换每一处<code>from</code><br>比如：<code>$(subst ee, EE, feet on the street)</code><br>结果为：<code>fEEt on the strEEt</code></p>
+</li>
+<li><p><code>$(patsubst pattern, replacement, text)</code><br>寻找<code>text</code>中符合格式<code>pattern</code>的字，用<code>replacement</code>替换它们。<code>pattern</code>和<code>replacement</code>中可以使用通配符。<br>比如：<code>$(patsubst %.c, %.o, x.c.c bar.c)</code><br>结果为：<code>x.c.o bar.o</code></p>
+</li>
+<li><p>$(strip string)<br>去掉前导和结尾空格，并将</p>
+</li>
+</ol>
+<h3 id="2-5-2-文件名函数"><a href="#2-5-2-文件名函数" class="headerlink" title="2.5.2 文件名函数"></a>2.5.2 文件名函数</h3><h3 id="2-5-3-其它函数"><a href="#2-5-3-其它函数" class="headerlink" title="2.5.3 其它函数"></a>2.5.3 其它函数</h3>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="melvin 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="melvin 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>melvin
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://meixsh.github.io/2021/09/03/02_embedded/04_embedded_linux_app_basic/02_makefile/makefile/" title="makefile">https://meixsh.github.io/2021/09/03/02_embedded/04_embedded_linux_app_basic/02_makefile/makefile/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/makefile/" rel="tag"># makefile</a>
+              <a href="/tags/linux/" rel="tag"># linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/03/02_embedded/04_embedded_linux_app_basic/01_gcc/gcc/" rel="prev" title="gcc">
+                  <i class="fa fa-chevron-left"></i> gcc
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/11/03_cpp/01_cpp_core/01_%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1/" rel="next" title="类和对象">
+                  类和对象 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">melvin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">154k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:20</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
