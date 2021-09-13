@@ -567,71 +567,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux系统管理-管理网络</title>
-    <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
-    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
-<ul>
-<li>查看网络接口<ul>
-<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
-<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
-<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
-</ul>
-</li>
-<li>操纵网络接口<ul>
-<li>启动<br><code>ifconfig eth1 up</code>    </li>
-<li>关闭<br><code>ifconfig eth1 down</code></li>
-<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
-</ul>
-</li>
-</ul>
-<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
-<ul>
-<li>重启网络服务<ul>
-<li>service network restart</li>
-</ul>
-</li>
-</ul>
-<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
-<p>编辑网络配置文件</p>
-<ul>
-<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
-<li>ifcfg-ethN 网卡配置文件</li>
-</ul>
-</li>
-<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>重启网络服务</p>
-<ul>
-<li>service network restart</li>
-</ul>
-<p>测试网络连通性</p>
-<ul>
-<li>ping -c 主机名/IP地址<ul>
-<li>线路是否连接好</li>
-<li>交换机或路由器是否打开，路由表</li>
-<li>防火墙设置</li>
-</ul>
-</li>
-</ul>
-<p>测试dns配置</p>
-<ul>
-<li>dig命令</li>
-<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
-<li>dig 域名</li>
-<li><code>dig www.baidu.com</code></li>
-</ul>
-<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
-]]></content>
-      <categories>
-        <category>linux系统管理</category>
-      </categories>
-      <tags>
-        <tag>linux网络配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux系统管理-重定向 &amp; 管道</title>
     <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E9%87%8D%E5%AE%9A%E5%90%91-%E7%AE%A1%E9%81%93/</url>
     <content><![CDATA[<h1 id="输入输出重定向"><a href="#输入输出重定向" class="headerlink" title="输入输出重定向"></a>输入输出重定向</h1><blockquote>
@@ -798,6 +733,71 @@
       </categories>
       <tags>
         <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux系统管理-管理网络</title>
+    <url>/2020/10/13/06_old_backup/Linux%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-%E7%AE%A1%E7%90%86%E7%BD%91%E7%BB%9C/</url>
+    <content><![CDATA[<h1 id="查看和操纵网络接口"><a href="#查看和操纵网络接口" class="headerlink" title="查看和操纵网络接口"></a>查看和操纵网络接口</h1><p>ifconfig命令</p>
+<ul>
+<li>查看网络接口<ul>
+<li>一般来说，所有用户都可以通过ifconfig命令来查看网络接口，但是只要root用户才可以使用ifconfig操纵网络接口 </li>
+<li><code>ifconfig</code><br>不加参数执行，只能看到已经启动的网络接口</li>
+<li><code>ifconfig -a</code><br>查看主机上所有网络接口，无论接口是否启动和配置<a id="more"></a></li>
+</ul>
+</li>
+<li>操纵网络接口<ul>
+<li>启动<br><code>ifconfig eth1 up</code>    </li>
+<li>关闭<br><code>ifconfig eth1 down</code></li>
+<li>修改<br>修改IP, <code>ifconfig eth1 192.168.16.125 netmask 255.255.255.0</code><br>修改mtu大小，<code>ifconfig eth1 mtu 5000</code></li>
+</ul>
+</li>
+</ul>
+<p>注意：用ifconfig改变的网络接口部分配置参数是临时的, 如果系统或网络服务重启，这些改变的参数是不会保留下来的</p>
+<ul>
+<li>重启网络服务<ul>
+<li>service network restart</li>
+</ul>
+</li>
+</ul>
+<h1 id="配置TCP-IP网络参数"><a href="#配置TCP-IP网络参数" class="headerlink" title="配置TCP/IP网络参数"></a>配置TCP/IP网络参数</h1><p>配置IP地址，子网掩码，网关，dns地址，主机名<br><code>192.168.71.128, 255.255.255.0, 192.168.71.2, 192.168.71.2, mooc.nbcc.cn</code></p>
+<p>编辑网络配置文件</p>
+<ul>
+<li><code>/etc/sysconfig/network-scripts/</code> 以太网接口配置文件目录<ul>
+<li>ifcfg-ethN 网卡配置文件</li>
+</ul>
+</li>
+<li>ubuntu系统网卡配置文件在 ‘/etc/network/interfaces’ 文件里，而且每个网卡的配置参数都可写在这个文件内  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 注释略</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet lookback</span><br><span class="line"></span><br><span class="line">auto eth0</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.2    # ip地址</span><br><span class="line">netmask 255.255.255.0  # 子网掩码</span><br><span class="line">network 192.168.0.0      # 网络号    </span><br><span class="line">broadcast 192.168.0.255 #广播地址</span><br><span class="line">gateway 192.168.0.1      # 网关</span><br><span class="line">dns-nameserver 8.8.8.8  # DNS服务器</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>重启网络服务</p>
+<ul>
+<li>service network restart</li>
+</ul>
+<p>测试网络连通性</p>
+<ul>
+<li>ping -c 主机名/IP地址<ul>
+<li>线路是否连接好</li>
+<li>交换机或路由器是否打开，路由表</li>
+<li>防火墙设置</li>
+</ul>
+</li>
+</ul>
+<p>测试dns配置</p>
+<ul>
+<li>dig命令</li>
+<li>该命令执行dns搜索，显示从受请求的域名服务器返回的答复</li>
+<li>dig 域名</li>
+<li><code>dig www.baidu.com</code></li>
+</ul>
+<p>设置主机名<br>    - /etc/sysconfig/network<br>    - /etc/hosts<br>    - 重启系统</p>
+]]></content>
+      <categories>
+        <category>linux系统管理</category>
+      </categories>
+      <tags>
+        <tag>linux网络配置</tag>
       </tags>
   </entry>
   <entry>
@@ -1480,6 +1480,29 @@
       </tags>
   </entry>
   <entry>
+    <title>十条技术原则</title>
+    <url>/2020/11/05/06_old_backup/%E5%8D%81%E6%9D%A1%E6%8A%80%E6%9C%AF%E5%8E%9F%E5%88%99/</url>
+    <content><![CDATA[<ul>
+<li>原则一：Owner意识</li>
+<li>原则二：时间观念</li>
+<li>原则三：以终为始</li>
+<li>原则四：闭环思维</li>
+<li>原则五：保持敬畏</li>
+<li>原则六：事不过二</li>
+<li>原则七：设计优先</li>
+<li>原则八：产出/产能平衡</li>
+<li>原则九：善于提问</li>
+<li>原则十：空杯心态</li>
+</ul>
+]]></content>
+      <categories>
+        <category>感悟</category>
+      </categories>
+      <tags>
+        <tag>技术原则</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>linux-系统编程之信号机制</title>
     <url>/2020/11/21/06_old_backup/linux-%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%E4%B9%8B%E4%BF%A1%E5%8F%B7%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<h1 id="信号的概念和机制"><a href="#信号的概念和机制" class="headerlink" title="信号的概念和机制"></a>信号的概念和机制</h1><ul>
@@ -1591,29 +1614,6 @@
       </categories>
       <tags>
         <tag>信号</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>十条技术原则</title>
-    <url>/2020/11/05/06_old_backup/%E5%8D%81%E6%9D%A1%E6%8A%80%E6%9C%AF%E5%8E%9F%E5%88%99/</url>
-    <content><![CDATA[<ul>
-<li>原则一：Owner意识</li>
-<li>原则二：时间观念</li>
-<li>原则三：以终为始</li>
-<li>原则四：闭环思维</li>
-<li>原则五：保持敬畏</li>
-<li>原则六：事不过二</li>
-<li>原则七：设计优先</li>
-<li>原则八：产出/产能平衡</li>
-<li>原则九：善于提问</li>
-<li>原则十：空杯心态</li>
-</ul>
-]]></content>
-      <categories>
-        <category>感悟</category>
-      </categories>
-      <tags>
-        <tag>技术原则</tag>
       </tags>
   </entry>
   <entry>
@@ -1800,6 +1800,57 @@
       </tags>
   </entry>
   <entry>
+    <title>技能-PDF扫描版书籍制作目录书签</title>
+    <url>/2020/11/07/06_old_backup/%E7%94%9F%E6%B4%BB%E6%8A%80%E8%83%BD-PDF%E6%89%AB%E6%8F%8F%E7%89%88%E4%B9%A6%E7%B1%8D%E5%88%B6%E4%BD%9C%E7%9B%AE%E5%BD%95%E4%B9%A6%E7%AD%BE/</url>
+    <content><![CDATA[<p>最近利用学校图书馆下了几本专业书籍的电子版，可是这些电子版书籍是扫描版的PDF格式，不支持搜索且无目录书签，十分不利于阅读学习，前者暂时不知道怎么解决同时也不是非常的紧急，但是没有后者目录书签的功能，可真是太令我头疼了。遂上网调研寻求解决方法，利用万能的谷歌，加上关键字搜索，<code>如何为扫描版PDF添加目录</code>，参考摸索得到下面的解决方案，真叫一个爽！</p>
+<a id="more"></a>
+
+<ul>
+<li><p>推荐软件环境：Notepad++、FreePic2Pdf、福昕阅读器高级版（支持页面编辑）[非必须]</p>
+</li>
+<li><p>寻找待制作目录书签电子书的目录文件，这里可以参考京东自营店该书籍详情页的目录信息或者豆瓣提供的书籍目录信息，此时直接复制粘贴至新建的目录文档。但是，可能在这两个地方找不到完整的目录信息，或者压根就没有目录信息，此时请另谋出路，利用谷歌搜索或者自己编辑，自求多福吧。</p>
+</li>
+<li><p>使用Notepad++打开第一步新建的目录文档，预处理该文档，使之符合后续FreePic2Pdf书签目录制作软件的目录格式规范</p>
+<ul>
+<li><code>ctrl + f</code> 进入替换对话框，勾选正则表达式，按下面步骤进行正则查找替换</li>
+<li>三级标题插入2个tab键：<code>^(\d&#123;1,2&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;)、\t\t\1</code></li>
+<li>二级标题插入1个tab键：<code>^(\d&#123;1,2&#125;\.\d&#123;1,2&#125;)、\t\1</code></li>
+<li>页码数字之前插入tab键：<code>(\d&#123;1,3&#125;)$、\t\1</code></li>
+</ul>
+</li>
+<li><p>打开FreePic2Pdf，依次选择：<code>更改PDF</code> &rarr; <code>从PDF取书签</code>，设置好待添加目录的PDF文件以及用于存放生成的目录接口文件的路径，点击开始，即可完成目录接口文件的生成。</p>
+</li>
+<li><p>使用Notepad++打开接口文件FreePic2Pdf_bkmk.txt，将经过预处理的目录文档内容拷贝至该接口文件并保存。</p>
+</li>
+<li><p>使用Notepad++打开接口文件FreePic2Pdf.itf，修改字段BasePage的值为扫描版PDF文件正文第一页所在的实际页数，即使用PDF阅读器打开该PDF文档，定位到该页，并查看PDF阅读器下方页码区域显示的页码数字。</p>
+</li>
+<li><p>使用FreePic2Pdf，依次选择：<code>更改PDF</code> &rarr; <code>往PDF挂书签</code>，将配置好的目录接口文件信息写入PDF文档中。切记如果此步骤之前打开了该PDF文档，请在此步骤进行前务必关闭该PDF文档，否则生成接口文件失败。</p>
+</li>
+<li><p>打开制作好目录书签的文档，享受阅读。</p>
+</li>
+</ul>
+<p><strong>注:</strong> 可以先生成目录接口文件，直接在该文件中预处理目录文档信息，可以减少一次文件的新建和拷贝操作。</p>
+<p>参考链接：<br><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017639890281664">正则表达式</a><br><a href="https://blog.csdn.net/hzm7512/article/details/8523748">PDF电子书（扫描版）的目录书签批量导入</a>  </p>
+]]></content>
+      <categories>
+        <category>技能</category>
+      </categories>
+      <tags>
+        <tag>技能</tag>
+        <tag>扫描版PDF</tag>
+        <tag>目录书签</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>立足当下，未来可期</title>
+    <url>/2020/10/20/06_old_backup/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
+    <content><![CDATA[<p>科研、论文 &amp; PPT，想到这些，总是会有意或无意的走神，一天下来，没多少产出，这是为啥呢？因为不热爱啊，我不是很适合走科研这条路，没啥成就感。但是，在deadline以及白纸黑字的要求面前，还是要坚持做下去，已然没有多大兴趣了，此时更不能乱了章法，需要自己为自己设立阶段性的小目标，这个目标需要清晰明确以及可行，垫垫脚再伸伸手就能够到，而不是去靠自己想象中的谜一般的自律，因为人性这个东西作为人你很难与之抗争，贪玩和懒惰是人的本性。在面对一个复杂且较为陌生的问题面前，大多数人都是会后退的，这是很自然的，所以，在面对此类问题时，首先战术上需要保持自信乐观的心态，其次在战略上对其进行分而治之，从逻辑上思考如何将问题进行拆分，然后针对每一个小点，有针对性的学习处理的方式，此过程中需要按照前面说的，制定清晰明确的小目标，如此一来，即使是复杂的问题，也会变得有迹可循。我相信水滴石穿。希望自己通过日积月累的实践可以渐渐培养起自己这方面的能力，这种能力会令我受益终身，无论是工作还是生活。</p>
+]]></content>
+      <categories>
+        <category>感悟</category>
+      </categories>
+  </entry>
+  <entry>
     <title>一些计算机知识00</title>
     <url>/2020/10/11/06_old_backup/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/</url>
     <content><![CDATA[<ul>
@@ -1908,137 +1959,6 @@
       </categories>
       <tags>
         <tag>编程杂项</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>技能-PDF扫描版书籍制作目录书签</title>
-    <url>/2020/11/07/06_old_backup/%E7%94%9F%E6%B4%BB%E6%8A%80%E8%83%BD-PDF%E6%89%AB%E6%8F%8F%E7%89%88%E4%B9%A6%E7%B1%8D%E5%88%B6%E4%BD%9C%E7%9B%AE%E5%BD%95%E4%B9%A6%E7%AD%BE/</url>
-    <content><![CDATA[<p>最近利用学校图书馆下了几本专业书籍的电子版，可是这些电子版书籍是扫描版的PDF格式，不支持搜索且无目录书签，十分不利于阅读学习，前者暂时不知道怎么解决同时也不是非常的紧急，但是没有后者目录书签的功能，可真是太令我头疼了。遂上网调研寻求解决方法，利用万能的谷歌，加上关键字搜索，<code>如何为扫描版PDF添加目录</code>，参考摸索得到下面的解决方案，真叫一个爽！</p>
-<a id="more"></a>
-
-<ul>
-<li><p>推荐软件环境：Notepad++、FreePic2Pdf、福昕阅读器高级版（支持页面编辑）[非必须]</p>
-</li>
-<li><p>寻找待制作目录书签电子书的目录文件，这里可以参考京东自营店该书籍详情页的目录信息或者豆瓣提供的书籍目录信息，此时直接复制粘贴至新建的目录文档。但是，可能在这两个地方找不到完整的目录信息，或者压根就没有目录信息，此时请另谋出路，利用谷歌搜索或者自己编辑，自求多福吧。</p>
-</li>
-<li><p>使用Notepad++打开第一步新建的目录文档，预处理该文档，使之符合后续FreePic2Pdf书签目录制作软件的目录格式规范</p>
-<ul>
-<li><code>ctrl + f</code> 进入替换对话框，勾选正则表达式，按下面步骤进行正则查找替换</li>
-<li>三级标题插入2个tab键：<code>^(\d&#123;1,2&#125;\.\d&#123;1,2&#125;\.\d&#123;1,2&#125;)、\t\t\1</code></li>
-<li>二级标题插入1个tab键：<code>^(\d&#123;1,2&#125;\.\d&#123;1,2&#125;)、\t\1</code></li>
-<li>页码数字之前插入tab键：<code>(\d&#123;1,3&#125;)$、\t\1</code></li>
-</ul>
-</li>
-<li><p>打开FreePic2Pdf，依次选择：<code>更改PDF</code> &rarr; <code>从PDF取书签</code>，设置好待添加目录的PDF文件以及用于存放生成的目录接口文件的路径，点击开始，即可完成目录接口文件的生成。</p>
-</li>
-<li><p>使用Notepad++打开接口文件FreePic2Pdf_bkmk.txt，将经过预处理的目录文档内容拷贝至该接口文件并保存。</p>
-</li>
-<li><p>使用Notepad++打开接口文件FreePic2Pdf.itf，修改字段BasePage的值为扫描版PDF文件正文第一页所在的实际页数，即使用PDF阅读器打开该PDF文档，定位到该页，并查看PDF阅读器下方页码区域显示的页码数字。</p>
-</li>
-<li><p>使用FreePic2Pdf，依次选择：<code>更改PDF</code> &rarr; <code>往PDF挂书签</code>，将配置好的目录接口文件信息写入PDF文档中。切记如果此步骤之前打开了该PDF文档，请在此步骤进行前务必关闭该PDF文档，否则生成接口文件失败。</p>
-</li>
-<li><p>打开制作好目录书签的文档，享受阅读。</p>
-</li>
-</ul>
-<p><strong>注:</strong> 可以先生成目录接口文件，直接在该文件中预处理目录文档信息，可以减少一次文件的新建和拷贝操作。</p>
-<p>参考链接：<br><a href="https://www.liaoxuefeng.com/wiki/1016959663602400/1017639890281664">正则表达式</a><br><a href="https://blog.csdn.net/hzm7512/article/details/8523748">PDF电子书（扫描版）的目录书签批量导入</a>  </p>
-]]></content>
-      <categories>
-        <category>技能</category>
-      </categories>
-      <tags>
-        <tag>技能</tag>
-        <tag>扫描版PDF</tag>
-        <tag>目录书签</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>立足当下，未来可期</title>
-    <url>/2020/10/20/06_old_backup/%E7%AB%8B%E8%B6%B3%E5%BD%93%E4%B8%8B%EF%BC%8C%E6%9C%AA%E6%9D%A5%E5%8F%AF%E6%9C%9F/</url>
-    <content><![CDATA[<p>科研、论文 &amp; PPT，想到这些，总是会有意或无意的走神，一天下来，没多少产出，这是为啥呢？因为不热爱啊，我不是很适合走科研这条路，没啥成就感。但是，在deadline以及白纸黑字的要求面前，还是要坚持做下去，已然没有多大兴趣了，此时更不能乱了章法，需要自己为自己设立阶段性的小目标，这个目标需要清晰明确以及可行，垫垫脚再伸伸手就能够到，而不是去靠自己想象中的谜一般的自律，因为人性这个东西作为人你很难与之抗争，贪玩和懒惰是人的本性。在面对一个复杂且较为陌生的问题面前，大多数人都是会后退的，这是很自然的，所以，在面对此类问题时，首先战术上需要保持自信乐观的心态，其次在战略上对其进行分而治之，从逻辑上思考如何将问题进行拆分，然后针对每一个小点，有针对性的学习处理的方式，此过程中需要按照前面说的，制定清晰明确的小目标，如此一来，即使是复杂的问题，也会变得有迹可循。我相信水滴石穿。希望自己通过日积月累的实践可以渐渐培养起自己这方面的能力，这种能力会令我受益终身，无论是工作还是生活。</p>
-]]></content>
-      <categories>
-        <category>感悟</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>gcc</title>
-    <url>/2021/09/03/02_embedded/04_embedded_linux_app_basic/01_gcc/gcc/</url>
-    <content><![CDATA[<h1 id="1-gcc编译过程"><a href="#1-gcc编译过程" class="headerlink" title="1. gcc编译过程"></a>1. gcc编译过程</h1><p>一个c/c++文件要经过预处理(preprocessing)、编译(compilation)、汇编(assembly)和链接(linking)等4步才能变成可执行文件。<br><img src="/2021/09/03/02_embedded/04_embedded_linux_app_basic/01_gcc/gcc/00_gcc%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B.png"></p>
-<p>通过不同的gcc选项可以控制这些过程<br><img src="/2021/09/03/02_embedded/04_embedded_linux_app_basic/01_gcc/gcc/01_gcc%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9.png"></p>
-<a id="more"></a>
-
-<h2 id="1-1-gcc编译过程分析"><a href="#1-1-gcc编译过程分析" class="headerlink" title="1.1 gcc编译过程分析"></a>1.1 gcc编译过程分析</h2><p>执行<code>gcc -o hello hello.c -v</code>可以查看到详细编译步骤，其中关键部分如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cc1 main.c -o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line">as         -o &#x2F;tmp&#x2F;ccZfdaDo.o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line"> </span><br><span class="line">cc1 sub.c -o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line">as         -o &#x2F;tmp&#x2F;ccn8Cjq6.o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line"> </span><br><span class="line">collect2 -o test &#x2F;tmp&#x2F;ccZfdaDo.o &#x2F;tmp&#x2F;ccn8Cjq6.o ....</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-2-编译选项体验"><a href="#1-2-编译选项体验" class="headerlink" title="1.2 编译选项体验"></a>1.2 编译选项体验</h2><p>手工执行以下命令体验gcc编译的步骤：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -E -o hello.i hello.c</span><br><span class="line">gcc -S -o hello.s hello.i</span><br><span class="line">gcc -c -o hello.o hello.s</span><br><span class="line">gcc -o hello hello.o</span><br></pre></td></tr></table></figure>
-
-<h2 id="1-3-常用编译选项"><a href="#1-3-常用编译选项" class="headerlink" title="1.3 常用编译选项"></a>1.3 常用编译选项</h2><table>
-<thead>
-<tr>
-<th>常用选项</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>-E</td>
-<td>预处理，开发过程中想快速确定某个宏可以使用<code>-E -dM</code></td>
-</tr>
-<tr>
-<td>-c</td>
-<td>把预处理、编译、汇编都做了，但是不链接</td>
-</tr>
-<tr>
-<td>-o</td>
-<td>指定输出文件</td>
-</tr>
-<tr>
-<td>-I</td>
-<td>指定头文件目录</td>
-</tr>
-<tr>
-<td>-L</td>
-<td>指定链接时库文件目录</td>
-</tr>
-<tr>
-<td>-l</td>
-<td>指定链接哪一个库文件</td>
-</tr>
-</tbody></table>
-<h2 id="1-4-制作、使用动态库"><a href="#1-4-制作、使用动态库" class="headerlink" title="1.4 制作、使用动态库"></a>1.4 制作、使用动态库</h2><h3 id="1-4-1-制作动态库"><a href="#1-4-1-制作动态库" class="headerlink" title="1.4.1 制作动态库"></a>1.4.1 制作动态库</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -c -o main.o main.c</span><br><span class="line">gcc -c -o sub.o sub.c</span><br><span class="line">gcc -shared -o libsub.so sub.o # 可以使用多个.o生成动态库</span><br><span class="line">gcc -o test main.o -lsub -L &#x2F;libsub.so所在目录&#x2F;</span><br></pre></td></tr></table></figure>
-<p>注意：执行<code>gcc -c -o sub.o sub.c</code>交叉编译需要在最后面加上<code>-fPIC</code>参数</p>
-<h3 id="1-4-2-运行链接动态库的可执行程序"><a href="#1-4-2-运行链接动态库的可执行程序" class="headerlink" title="1.4.2 运行链接动态库的可执行程序"></a>1.4.2 运行链接动态库的可执行程序</h3><ol>
-<li>先把libsub.so放到Ubuntu的/lib目录，然后就可以运行test程序</li>
-<li>如果不想把libsub.so放到/lib，也可以放在某个目录比如/a，然后执行如下命令：   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;$LD_LIBRARY_PATH:&#x2F;a</span><br><span class="line">.&#x2F;test</span><br></pre></td></tr></table></figure>
-<h2 id="1-5-制作、使用静态库"><a href="#1-5-制作、使用静态库" class="headerlink" title="1.5 制作、使用静态库"></a>1.5 制作、使用静态库</h2><h3 id="1-5-1-制作静态库"><a href="#1-5-1-制作静态库" class="headerlink" title="1.5.1 制作静态库"></a>1.5.1 制作静态库</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -c -o main.o main.c</span><br><span class="line">gcc -c -o sub.o sub.c</span><br><span class="line">ar crs libsub.a sub.o # 可以使用多个.o生成静态库</span><br><span class="line">gcc -o test main.o libsub.a # 如果静态库不在当前目录，需要指定路径</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="1-5-2-运行链接静态库的可执行程序"><a href="#1-5-2-运行链接静态库的可执行程序" class="headerlink" title="1.5.2 运行链接静态库的可执行程序"></a>1.5.2 运行链接静态库的可执行程序</h3><p>不需要把静态库libsub.a放到板子上。</p>
-<h2 id="1-6-很有用的选项"><a href="#1-6-很有用的选项" class="headerlink" title="1.6 很有用的选项"></a>1.6 很有用的选项</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -E main.c &#x2F;&#x2F; 查看预处理结果，比如头文件是哪个</span><br><span class="line">gcc -E -dM main.c &gt; 1.txt &#x2F;&#x2F; 把所有的宏展开，存在1.txt中</span><br><span class="line">gcc -Wp, -MD, abc.dep -c -o main.o main.c &#x2F;&#x2F; 生成依赖文件abc.dep, 后面Makefile会用</span><br><span class="line">echo &#39;main()&#123;&#125;&#39; | gcc -E -v - &#x2F;&#x2F; 它会列出头文件目录、库文件目录(LIBRARY_PATH)</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>警告选项<ul>
-<li>-Wall</li>
-</ul>
-</li>
-<li>调试选项<ul>
-<li>-g</li>
-</ul>
-</li>
-<li>优化选项<ul>
-<li>-O0 不优化</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>嵌入式</category>
-      </categories>
-      <tags>
-        <tag>gcc</tag>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2163,8 +2083,88 @@
         <category>嵌入式</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>makefile</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>gcc</title>
+    <url>/2021/09/03/02_embedded/04_embedded_linux_app_basic/01_gcc/gcc/</url>
+    <content><![CDATA[<h1 id="1-gcc编译过程"><a href="#1-gcc编译过程" class="headerlink" title="1. gcc编译过程"></a>1. gcc编译过程</h1><p>一个c/c++文件要经过预处理(preprocessing)、编译(compilation)、汇编(assembly)和链接(linking)等4步才能变成可执行文件。<br><img src="/2021/09/03/02_embedded/04_embedded_linux_app_basic/01_gcc/gcc/00_gcc%E7%BC%96%E8%AF%91%E8%BF%87%E7%A8%8B.png"></p>
+<p>通过不同的gcc选项可以控制这些过程<br><img src="/2021/09/03/02_embedded/04_embedded_linux_app_basic/01_gcc/gcc/01_gcc%E7%BC%96%E8%AF%91%E9%80%89%E9%A1%B9.png"></p>
+<a id="more"></a>
+
+<h2 id="1-1-gcc编译过程分析"><a href="#1-1-gcc编译过程分析" class="headerlink" title="1.1 gcc编译过程分析"></a>1.1 gcc编译过程分析</h2><p>执行<code>gcc -o hello hello.c -v</code>可以查看到详细编译步骤，其中关键部分如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cc1 main.c -o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line">as         -o &#x2F;tmp&#x2F;ccZfdaDo.o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line"> </span><br><span class="line">cc1 sub.c -o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line">as         -o &#x2F;tmp&#x2F;ccn8Cjq6.o &#x2F;tmp&#x2F;ccXCx1YG.s</span><br><span class="line"> </span><br><span class="line">collect2 -o test &#x2F;tmp&#x2F;ccZfdaDo.o &#x2F;tmp&#x2F;ccn8Cjq6.o ....</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-2-编译选项体验"><a href="#1-2-编译选项体验" class="headerlink" title="1.2 编译选项体验"></a>1.2 编译选项体验</h2><p>手工执行以下命令体验gcc编译的步骤：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -E -o hello.i hello.c</span><br><span class="line">gcc -S -o hello.s hello.i</span><br><span class="line">gcc -c -o hello.o hello.s</span><br><span class="line">gcc -o hello hello.o</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-3-常用编译选项"><a href="#1-3-常用编译选项" class="headerlink" title="1.3 常用编译选项"></a>1.3 常用编译选项</h2><table>
+<thead>
+<tr>
+<th>常用选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-E</td>
+<td>预处理，开发过程中想快速确定某个宏可以使用<code>-E -dM</code></td>
+</tr>
+<tr>
+<td>-c</td>
+<td>把预处理、编译、汇编都做了，但是不链接</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>指定输出文件</td>
+</tr>
+<tr>
+<td>-I</td>
+<td>指定头文件目录</td>
+</tr>
+<tr>
+<td>-L</td>
+<td>指定链接时库文件目录</td>
+</tr>
+<tr>
+<td>-l</td>
+<td>指定链接哪一个库文件</td>
+</tr>
+</tbody></table>
+<h2 id="1-4-制作、使用动态库"><a href="#1-4-制作、使用动态库" class="headerlink" title="1.4 制作、使用动态库"></a>1.4 制作、使用动态库</h2><h3 id="1-4-1-制作动态库"><a href="#1-4-1-制作动态库" class="headerlink" title="1.4.1 制作动态库"></a>1.4.1 制作动态库</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -c -o main.o main.c</span><br><span class="line">gcc -c -o sub.o sub.c</span><br><span class="line">gcc -shared -o libsub.so sub.o # 可以使用多个.o生成动态库</span><br><span class="line">gcc -o test main.o -lsub -L &#x2F;libsub.so所在目录&#x2F;</span><br></pre></td></tr></table></figure>
+<p>注意：执行<code>gcc -c -o sub.o sub.c</code>交叉编译需要在最后面加上<code>-fPIC</code>参数</p>
+<h3 id="1-4-2-运行链接动态库的可执行程序"><a href="#1-4-2-运行链接动态库的可执行程序" class="headerlink" title="1.4.2 运行链接动态库的可执行程序"></a>1.4.2 运行链接动态库的可执行程序</h3><ol>
+<li>先把libsub.so放到Ubuntu的/lib目录，然后就可以运行test程序</li>
+<li>如果不想把libsub.so放到/lib，也可以放在某个目录比如/a，然后执行如下命令：   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;$LD_LIBRARY_PATH:&#x2F;a</span><br><span class="line">.&#x2F;test</span><br></pre></td></tr></table></figure>
+<h2 id="1-5-制作、使用静态库"><a href="#1-5-制作、使用静态库" class="headerlink" title="1.5 制作、使用静态库"></a>1.5 制作、使用静态库</h2><h3 id="1-5-1-制作静态库"><a href="#1-5-1-制作静态库" class="headerlink" title="1.5.1 制作静态库"></a>1.5.1 制作静态库</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -c -o main.o main.c</span><br><span class="line">gcc -c -o sub.o sub.c</span><br><span class="line">ar crs libsub.a sub.o # 可以使用多个.o生成静态库</span><br><span class="line">gcc -o test main.o libsub.a # 如果静态库不在当前目录，需要指定路径</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="1-5-2-运行链接静态库的可执行程序"><a href="#1-5-2-运行链接静态库的可执行程序" class="headerlink" title="1.5.2 运行链接静态库的可执行程序"></a>1.5.2 运行链接静态库的可执行程序</h3><p>不需要把静态库libsub.a放到板子上。</p>
+<h2 id="1-6-很有用的选项"><a href="#1-6-很有用的选项" class="headerlink" title="1.6 很有用的选项"></a>1.6 很有用的选项</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">gcc -E main.c &#x2F;&#x2F; 查看预处理结果，比如头文件是哪个</span><br><span class="line">gcc -E -dM main.c &gt; 1.txt &#x2F;&#x2F; 把所有的宏展开，存在1.txt中</span><br><span class="line">gcc -Wp, -MD, abc.dep -c -o main.o main.c &#x2F;&#x2F; 生成依赖文件abc.dep, 后面Makefile会用</span><br><span class="line">echo &#39;main()&#123;&#125;&#39; | gcc -E -v - &#x2F;&#x2F; 它会列出头文件目录、库文件目录(LIBRARY_PATH)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>警告选项<ul>
+<li>-Wall</li>
+</ul>
+</li>
+<li>调试选项<ul>
+<li>-g</li>
+</ul>
+</li>
+<li>优化选项<ul>
+<li>-O0 不优化</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>嵌入式</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>gcc</tag>
       </tags>
   </entry>
   <entry>
@@ -2345,7 +2345,61 @@
 <li>如果用户定义拷贝构造函数，c++不再提供其他普通构造函数</li>
 </ul>
 <h1 id="5-深拷贝与浅拷贝"><a href="#5-深拷贝与浅拷贝" class="headerlink" title="5 深拷贝与浅拷贝"></a>5 深拷贝与浅拷贝</h1><p>浅拷贝：简单的赋值拷贝操作<br>深拷贝：在堆区重新申请空间，进行拷贝操作</p>
-<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Person()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的默认构造函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Person(<span class="keyword">int</span> age, <span class="keyword">int</span> height)</span><br><span class="line">    &#123;</span><br><span class="line">        m_Age = age;</span><br><span class="line">        m_Height = <span class="keyword">new</span> <span class="keyword">int</span>(height);</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的有参构造函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 自己实现拷贝构造函数，解决浅拷贝带来的问题</span></span><br><span class="line">    Person(<span class="keyword">const</span> Person &amp;p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的拷贝构造函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        m_Age = p.m_Age;</span><br><span class="line">        <span class="comment">// m_Height = p.m_Height; 浅拷贝</span></span><br><span class="line">        m_Height = <span class="keyword">new</span> <span class="keyword">int</span>(*p.m_Height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~Person()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 析构代码，将堆区开辟数据做释放操作</span></span><br><span class="line">        <span class="keyword">if</span> (m_Height != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span> m_Height;</span><br><span class="line">            m_Height = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的析构函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> m_Age; </span><br><span class="line">    <span class="keyword">int</span> *m_Height;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">Person <span class="title">p1</span><span class="params">(<span class="number">18</span>, <span class="number">160</span>)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;p1的年龄为：&quot;</span> &lt;&lt; p1.m_Age &lt;&lt; <span class="string">&quot; 身高为：&quot;</span> &lt;&lt; *p1.m_Height &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="function">Person <span class="title">p2</span><span class="params">(p1)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;p2的年龄为：&quot;</span> &lt;&lt; p2.m_Age &lt;&lt; <span class="string">&quot; 身高为：&quot;</span> &lt;&lt; *p2.m_Height &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    test01();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Person()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的默认构造函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Person(<span class="keyword">int</span> age, <span class="keyword">int</span> height)</span><br><span class="line">    &#123;</span><br><span class="line">        m_Age = age;</span><br><span class="line">        m_Height = <span class="keyword">new</span> <span class="keyword">int</span>(height);</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的有参构造函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 自己实现拷贝构造函数，解决浅拷贝带来的问题</span></span><br><span class="line">    Person(<span class="keyword">const</span> Person &amp;p)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的拷贝构造函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">        m_Age = p.m_Age;</span><br><span class="line">        <span class="comment">// m_Height = p.m_Height; 浅拷贝</span></span><br><span class="line">        m_Height = <span class="keyword">new</span> <span class="keyword">int</span>(*p.m_Height);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~Person()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 析构代码，将堆区开辟数据做释放操作</span></span><br><span class="line">        <span class="keyword">if</span> (m_Height != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">delete</span> m_Height;</span><br><span class="line">            m_Height = <span class="literal">NULL</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person的析构函数调用&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> m_Age; </span><br><span class="line">    <span class="keyword">int</span> *m_Height;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">Person <span class="title">p1</span><span class="params">(<span class="number">18</span>, <span class="number">160</span>)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;p1的年龄为：&quot;</span> &lt;&lt; p1.m_Age &lt;&lt; <span class="string">&quot; 身高为：&quot;</span> &lt;&lt; *p1.m_Height &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    <span class="function">Person <span class="title">p2</span><span class="params">(p1)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;p2的年龄为：&quot;</span> &lt;&lt; p2.m_Age &lt;&lt; <span class="string">&quot; 身高为：&quot;</span> &lt;&lt; *p2.m_Height &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    test01();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-初始化列表"><a href="#6-初始化列表" class="headerlink" title="6 初始化列表"></a>6 初始化列表</h1><p>C++提供了初始化列表语法，用来初始化属性<br>语法：<code>构造函数(): 属性1(值1), 属性2(值2) ... &#123; &#125;</code></p>
+<h1 id="7-类对象作为类成员"><a href="#7-类对象作为类成员" class="headerlink" title="7 类对象作为类成员"></a>7 类对象作为类成员</h1><p>C++类中成员可以是另一个类的对象，我们称该成员为对象成员<br>例如：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span> &#123;</span>&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    A a;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>B类中有对象A作为成员，A为对象成员，那么当创建B类的对象时，A与B的构造和析构顺序是谁先谁后？<br>当其他类对象作为本类成员，构造时候先构造其他类对象，再构造自身，析构的顺序与构造相反<br>示例：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类对象作为类成员</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 手机类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Phone(<span class="built_in">string</span> pName)</span><br><span class="line">    &#123;</span><br><span class="line">        m_PName = pName;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Phone ctor invoke&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~Phone()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Phone dector invoke&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Phone brand name</span></span><br><span class="line">    <span class="built_in">string</span> m_PName;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 人类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// name</span></span><br><span class="line">    <span class="built_in">string</span> m_Name;</span><br><span class="line">    <span class="comment">// Phone</span></span><br><span class="line">    Phone m_Phone;</span><br><span class="line"></span><br><span class="line">    Person(<span class="built_in">string</span> name, <span class="built_in">string</span> PName) : m_Name(name), m_Phone(PName)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person ctor invoke&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~Person()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Person dector invoke&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当其他类对象作为本类成员，构造时候先构造其他类对象，再构造自身，析构的顺序与构造相反</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="function">Person <span class="title">p</span><span class="params">(<span class="string">&quot;zhangsan&quot;</span>, <span class="string">&quot;iphone 13&quot;</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; p.m_Name &lt;&lt; <span class="string">&quot; have a &quot;</span> &lt;&lt; p.m_Phone.m_PName &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    test01();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出结果：</span><br><span class="line">-------------------------</span><br><span class="line">Phone ctor invoke</span><br><span class="line">Person ctor invoke</span><br><span class="line">zhangsan have a iphone <span class="number">13</span></span><br><span class="line">Person dector invoke</span><br><span class="line">Phone dector invoke</span><br><span class="line">-------------------------</span><br></pre></td></tr></table></figure>
+
+<h1 id="8-静态成员"><a href="#8-静态成员" class="headerlink" title="8 静态成员"></a>8 静态成员</h1><p>静态成员就是在成员变量和成员函数前加上关键字static，称为静态成员<br>静态成员分为：  </p>
+<ul>
+<li>静态成员变量<ul>
+<li>所有对象共享同一份数据</li>
+<li>在编译阶段分配内存</li>
+<li>类内声明，类外初始化</li>
+</ul>
+</li>
+<li>静态成员函数<ul>
+<li>所有对象共享同一个函数</li>
+<li>静态成员函数只能访问静态成员变量</li>
+</ul>
+</li>
+</ul>
+<p>静态成员变量</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 静态成员变量</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 1. 所有对象都共享同一份数据</span></span><br><span class="line">    <span class="comment">// 2. 编译阶段就分配内存</span></span><br><span class="line">    <span class="comment">// 3. 类内声明，类外初始化操作</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> m_A;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态成员变量也是有访问权限的</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> m_B;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Person::m_A = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">int</span> Person::m_B = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Person p;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; p.m_A &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    Person p2;</span><br><span class="line">    p2.m_A = <span class="number">200</span>;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; p.m_A &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test02</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 静态成员变量不属于某个对象上，所有对象都共享同一份数据</span></span><br><span class="line">    <span class="comment">// 因此静态成员变量有两种访问方式</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1. 通过对象进行访问</span></span><br><span class="line">    Person p;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; p.m_A &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 通过类名进行访问</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; Person::m_A &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态成员变量也是有访问权限的</span></span><br><span class="line">    <span class="comment">//cout &lt;&lt; Person::m_B &lt;&lt; endl; // 类外访问不到私有静态成员变量</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    test01();</span><br><span class="line">    test02();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>静态成员函数</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// 静态成员函数</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        m_A = <span class="number">100</span>; <span class="comment">// 静态成员函数可以访问静态成员变量</span></span><br><span class="line">        <span class="comment">// m_B = 200; // 静态成员函数不可以访问非静态成员变量</span></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;static void func invoke&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> m_A; <span class="comment">// 静态成员变量</span></span><br><span class="line">    <span class="keyword">int</span> m_B; <span class="comment">// 非静态成员变量</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态成员函数也是有访问权限的</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Person::m_A = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 有两种访问方式</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 1. 通过对象访问</span></span><br><span class="line">        Person p;</span><br><span class="line">        p.func();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 通过类名访问</span></span><br><span class="line">    Person::func();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="9-C-对象模型和this指针"><a href="#9-C-对象模型和this指针" class="headerlink" title="9 C++对象模型和this指针"></a>9 C++对象模型和this指针</h1><h2 id="9-1-成员变量和成员函数分开存储"><a href="#9-1-成员变量和成员函数分开存储" class="headerlink" title="9.1 成员变量和成员函数分开存储"></a>9.1 成员变量和成员函数分开存储</h2><p>在c++中，类内成员变量和成员函数分开存储，只有非静态成员变量才属于类的对象上</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 成员变量和成员函数是分开存储的</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Person p;</span><br><span class="line">    <span class="comment">// 空对象占用内存空间为：1</span></span><br><span class="line">    <span class="comment">// c++编译器会给每个空对象也会分配一个字节的空间，是为了区分空对象占内存的位置</span></span><br><span class="line">    <span class="comment">// 每个空对象也应该有一个独一无二的内存地址</span></span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;size of p = &quot;</span> &lt;&lt; <span class="keyword">sizeof</span>(p) &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person2</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> m_A; <span class="comment">// 非静态成员变量，属于类的对象上</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> m_B; <span class="comment">// 静态成员变量，不属于类的对象上</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">// 非静态成员函数，不属于类的对象上</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">// 静态成员函数，不属于类的对象上</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> Person2::m_B = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test02</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Person2 p;</span><br><span class="line">    <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;size of p = &quot;</span> &lt;&lt; <span class="keyword">sizeof</span>(p) &lt;&lt; <span class="built_in">endl</span>; <span class="comment">// 4</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    test01();</span><br><span class="line">    test02();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-2-this指针概念"><a href="#9-2-this指针概念" class="headerlink" title="9.2 this指针概念"></a>9.2 this指针概念</h2><p>通过上一小节，我们知道c++中成员变量和成员函数是分开存储的。<br>每一个非静态成员函数指挥诞生一份函数实例，也就是说多个同类型的对象会共用一块代码。那么问题是：这一块代码是如何区分哪个对象调用自己的呢？</p>
+<p>c++通过提供特殊的对象指针，this指针，解决上述问题。this指针指向被调用的成员函数所属的对象</p>
+<p>this指针是隐含每一个非静态成员函数内的一种指针<br>this指针不需要定义，直接使用即可</p>
+<p>this指针用途：</p>
+<ul>
+<li>当形参和成员变量同名时，可以用this指针来区分</li>
+<li>在类的非静态成员函数中返回对象本身，可以使用return *this;</li>
+</ul>
+<h2 id="9-3-空指针访问成员函数"><a href="#9-3-空指针访问成员函数" class="headerlink" title="9.3 空指针访问成员函数"></a>9.3 空指针访问成员函数</h2><p>c++中空指针也是可以调用成员函数的，但是也要注意有没有用到this指针<br>如果用到this指针，需要加以判断保证代码的健壮性。</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">showClassName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;this is Person class&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">showPersonAge</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;age = &quot;</span> &lt;&lt; <span class="keyword">this</span>-&gt;m_Age &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> m_Age;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Person *p = <span class="literal">NULL</span>;</span><br><span class="line">    p-&gt;showClassName();</span><br><span class="line">    p-&gt;showPersonAge();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    test01();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="9-4-const修饰成员函数"><a href="#9-4-const修饰成员函数" class="headerlink" title="9.4 const修饰成员函数"></a>9.4 const修饰成员函数</h2><p><strong>常函数：</strong></p>
+<ul>
+<li>成员函数后加const，我们称之为常函数</li>
+<li>常函数内不可以修改成员属性</li>
+<li>成员属性声明时加关键字mutable后，在常函数中依然可以修改</li>
+</ul>
+<p><strong>常对象：</strong></p>
+<ul>
+<li>声明对象前加const称之为常对象</li>
+<li>常对象只能调用常函数</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 常函数</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Person() &#123;&#125;</span><br><span class="line">    <span class="comment">// this指针的本质 是指针常量 指针的指向是不可以修改的</span></span><br><span class="line">    <span class="comment">// const Person * const this;</span></span><br><span class="line">    <span class="comment">// 在成员函数后面加const, 修饰的是this指向，让指针指向的值也不可以修改</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">showPerson</span><span class="params">()</span> <span class="keyword">const</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;m_B = <span class="number">100</span>;</span><br><span class="line">        <span class="comment">// this-&gt;m_A = 100; // 不合法</span></span><br><span class="line">        <span class="comment">// this = NULL; // this指针不可以修改指针的指向</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> m_A;</span><br><span class="line">    <span class="keyword">mutable</span> <span class="keyword">int</span> m_B; <span class="comment">// 特殊变量，即使在常函数中，也可以修改这个值, 加关键字mutable</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test01</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    Person p;</span><br><span class="line">    p.showPerson();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 常对象</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test02</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">const</span> Person p; <span class="comment">// 在对象前面加const，变为常对象</span></span><br><span class="line">    <span class="comment">// p.m_A; // 非法</span></span><br><span class="line">    p.m_B = <span class="number">100</span>; <span class="comment">// m_B是特殊值，在常对象下也可以修改</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 常对象只能调用常函数</span></span><br><span class="line">    p.showPerson();</span><br><span class="line">    <span class="comment">// p.func(); // 常对象不可以调用普通成员函数，因为普通成员函数可以修改属性</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>cpp</category>
       </categories>
