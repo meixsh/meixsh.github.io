@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"meixsh.github.io","root":"/","scheme":"Mist","version":"8.0.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="1 字符的编码方式1.1 ASCII是“American Standard Code for Information Interchange”的缩写，美国信息交换标准代码。电脑毕竟是西方人发明的，他们常用字母就26个，区分大小写、加上标点符号也没超过127个，每个字符用一个字节来表示就足够了。一个字节的7位就可以表示128个数值，在ASCII码中最高位永远是0。字符和数值的对应关系可以参考：htt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文字显示">
+<meta property="og:url" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/index.html">
+<meta property="og:site_name" content="melvin&#39;s blog">
+<meta property="og:description" content="1 字符的编码方式1.1 ASCII是“American Standard Code for Information Interchange”的缩写，美国信息交换标准代码。电脑毕竟是西方人发明的，他们常用字母就26个，区分大小写、加上标点符号也没超过127个，每个字符用一个字节来表示就足够了。一个字节的7位就可以表示128个数值，在ASCII码中最高位永远是0。字符和数值的对应关系可以参考：htt">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/01_ASCII.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/02_utf-8.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/03_utf-8%E5%8F%98%E9%95%BF%E7%BC%96%E7%A0%81.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/04_ascii%E7%82%B9%E9%98%B5.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/05_ascii%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA.png">
+<meta property="og:image" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/06_%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0.png">
+<meta property="article:published_time" content="2021-09-13T15:38:19.000Z">
+<meta property="article:modified_time" content="2021-09-13T16:24:46.289Z">
+<meta property="article:author" content="melvin">
+<meta property="article:tag" content="文字显示">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/01_ASCII.png">
+
+
+<link rel="canonical" href="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>文字显示 | melvin's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">melvin's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">脚踏实地，仰望星空</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%AD%97%E7%AC%A6%E7%9A%84%E7%BC%96%E7%A0%81%E6%96%B9%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">1 字符的编码方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-ASCII"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 ASCII</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-ANSI"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 ANSI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-3-UNICODE"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 UNICODE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-UNICODE-%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 UNICODE 编码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-1-%E4%BD%BF%E7%94%A83%E4%B8%AA%E5%AD%97%E8%8A%82%E8%A1%A8%E7%A4%BA%E4%B8%80%E4%B8%AAUNICODE"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.4.1 使用3个字节表示一个UNICODE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-2-UCS-2-Little-endian-UTF-16-LE"><span class="nav-number">1.4.2.</span> <span class="nav-text">1.4.2 UCS-2 Little endian&#x2F;UTF-16 LE</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-4-3-UCS-2-Big-endian-UTF-16-BE"><span class="nav-number">1.5.</span> <span class="nav-text">1.4.3 UCS-2 Big endian&#x2F;UTF-16 BE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-4-UTF8"><span class="nav-number">1.5.1.</span> <span class="nav-text">1.4.4 UTF8</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-ASCII%E5%AD%97%E7%AC%A6%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA"><span class="nav-number">2.</span> <span class="nav-text">2 ASCII字符点阵显示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-%E8%8E%B7%E5%8F%96%E7%82%B9%E9%98%B5"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 获取点阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-%E6%8F%8F%E7%82%B9"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 描点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-main%E5%87%BD%E6%95%B0"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 main函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E4%B8%AD%E6%96%87%E5%AD%97%E7%AC%A6%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA"><span class="nav-number">3.</span> <span class="nav-text">3 中文字符点阵显示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-%E6%8C%87%E5%AE%9A%E7%BC%96%E7%A0%81%E6%A0%BC%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 指定编码格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-%E6%B1%89%E5%AD%97%E5%8C%BA%E4%BD%8D%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 汉字区位码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-%E6%B1%89%E5%AD%97%E6%98%BE%E7%A4%BA"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 汉字显示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-1-%E6%89%93%E5%BC%80%E6%B1%89%E5%AD%97%E5%BA%93%E6%96%87%E4%BB%B6"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1 打开汉字库文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-2-%E7%BC%96%E5%86%99%E6%98%BE%E7%A4%BA%E6%B1%89%E5%AD%97%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2 编写显示汉字的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-3-%E4%BD%BF%E7%94%A8lcd-put-chinese%E5%87%BD%E6%95%B0"><span class="nav-number">3.3.3.</span> <span class="nav-text">3.3.3 使用lcd_put-chinese函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-4-%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.3.4.</span> <span class="nav-text">3.3.4 编译程序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E4%BA%A4%E5%8F%89%E7%BC%96%E8%AF%91%E7%A8%8B%E5%BA%8F%EF%BC%9A%E4%BB%A5freetype%E4%B8%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">4 交叉编译程序：以freetype为例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-%E4%BD%BF%E7%94%A8freetype%E6%98%BE%E7%A4%BA%E5%8D%95%E4%B8%AA%E5%AD%97%E7%AC%A6"><span class="nav-number">5.</span> <span class="nav-text">5 使用freetype显示单个字符</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-%E4%BD%BF%E7%94%A8freetype%E6%98%BE%E7%A4%BA%E4%B8%80%E8%A1%8C%E6%96%87%E5%AD%97"><span class="nav-number">6.</span> <span class="nav-text">6 使用freetype显示一行文字</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="melvin"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">melvin</p>
+  <div class="site-description" itemprop="description">Life is fantastic!</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meixsh" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;meixsh" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:meixsh@qq.com" title="E-Mail → mailto:meixsh@qq.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="melvin">
+      <meta itemprop="description" content="Life is fantastic!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="melvin's blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          文字显示
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-09-13 23:38:19" itemprop="dateCreated datePublished" datetime="2021-09-13T23:38:19+08:00">2021-09-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-14 00:24:46" itemprop="dateModified" datetime="2021-09-14T00:24:46+08:00">2021-09-14</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B5%8C%E5%85%A5%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">嵌入式</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-字符的编码方式"><a href="#1-字符的编码方式" class="headerlink" title="1 字符的编码方式"></a>1 字符的编码方式</h1><h2 id="1-1-ASCII"><a href="#1-1-ASCII" class="headerlink" title="1.1 ASCII"></a>1.1 ASCII</h2><p>是“American Standard Code for Information Interchange”的缩写，美国信息交换标准代码。<br>电脑毕竟是西方人发明的，他们常用字母就26个，区分大小写、加上标点符号也没超过127个，每个字符用一个字节来表示就足够了。一个字节的7位就可以表示128个数值，在ASCII码中最高位永远是0。<br>字符和数值的对应关系可以参考：<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/ASCII">https://baike.baidu.com/item/ASCII</a><br><img src="/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/01_ASCII.png"></p>
+<h2 id="1-2-ANSI"><a href="#1-2-ANSI" class="headerlink" title="1.2 ANSI"></a>1.2 ANSI</h2><p>强烈建议阅读：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/malecrab/p/5300486.html">https://www.cnblogs.com/malecrab/p/5300486.html</a><br>使用记事本保存文件时，可以选择“ANSI”编码，却没有“ASCII”，各下图所示。怎么回事？<br>SNI是ASCII的扩展，向下包含ASCII。对于ASCII字符仍以一个字节来表示，对于非ASCII字符则使用2字节来表示。并没有固定的ASNI编码，它跟“本地化”(locale)密切相关。比如在中国大陆地区，ANSI的默认编码是GB2312；在港澳台地区默认编码是BIG5。以数值“0xd0d6”为例，对于GB2312编码它表示“中”；对于BIG5编码它表示“笢”。所以对于ANSI编码的TXT文件，如果你打开它发现乱码，那么还得再次细分它的具体编码。<br>这仅仅是在中国地区就出现这些不兼容的问题。对于不同国家，它们默认的ANSI编码各不相同，所以同一个TXT文件在不同国家就很有可能出现乱码。<br>根本的原理在于没有“统一的编码”，那解决方法自然就是使用“统一的编码”：UNICODE。</p>
+<h2 id="1-3-UNICODE"><a href="#1-3-UNICODE" class="headerlink" title="1.3 UNICODE"></a>1.3 UNICODE</h2><p>在ANSI标准中，很多种文字都有自己的编码标准，汉字简体字有GB2312、繁体字有BIG5，这难免同一个数值对应不同字符。比如数值“0xd0d6”，对于GB2312编码它表示“中”；对于BIG5编码它表示“笢”。这造成了使用ANSI编码保存的文件，不适合跨地区交流。<br>UNICODE编码就是解决这类问题：对于地球上任意一个字符，都给它一个唯一的数值。<br>UNICODE仍然向下兼容ASCII，但是对于其他字符会有对应的数值，比如对于“中”、“笢”，它们的数值分别是：0x4e2d、0x7b22<br>UNICODE中的数值范围是0x0000至0x10FFFF，有1,114,111即100多万个数值，可以表示100多万个字符，足够地球人使用了。</p>
+<h2 id="1-4-UNICODE-编码实现"><a href="#1-4-UNICODE-编码实现" class="headerlink" title="1.4 UNICODE 编码实现"></a>1.4 UNICODE 编码实现</h2><p>所谓编码实现，就是对于一个数值，怎么表示它。这很奇怪，数值还能怎么表示？比如“中”的UNICODE值是0x4e2d，在TXT文件中怎么表示0x4e2d？直接写入0x4e2d？不行！<br>比如在TXT文件中写入2字节数据“0x2d 0x4e”，它可以用来表示“中”字吗？不能！它们对应ASCII字符“-N”。<br>问题的关键在于：怎么断字。在TXT文件中，2字节数据“0x2d 0x4e”是作为一个整体看待，还是拆成2部分看待？<br>所以，需要用一定的技巧来表示数值，这就对应不同的编码实现。</p>
+<p>现在我们知道：</p>
+<ol>
+<li>ASCII编码中使用一个字节来表示一个字符，只用到其中的7位，最高位恒为0；</li>
+<li>ANSI编码中，对于ASCII字符仍使用一个字节来表示(BIT7是0)，对于非ASCII字符一般使用2个字节来表示，非ASCII字符的数值BIT7都是1。</li>
+<li>UNICODE：这就有点复杂了，下面一一讲解。</li>
+</ol>
+<p>先用记事本新建3个文件：utf-16_le.txt、utf-16_be.txt、utf-8.txt、bom_utf-8.txt，里面的内容都是“ab中”，保存时编码分别选择“UTF-16 LE”、“UTF-16 BE”、“UTF-8”、“带有BOM的UTF-8”。</p>
+<p><strong>怎么表示一个UNICODE数值？</strong></p>
+<h3 id="1-4-1-使用3个字节表示一个UNICODE"><a href="#1-4-1-使用3个字节表示一个UNICODE" class="headerlink" title="1.4.1 使用3个字节表示一个UNICODE"></a>1.4.1 使用3个字节表示一个UNICODE</h3><p>不，太浪费。<br>UNICODE的最大值是0x10FFFF，那使用3个字节来表示一个UNICODE数值？这当然是很省事的方法，但是会造成浪费，比如字符A的UNICOCDE值是0x41，难道也用“0x41 0x00 0x00”这3个字节来表示？</p>
+<h3 id="1-4-2-UCS-2-Little-endian-UTF-16-LE"><a href="#1-4-2-UCS-2-Little-endian-UTF-16-LE" class="headerlink" title="1.4.2 UCS-2 Little endian/UTF-16 LE"></a>1.4.2 UCS-2 Little endian/UTF-16 LE</h3><p>每个UNICODE值用3字节来表示有点浪费，那只用2字节呢？它可以表示2^16=65536个字符，全世界常用的字符都可以表示了。<br>Little endian表示小字节序，数值中权重低的字节放在前面，比如字符“A中”在TXT文件中的数值如下，其中的“A”使用“0x41 0x00”两字节表示；“中”使用“0x2d 0x4e”两字节表示。文件开头的“0xff 0xfe”表示“UTF-16 LE”。</p>
+<h2 id="1-4-3-UCS-2-Big-endian-UTF-16-BE"><a href="#1-4-3-UCS-2-Big-endian-UTF-16-BE" class="headerlink" title="1.4.3 UCS-2 Big endian/UTF-16 BE"></a>1.4.3 UCS-2 Big endian/UTF-16 BE</h2><p>Big endian表示大字节序，数值中权重低的字节放在后面，比如字符“ab中”在TXT文件中的数值如下，其中的“A”使用“0x00 0x41”两字节表示；“中”使用“0x4e 0x2d”两字节表示。文件开头的“0xfe 0xff”表示“UTF-16 BE”。</p>
+<h3 id="1-4-4-UTF8"><a href="#1-4-4-UTF8" class="headerlink" title="1.4.4 UTF8"></a>1.4.4 UTF8</h3><p>在上面2种方法中，每一个UNICODE使用2字节来表示，这有3个缺点：表示的字符数量有限、对于ASCII字符有空间浪费、如果文件中有某个字节丢失，这会使得后面所有字符都因为错位而无法显示。<br>使用UTF8可以解决上述所有问题。UTF8是变长的编码方法，有2种UTF8格式的文件：带有头部、不带头部。先举例，看下图：<br><img src="/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/02_utf-8.png"></p>
+<p>对于其中的ASCII字符，在UTF8文件中直接用其ASCII码来表示，比如上图中的0x61表示字符a、0x62表示字符b。上图中的3个字节“0xe4 0xb8 0xad”表示的数值是0x4e2d，对应“中”的UNICODE码。<br>对于非ASCII字符，使用变长的编码：每一个字节的高位都自带长度信息。请看下图：<br><img src="/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/03_utf-8%E5%8F%98%E9%95%BF%E7%BC%96%E7%A0%81.png"></p>
+<p>上图中，0xe4的二进制是“11100100”，高位有3个1，表示从当前字节起有3字节参与表示UNICODE；0xb8的二进制是“10111000”，高位有1个1，表示从当前字节起有1字节参与表示UNICODE；0xad的二进制是“10101101”，高位有1个1，表示从当前字节起有1字节参与表示UNICODE；除去高位的“1110”、“10”、“10”后，剩下的二进制数组合起来得到“01001110001101”，它就是0x4e2d，即“中”的UNICODE值。<br>使用UTF8编码时，即使TXT文件中丢失了某些数据，也只会影响到当前字符的显示，后面的字符不受影响</p>
+<h1 id="2-ASCII字符点阵显示"><a href="#2-ASCII字符点阵显示" class="headerlink" title="2 ASCII字符点阵显示"></a>2 ASCII字符点阵显示</h1><p>要在LCD中显示一个ASCII字符，即英文字母这些字符，首先是要找到字符对应的点阵。在Linux内核源码中有这个文件：lib\fonts\font_8x16.c，里面以数组形式保存各个字符的点阵，比如：<br><img src="/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/04_ascii%E7%82%B9%E9%98%B5.png"></p>
+<p>数组里的数字是如何表示点阵的？以字符A为例，如下图所示：<br><img src="/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/05_ascii%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA.png"></p>
+<p>上图左侧有16行数值，每行1个字节。每一个节对应右侧一行中8个像素：像素从右边数起，bit0对应第0个像素，bit1对应第1个像素，……，bit7对应第7个像素。某位的值为1时，表示对应的像素要被点亮；值为0时表示对应的像素要熄灭。<br>所以要显示某个字符时，根据它的ASCII码在fontdata_8x16数组中找到它的点阵，然后取出这16个字节去描画16行像素。<br>比如字符A的ASCII值是0x41，那么从fontdata_8x16[0x41*16]开始取其点阵数据。</p>
+<p>字符显示的核心函数是void lcd_put_ascii(int x, int y, unsigned char c)，它在LCD的(x,y)位置处显示字符c，代码如下图所示：<br><img src="/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/06_%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0.png"></p>
+<h2 id="2-1-获取点阵"><a href="#2-1-获取点阵" class="headerlink" title="2.1 获取点阵"></a>2.1 获取点阵</h2><p>对于字符c，char c，它的点阵获取方法如下：<br><code>4693        unsigned char *dots = (unsigned char *)&amp;fontdata_8x16[c*16];</code></p>
+<h2 id="2-2-描点"><a href="#2-2-描点" class="headerlink" title="2.2 描点"></a>2.2 描点</h2><p>根据上图，我们分析下如何利用点阵在LCD上显示一个英文字母。<br>因为有十六行，所以首先要有一个循环16次的大循环，然后每一行里有8位，那么在每一个大循环里也需要一个循环8次的小循环。<br>小循环里的判断单行的描点情况，如果是1，就填充白色，如果是0就填充黑色，如此一来，就可以显示出黑色底，白色轮廓的英文字母。</p>
+<h2 id="2-3-main函数"><a href="#2-3-main函数" class="headerlink" title="2.3 main函数"></a>2.3 main函数</h2><p>main函数中首先要打开LCD设备，获取Framebuffer参数，实现lcd_put_pixel函数；然后调用lcd_put_ascii即可绘制字符。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4716</span> <span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function">4717 </span>&#123;</span><br><span class="line"><span class="number">4718</span>    fd_fb = open(<span class="string">&quot;/dev/fb0&quot;</span>, O_RDWR);</span><br><span class="line"><span class="number">4719</span>    <span class="keyword">if</span> (fd_fb &lt; <span class="number">0</span>)</span><br><span class="line"><span class="number">4720</span>    &#123;</span><br><span class="line"><span class="number">4721</span>            <span class="built_in">printf</span>(<span class="string">&quot;can&#x27;t open /dev/fb0\n&quot;</span>);</span><br><span class="line"><span class="number">4722</span>            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"><span class="number">4723</span>    &#125;</span><br><span class="line"><span class="number">4724</span>    <span class="keyword">if</span> (ioctl(fd_fb, FBIOGET_VSCREENINFO, &amp;var))</span><br><span class="line"><span class="number">4725</span>    &#123;</span><br><span class="line"><span class="number">4726</span>            <span class="built_in">printf</span>(<span class="string">&quot;can&#x27;t get var\n&quot;</span>);</span><br><span class="line"><span class="number">4727</span>            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"><span class="number">4728</span>    &#125;</span><br><span class="line"><span class="number">4729</span></span><br><span class="line"><span class="number">4730</span>    line_width  = var.xres * var.bits_per_pixel / <span class="number">8</span>;</span><br><span class="line"><span class="number">4731</span>    pixel_width = var.bits_per_pixel / <span class="number">8</span>;</span><br><span class="line"><span class="number">4732</span>    screen_size = var.xres * var.yres * var.bits_per_pixel / <span class="number">8</span>;</span><br><span class="line"><span class="number">4733</span>    fbmem = (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)mmap(<span class="literal">NULL</span> , screen_size, PROT_READ | PROT_WRITE, MAP_SHARED, fd_fb, <span class="number">0</span>);</span><br><span class="line"><span class="number">4734</span>    <span class="keyword">if</span> (fbmem == (<span class="keyword">unsigned</span> <span class="keyword">char</span> *)<span class="number">-1</span>)</span><br><span class="line"><span class="number">4735</span>    &#123;</span><br><span class="line"><span class="number">4736</span>            <span class="built_in">printf</span>(<span class="string">&quot;can&#x27;t mmap\n&quot;</span>);</span><br><span class="line"><span class="number">4737</span>            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line"><span class="number">4738</span>    &#125;</span><br><span class="line"><span class="number">4739</span></span><br><span class="line"><span class="number">4740</span>    <span class="comment">/* 清屏: 全部设为黑色 */</span></span><br><span class="line"><span class="number">4741</span>    <span class="built_in">memset</span>(fbmem, <span class="number">0</span>, screen_size);</span><br><span class="line"><span class="number">4742</span></span><br><span class="line"><span class="number">4743</span>    lcd_put_ascii(var.xres/<span class="number">2</span>, var.yres/<span class="number">2</span>, <span class="string">&#x27;A&#x27;</span>); <span class="comment">/*在屏幕中间显示8*16的字母A*/</span></span><br><span class="line"><span class="number">4744</span></span><br><span class="line"><span class="number">4745</span>    munmap(fbmem , screen_size);</span><br><span class="line"><span class="number">4746</span>    close(fd_fb);</span><br><span class="line"><span class="number">4747</span></span><br><span class="line"><span class="number">4748</span>    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="number">4749</span> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="3-中文字符点阵显示"><a href="#3-中文字符点阵显示" class="headerlink" title="3 中文字符点阵显示"></a>3 中文字符点阵显示</h1><h2 id="3-1-指定编码格式"><a href="#3-1-指定编码格式" class="headerlink" title="3.1 指定编码格式"></a>3.1 指定编码格式</h2><p>用点阵字库时，中文字符的显示原理跟ASCII字符是一样的。要注意的地方在于中文的编码：在C源文件中它的编码方式是GB2312还是UTF-8？编译出的可执行程序，其中的汉字编码方式是GB2312还是UTF-8？<br>注意：一般不会使用UTF-16的编码方式，在这种方式下ASCII字符也是用2字节来表示，而其中一个字节是0，但是在C语言中0表示字符串的结束符，会引起误会。<br>我们编写C程序时，可以使用ANSI编码，或是UTF-8编码；在编译程序时，可以使用以下的选项告诉编译器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-finput-charset&#x3D;GB2312</span><br><span class="line">-finput-charset&#x3D;UTF-8</span><br></pre></td></tr></table></figure>
+<p>如果不指定“-finput-charset”，GCC就会默认C程序的编码方式为UTF-8，即使你是以ANSI格式保存，也会被当作UTF-8来对待。<br>对于编译出来的可执行程序，可以指定它里面的字符是以什么方式编码，可以使用以下的选项编译器：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-fexec-charset&#x3D;GB2312</span><br><span class="line">-fexec-charset&#x3D;UTF-8</span><br></pre></td></tr></table></figure>
+<p>如果不指定“-fexec-charset”，GCC就会默认编译出的可执行程序中字符的编码方式为UTF-8。<br>如果“-finput-charset”与“-fexec-charset”不一样，编译器会进行格式转换。</p>
+<h2 id="3-2-汉字区位码"><a href="#3-2-汉字区位码" class="headerlink" title="3.2 汉字区位码"></a>3.2 汉字区位码</h2><p>从网上搜到HZK16这个文件，它是常用汉字的16*16点阵字库。HZK16里每个汉字使用32字节来描述，如下图所示：</p>
+<h2 id="3-3-汉字显示"><a href="#3-3-汉字显示" class="headerlink" title="3.3 汉字显示"></a>3.3 汉字显示</h2><h3 id="3-3-1-打开汉字库文件"><a href="#3-3-1-打开汉字库文件" class="headerlink" title="3.3.1 打开汉字库文件"></a>3.3.1 打开汉字库文件</h3><h3 id="3-3-2-编写显示汉字的函数"><a href="#3-3-2-编写显示汉字的函数" class="headerlink" title="3.3.2 编写显示汉字的函数"></a>3.3.2 编写显示汉字的函数</h3><h3 id="3-3-3-使用lcd-put-chinese函数"><a href="#3-3-3-使用lcd-put-chinese函数" class="headerlink" title="3.3.3 使用lcd_put-chinese函数"></a>3.3.3 使用lcd_put-chinese函数</h3><h3 id="3-3-4-编译程序"><a href="#3-3-4-编译程序" class="headerlink" title="3.3.4 编译程序"></a>3.3.4 编译程序</h3><h1 id="4-交叉编译程序：以freetype为例"><a href="#4-交叉编译程序：以freetype为例" class="headerlink" title="4 交叉编译程序：以freetype为例"></a>4 交叉编译程序：以freetype为例</h1><h1 id="5-使用freetype显示单个字符"><a href="#5-使用freetype显示单个字符" class="headerlink" title="5 使用freetype显示单个字符"></a>5 使用freetype显示单个字符</h1><h1 id="6-使用freetype显示一行文字"><a href="#6-使用freetype显示一行文字" class="headerlink" title="6 使用freetype显示一行文字"></a>6 使用freetype显示一行文字</h1>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div></div>
+  <button onclick="document.querySelector('.post-reward').classList.toggle('active');">
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/images/wechatpay.png" alt="melvin 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/images/alipay.png" alt="melvin 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>melvin
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/" title="文字显示">https://meixsh.github.io/2021/09/13/02_embedded/04_embedded_linux_app_basic/05_text_display/文字显示/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%96%87%E5%AD%97%E6%98%BE%E7%A4%BA/" rel="tag"># 文字显示</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/12/02_embedded/04_embedded_linux_app_basic/04_framebuffer/Framebuffer%E5%BA%94%E7%94%A8%E7%BC%96%E7%A8%8B/" rel="prev" title="Framebuffer应用编程">
+                  <i class="fa fa-chevron-left"></i> Framebuffer应用编程
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">melvin</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">176k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:40</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
