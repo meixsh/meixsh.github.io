@@ -91,8 +91,33 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <p>[TOC]</p>
-<h1 id="1-变量"><a href="#1-变量" class="headerlink" title="1. 变量"></a>1. 变量</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hello = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">hello = hello + <span class="string">&quot;world&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> age1 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">var</span> age2 = <span class="number">20</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">write</span>(age1 &lt;= age2);</span><br></pre></td></tr></table></figure>
+		
+			<div style="width:100%;float:left;margin-bottom:25px;">
+   <div id="toc" class="toc-article" >
+      <div class="toc-title">
+         <p>
+            <span> 目录 </span>
+            <a href="#" onclick="javascript:return openct(this);" title="展开">[+]</a>
+         </p>
+      </div>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%8F%98%E9%87%8F"><span class="toc-text">1. 变量</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%88%A4%E6%96%AD"><span class="toc-text">2. 判断</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%AE%A1%E7%AE%97"><span class="toc-text">逻辑计算</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%BE%AA%E7%8E%AF"><span class="toc-text">3. 循环</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%87%BD%E6%95%B0"><span class="toc-text">4. 函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-text">定义函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%8F%98%E9%87%8F"><span class="toc-text">函数变量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%95%B0%E7%BB%84"><span class="toc-text">5. 数组</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E7%BB%84"><span class="toc-text">创建数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E9%95%BF%E5%BA%A6"><span class="toc-text">数组长度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E6%8D%A2%E6%95%B0%E7%BB%84%E4%B8%BA%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">转换数组为字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A0%86%E6%A0%88%E6%93%8D%E4%BD%9C"><span class="toc-text">堆栈操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%9F%E5%88%97%E6%93%8D%E4%BD%9C"><span class="toc-text">队列操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E6%93%8D%E4%BD%9C"><span class="toc-text">排序操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%B7%B1%E5%86%99%E6%AF%94%E8%BE%83"><span class="toc-text">自己写比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E7%BB%84%E6%93%8D%E4%BD%9C"><span class="toc-text">数组操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#splice"><span class="toc-text">splice()</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-%E5%AF%B9%E8%B1%A1"><span class="toc-text">6. 对象</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-text">创建对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="toc-text">访问对象属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7"><span class="toc-text">删除对象属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%8D%E5%8E%86%E6%89%80%E6%9C%89%E5%B1%9E%E6%80%A7"><span class="toc-text">遍历所有属性</span></a></li></ol></li></ol>
+   </div>
+</div>
+<script>
+   function openct(e){    
+      if (e.innerHTML == '[+]') {
+         $(e).attr('title', '收起').html('[-]');
+         $(".toc-article ol").show();
+      } else {
+         $(e).attr('title', '展开').html('[+]');
+         $(".toc-article ol").hide();
+      }
+      e.blur();
+      return false;
+   }
+</script>
+		
+		<h1 id="1-变量"><a href="#1-变量" class="headerlink" title="1. 变量"></a>1. 变量</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> hello = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">hello = hello + <span class="string">&quot;world&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> age1 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">var</span> age2 = <span class="number">20</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">write</span>(age1 &lt;= age2);</span><br></pre></td></tr></table></figure>
 
 
 
@@ -195,11 +220,29 @@
 <li>或者说，对象是一个属性集合，每个属性都有自己的名字和值</li>
 <li>JavaScript并不像其它OOP语言那样有类的概念，不是先设计类再制造对象</li>
 </ul>
+<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><ul>
+<li>var o &#x3D; new Object();</li>
+<li>var cicle &#x3D; {x: 0, y: 0, radius: 2};</li>
+</ul>
+<h2 id="访问对象属性"><a href="#访问对象属性" class="headerlink" title="访问对象属性"></a>访问对象属性</h2><ul>
+<li><p><code>.</code> 运算符</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> book = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">book.<span class="property">title</span> = <span class="string">&quot;HTML5&quot;</span>;</span><br><span class="line">book.<span class="property">translator</span> = <span class="string">&quot;Bob&quot;</span>;</span><br><span class="line">book.<span class="property">chapter1</span> = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">book.<span class="property">chapter1</span>.<span class="property">title</span> = <span class="string">&quot;简介&quot;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>即使构造的时候不存在的属性也可以在今后随时增加</p>
+</li>
+</ul>
+<h2 id="删除对象属性"><a href="#删除对象属性" class="headerlink" title="删除对象属性"></a>删除对象属性</h2><ul>
+<li>delete book.chapter1;</li>
+<li>book.chapter1 &#x3D; null;</li>
+</ul>
+<h2 id="遍历所有属性"><a href="#遍历所有属性" class="headerlink" title="遍历所有属性"></a>遍历所有属性</h2><ul>
+<li>for (var x in o) …</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/01/01JavaScript/JavaScript%E6%A6%82%E8%A7%88/" data-id="clvo19w3o0000n06lhtsm669c" data-title="JavaScript概览" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/05/01/01JavaScript/JavaScript%E6%A6%82%E8%A7%88/" data-id="clvo2i2o70000lc6lgevscj5m" data-title="JavaScript概览" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -210,6 +253,7 @@
 
 
 
+    
   
 
 
