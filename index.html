@@ -108,7 +108,7 @@
 <li>or: ||</li>
 <li>not: !</li>
 </ul>
-<h1 id="3-循环"><a href="#3-循环" class="headerlink" title="3. 循环"></a>3. 循环</h1><p>求最大公约数：</p>
+<h1 id="3-循环"><a href="#3-循环" class="headerlink" title="3. 循环"></a>3. 循环</h1><p><strong>求最大公约数：</strong></p>
 <p>问题：找到两个非负整数u和v的最大公约数gcd</p>
 <p>第一步：如果v等于0，gcd就是u，算法结束</p>
 <p>第二步：计算 temp &#x3D; u % v, u &#x3D; v, v &#x3D; temp，然后回到第一步。</p>
@@ -116,14 +116,93 @@
 
 
 
-<p>reverse number</p>
+<p><strong>reverse number</strong></p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> number = <span class="number">23871</span>;</span><br><span class="line"><span class="keyword">var</span> reverse = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> lastDigit = number % <span class="number">10</span>;</span><br><span class="line">    reverse = (reverse * <span class="number">10</span>) + lastDigit;</span><br><span class="line">    number = number / <span class="number">10</span>;</span><br><span class="line">&#125; <span class="keyword">while</span> (number &gt; <span class="number">0</span>);</span><br><span class="line"><span class="title function_">alert</span>(<span class="string">&quot;That number reversed is &quot;</span> + reverse);</span><br></pre></td></tr></table></figure>
 
+
+
+<h1 id="4-函数"><a href="#4-函数" class="headerlink" title="4. 函数"></a>4. 函数</h1><h2 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a>定义函数</h2><ul>
+<li><code>function fun_name() &#123;&#125;</code></li>
+<li><code>function fun_name(a, b) &#123;&#125;</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">print</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">write</span>(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">println</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="title function_">print</span>(msg + <span class="string">&quot;&lt;br/&gt;&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">gcd</span>(<span class="params">u, v</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> temp = v;</span><br><span class="line">    <span class="keyword">while</span> (v != <span class="number">0</span>) &#123;</span><br><span class="line">        temp = u % v;</span><br><span class="line">        u = v;</span><br><span class="line">        v = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="函数变量"><a href="#函数变量" class="headerlink" title="函数变量"></a>函数变量</h2><ul>
+<li><p><code>var f = new Function(&quot;x&quot;, &quot;y&quot;, &quot;return x*y&quot;);</code></p>
+</li>
+<li><p>等价于</p>
+</li>
+<li><p><code>function f(x, y) &#123; return x * y; &#125;</code></p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">cal</span>(<span class="params">f, a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">f</span>(a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="5-数组"><a href="#5-数组" class="headerlink" title="5. 数组"></a>5. 数组</h1><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> marks = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line">marks[<span class="number">0</span>] = <span class="number">89</span>;</span><br><span class="line">marks[<span class="number">1</span>] = <span class="number">78</span>;</span><br><span class="line">marks[<span class="number">2</span>] = <span class="number">90</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h2><ul>
+<li><code>var a = new Array();</code></li>
+<li><code>var b = new Array(size);</code></li>
+<li><code>var c = new Array(d1, d2, ..., dn);</code></li>
+<li><code>var d = [d1, d2, ..., dn];</code></li>
+</ul>
+<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><ul>
+<li><p>a.length 给出数组a的长度</p>
+</li>
+<li><p>.length 可写</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line">colors.<span class="property">length</span> = <span class="number">2</span>;</span><br><span class="line"><span class="title function_">alert</span>(colors[<span class="number">2</span>]);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="转换数组为字符串"><a href="#转换数组为字符串" class="headerlink" title="转换数组为字符串"></a>转换数组为字符串</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">toString</span>());</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">valueOf</span>());</span><br><span class="line"><span class="title function_">alert</span>(colors);</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">join</span>(<span class="string">&quot;,&quot;</span>));</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">join</span>(<span class="string">&quot;||&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="堆栈操作"><a href="#堆栈操作" class="headerlink" title="堆栈操作"></a>堆栈操作</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line"><span class="keyword">var</span> count = colors.<span class="title function_">push</span>(<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line">count = colors.<span class="title function_">push</span>(<span class="string">&quot;black&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line"><span class="keyword">var</span> item = colors.<span class="title function_">pop</span>();</span><br><span class="line"><span class="title function_">alert</span>(item);</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="property">length</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="队列操作"><a href="#队列操作" class="headerlink" title="队列操作"></a>队列操作</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line"><span class="keyword">var</span> count = colors.<span class="title function_">push</span>(<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line">count = colors.<span class="title function_">push</span>(<span class="string">&quot;black&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line"><span class="keyword">var</span> item = colors.<span class="title function_">shift</span>();</span><br><span class="line"><span class="title function_">alert</span>(item);</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="property">length</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="排序操作"><a href="#排序操作" class="headerlink" title="排序操作"></a>排序操作</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>]</span><br><span class="line">values.<span class="title function_">sort</span>();</span><br><span class="line"><span class="title function_">alert</span>(values); <span class="comment">// 0, 1, 10, 15, 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> values = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">values.<span class="title function_">reverse</span>();</span><br><span class="line"><span class="title function_">alert</span>(values); <span class="comment">// 5, 4, 3, 2, 1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="自己写比较"><a href="#自己写比较" class="headerlink" title="自己写比较"></a>自己写比较</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">compare</span>(<span class="params">value1, value2</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value1 &lt; value2) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value1 &gt; value2) &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>];</span><br><span class="line">values.<span class="title function_">sort</span>(compare);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h2><ul>
+<li><p>连接</p>
+<p><code>colors2 = colors.concat(&quot;yellow&quot;, [&quot;black&quot;, &quot;brown&quot;]);</code></p>
+</li>
+<li><p>截取</p>
+<p><code>colors3 = colors.slice(1, 4);</code></p>
+</li>
+</ul>
+<h2 id="splice"><a href="#splice" class="headerlink" title="splice()"></a>splice()</h2><ul>
+<li>splice(开始位置，删除个数，插入元素…)<ul>
+<li>删除：splice(0, 2)</li>
+<li>插入：splice(2, 0, “red”, “green”)</li>
+<li>替换：splice(2, 1, “red”, “green”)</li>
+</ul>
+</li>
+</ul>
+<h1 id="6-对象"><a href="#6-对象" class="headerlink" title="6. 对象"></a>6. 对象</h1><ul>
+<li>对象是JavaScript的一种复合数据类型，它可以把多个数据集中在一个变量中，并且给其中的每个数据起名字</li>
+<li>或者说，对象是一个属性集合，每个属性都有自己的名字和值</li>
+<li>JavaScript并不像其它OOP语言那样有类的概念，不是先设计类再制造对象</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/01/01JavaScript/JavaScript%E6%A6%82%E8%A7%88/" data-id="clvnxnfyp00003c6lhvwk9ko8" data-title="JavaScript概览" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2024/05/01/01JavaScript/JavaScript%E6%A6%82%E8%A7%88/" data-id="clvo19w3o0000n06lhtsm669c" data-title="JavaScript概览" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
