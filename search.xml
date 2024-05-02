@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>JavaScript概览</title>
-    <url>/2024/05/01/01JavaScript/JavaScript%E6%A6%82%E8%A7%88/</url>
+    <title>HTML入门</title>
+    <url>/2024/05/02/01JavaScript/HTML%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>html</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JavaScript入门</title>
+    <url>/2024/05/01/01JavaScript/JavaScript%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h1 id="1-变量"><a href="#1-变量" class="headerlink" title="1. 变量"></a>1. 变量</h1><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> hello = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">hello = hello + <span class="string">&quot;world&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> age1 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">var</span> age2 = <span class="number">20</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">write</span>(age1 &lt;= age2);</span><br></pre></td></tr></table></figure>
 
 
@@ -263,5 +271,8 @@
 </li>
 </ul>
 ]]></content>
+      <tags>
+        <tag>js</tag>
+      </tags>
   </entry>
 </search>
