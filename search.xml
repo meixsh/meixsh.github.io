@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>JavaScript概览</title>
+    <url>/2024/05/01/01JavaScript/JavaScript%E6%A6%82%E8%A7%88/</url>
+    <content><![CDATA[<h1 id="1-变量"><a href="#1-变量" class="headerlink" title="1. 变量"></a>1. 变量</h1><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> hello = <span class="string">&quot;hello&quot;</span>;</span><br><span class="line">hello = hello + <span class="string">&quot;world&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> age1 = <span class="number">20</span>;</span><br><span class="line"><span class="keyword">var</span> age2 = <span class="number">20</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">write</span>(age1 &lt;= age2);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="2-判断"><a href="#2-判断" class="headerlink" title="2. 判断"></a>2. 判断</h1><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> age = <span class="number">20</span>;</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">write</span>(<span class="string">&quot;你的年龄是：&quot;</span> + age);</span><br><span class="line"><span class="keyword">if</span> (age &gt; <span class="number">18</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="title function_">alert</span>(<span class="string">&quot;成年了&quot;</span>);        </span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;还小呢&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">alert</span>(<span class="string">&quot;好啦好啦，知道啦&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="逻辑计算"><a href="#逻辑计算" class="headerlink" title="逻辑计算"></a>逻辑计算</h2><ul>
+<li>and: &amp;&amp;</li>
+<li>or: ||</li>
+<li>not: !</li>
+</ul>
+<h1 id="3-循环"><a href="#3-循环" class="headerlink" title="3. 循环"></a>3. 循环</h1><p><strong>求最大公约数：</strong></p>
+<p>问题：找到两个非负整数u和v的最大公约数gcd</p>
+<p>第一步：如果v等于0，gcd就是u，算法结束</p>
+<p>第二步：计算 temp &#x3D; u % v, u &#x3D; v, v &#x3D; temp，然后回到第一步。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> u = <span class="number">42</span>;</span><br><span class="line"><span class="keyword">var</span> v = <span class="number">21</span>;</span><br><span class="line"><span class="keyword">var</span> temp = v;</span><br><span class="line"><span class="keyword">while</span> (v != <span class="number">0</span>) &#123;</span><br><span class="line">    temp = u % v;</span><br><span class="line">    u = v;</span><br><span class="line">    v = temp;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_">alert</span>(<span class="string">&quot;最大公约数：&quot;</span> + u);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>reverse number</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> number = <span class="number">23871</span>;</span><br><span class="line"><span class="keyword">var</span> reverse = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> lastDigit = number % <span class="number">10</span>;</span><br><span class="line">    reverse = (reverse * <span class="number">10</span>) + lastDigit;</span><br><span class="line">    number = number / <span class="number">10</span>;</span><br><span class="line">&#125; <span class="keyword">while</span> (number &gt; <span class="number">0</span>);</span><br><span class="line"><span class="title function_">alert</span>(<span class="string">&quot;That number reversed is &quot;</span> + reverse);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="4-函数"><a href="#4-函数" class="headerlink" title="4. 函数"></a>4. 函数</h1><h2 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a>定义函数</h2><ul>
+<li><code>function fun_name() &#123;&#125;</code></li>
+<li><code>function fun_name(a, b) &#123;&#125;</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">print</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">write</span>(msg);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">println</span>(<span class="params">msg</span>) &#123;</span><br><span class="line">    <span class="title function_">print</span>(msg + <span class="string">&quot;&lt;br/&gt;&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">gcd</span>(<span class="params">u, v</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> temp = v;</span><br><span class="line">    <span class="keyword">while</span> (v != <span class="number">0</span>) &#123;</span><br><span class="line">        temp = u % v;</span><br><span class="line">        u = v;</span><br><span class="line">        v = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> u;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="函数变量"><a href="#函数变量" class="headerlink" title="函数变量"></a>函数变量</h2><ul>
+<li><p><code>var f = new Function(&quot;x&quot;, &quot;y&quot;, &quot;return x*y&quot;);</code></p>
+</li>
+<li><p>等价于</p>
+</li>
+<li><p><code>function f(x, y) &#123; return x * y; &#125;</code></p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">add</span>(<span class="params">a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> a + b;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">cal</span>(<span class="params">f, a, b</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="title function_">f</span>(a, b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="5-数组"><a href="#5-数组" class="headerlink" title="5. 数组"></a>5. 数组</h1><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> marks = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line">marks[<span class="number">0</span>] = <span class="number">89</span>;</span><br><span class="line">marks[<span class="number">1</span>] = <span class="number">78</span>;</span><br><span class="line">marks[<span class="number">2</span>] = <span class="number">90</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a>创建数组</h2><ul>
+<li><code>var a = new Array();</code></li>
+<li><code>var b = new Array(size);</code></li>
+<li><code>var c = new Array(d1, d2, ..., dn);</code></li>
+<li><code>var d = [d1, d2, ..., dn];</code></li>
+</ul>
+<h2 id="数组长度"><a href="#数组长度" class="headerlink" title="数组长度"></a>数组长度</h2><ul>
+<li><p>a.length 给出数组a的长度</p>
+</li>
+<li><p>.length 可写</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line">colors.<span class="property">length</span> = <span class="number">2</span>;</span><br><span class="line"><span class="title function_">alert</span>(colors[<span class="number">2</span>]);</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="转换数组为字符串"><a href="#转换数组为字符串" class="headerlink" title="转换数组为字符串"></a>转换数组为字符串</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = [<span class="string">&quot;red&quot;</span>, <span class="string">&quot;blue&quot;</span>, <span class="string">&quot;green&quot;</span>];</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">toString</span>());</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">valueOf</span>());</span><br><span class="line"><span class="title function_">alert</span>(colors);</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">join</span>(<span class="string">&quot;,&quot;</span>));</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="title function_">join</span>(<span class="string">&quot;||&quot;</span>));</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="堆栈操作"><a href="#堆栈操作" class="headerlink" title="堆栈操作"></a>堆栈操作</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line"><span class="keyword">var</span> count = colors.<span class="title function_">push</span>(<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line">count = colors.<span class="title function_">push</span>(<span class="string">&quot;black&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line"><span class="keyword">var</span> item = colors.<span class="title function_">pop</span>();</span><br><span class="line"><span class="title function_">alert</span>(item);</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="property">length</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="队列操作"><a href="#队列操作" class="headerlink" title="队列操作"></a>队列操作</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> colors = <span class="keyword">new</span> <span class="title class_">Array</span>();</span><br><span class="line"><span class="keyword">var</span> count = colors.<span class="title function_">push</span>(<span class="string">&quot;red&quot;</span>, <span class="string">&quot;green&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line">count = colors.<span class="title function_">push</span>(<span class="string">&quot;black&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(count);</span><br><span class="line"><span class="keyword">var</span> item = colors.<span class="title function_">shift</span>();</span><br><span class="line"><span class="title function_">alert</span>(item);</span><br><span class="line"><span class="title function_">alert</span>(colors.<span class="property">length</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="排序操作"><a href="#排序操作" class="headerlink" title="排序操作"></a>排序操作</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>]</span><br><span class="line">values.<span class="title function_">sort</span>();</span><br><span class="line"><span class="title function_">alert</span>(values); <span class="comment">// 0, 1, 10, 15, 5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> values = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">values.<span class="title function_">reverse</span>();</span><br><span class="line"><span class="title function_">alert</span>(values); <span class="comment">// 5, 4, 3, 2, 1</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="自己写比较"><a href="#自己写比较" class="headerlink" title="自己写比较"></a>自己写比较</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">compare</span>(<span class="params">value1, value2</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (value1 &lt; value2) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (value1 &gt; value2) &#123;</span><br><span class="line">        <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> values = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>];</span><br><span class="line">values.<span class="title function_">sort</span>(compare);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h2><ul>
+<li><p>连接</p>
+<p><code>colors2 = colors.concat(&quot;yellow&quot;, [&quot;black&quot;, &quot;brown&quot;]);</code></p>
+</li>
+<li><p>截取</p>
+<p><code>colors3 = colors.slice(1, 4);</code></p>
+</li>
+</ul>
+<h2 id="splice"><a href="#splice" class="headerlink" title="splice()"></a>splice()</h2><ul>
+<li>splice(开始位置，删除个数，插入元素…)<ul>
+<li>删除：splice(0, 2)</li>
+<li>插入：splice(2, 0, “red”, “green”)</li>
+<li>替换：splice(2, 1, “red”, “green”)</li>
+</ul>
+</li>
+</ul>
+<h1 id="6-对象"><a href="#6-对象" class="headerlink" title="6. 对象"></a>6. 对象</h1><ul>
+<li>对象是JavaScript的一种复合数据类型，它可以把多个数据集中在一个变量中，并且给其中的每个数据起名字</li>
+<li>或者说，对象是一个属性集合，每个属性都有自己的名字和值</li>
+<li>JavaScript并不像其它OOP语言那样有类的概念，不是先设计类再制造对象</li>
+</ul>
+<h2 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h2><ul>
+<li>var o &#x3D; new Object();</li>
+<li>var cicle &#x3D; {x: 0, y: 0, radius: 2};</li>
+</ul>
+<h2 id="访问对象属性"><a href="#访问对象属性" class="headerlink" title="访问对象属性"></a>访问对象属性</h2><ul>
+<li><p><code>.</code> 运算符</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> book = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">book.<span class="property">title</span> = <span class="string">&quot;HTML5&quot;</span>;</span><br><span class="line">book.<span class="property">translator</span> = <span class="string">&quot;Bob&quot;</span>;</span><br><span class="line">book.<span class="property">chapter1</span> = <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">book.<span class="property">chapter1</span>.<span class="property">title</span> = <span class="string">&quot;简介&quot;</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>即使构造的时候不存在的属性也可以在今后随时增加</p>
+</li>
+</ul>
+<h2 id="删除对象属性"><a href="#删除对象属性" class="headerlink" title="删除对象属性"></a>删除对象属性</h2><ul>
+<li>delete book.chapter1;</li>
+<li>book.chapter1 &#x3D; null;</li>
+</ul>
+<h2 id="遍历所有属性"><a href="#遍历所有属性" class="headerlink" title="遍历所有属性"></a>遍历所有属性</h2><ul>
+<li>for (var x in o) …</li>
+</ul>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><ul>
+<li>不直接制造对象</li>
+<li>通过this来定义成员</li>
+<li>没有return</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Rect</span>(<span class="params">w, h</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">width</span> = w;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">height</span> = h;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">area</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123; <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">width</span> * <span class="variable language_">this</span>.<span class="property">height</span>; &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> r = <span class="keyword">new</span> <span class="title class_">Rect</span>(<span class="number">5</span>, <span class="number">10</span>);</span><br><span class="line"><span class="title function_">alert</span>(r.<span class="title function_">area</span>());</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>一旦定义了构造函数就可以构造任意数量的对象</li>
+</ul>
+<h2 id="原型对象"><a href="#原型对象" class="headerlink" title="原型对象"></a>原型对象</h2><ul>
+<li>对象的prototype属性指定了它的原型对象，可以用 <code>.</code> 运算符直接读取它的原型对象属性</li>
+<li>当写这个属性时才在它自己内部产生实际的属性</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params"></span>) &#123;&#125;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">name</span> = <span class="string">&quot;Nicholas&quot;</span>;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">age</span> = <span class="number">29</span>;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">job</span> = <span class="string">&quot;Software Engineer&quot;</span>;</span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">sayName</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">person1.<span class="title function_">sayName</span>(); <span class="comment">// &quot;Nicholas&quot;</span></span><br><span class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br><span class="line">person2.<span class="title function_">sayName</span>(); <span class="comment">// &quot;Nicholas&quot;</span></span><br><span class="line"><span class="title function_">alert</span>(person1.<span class="property">sayName</span> == person2.<span class="property">sayName</span>); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="组合原型和构造方法"><a href="#组合原型和构造方法" class="headerlink" title="组合原型和构造方法"></a>组合原型和构造方法</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, job</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">job</span> = job;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">friends</span> = [<span class="string">&quot;shelby&quot;</span>, <span class="string">&quot;court&quot;</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span> = &#123;</span><br><span class="line">  <span class="attr">constructor</span>: <span class="title class_">Person</span>,</span><br><span class="line">  <span class="attr">sayName</span>: <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="title function_">alert</span>(<span class="variable language_">this</span>.<span class="property">name</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="7-window"><a href="#7-window" class="headerlink" title="7. window"></a>7. window</h1><h2 id="全局对象"><a href="#全局对象" class="headerlink" title="全局对象"></a>全局对象</h2><ul>
+<li>浏览器的全局对象是window</li>
+<li>所有全局变量实际上是window的成员<ul>
+<li>var answer &#x3D; 12;</li>
+<li>alert(window.answer);</li>
+</ul>
+</li>
+</ul>
+<h2 id="document"><a href="#document" class="headerlink" title="document"></a>document</h2><ul>
+<li>window.document 表示浏览器窗口中的HTML页面</li>
+<li>document.write()将内容写入页面</li>
+<li>页面中的元素就是document里的成员</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (x <span class="keyword">in</span> <span class="variable language_">document</span>)</span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">write</span>(x + <span class="string">&#x27;&lt;br/&gt;&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="html中的JavaScript"><a href="#html中的JavaScript" class="headerlink" title="html中的JavaScript"></a>html中的JavaScript</h2><ul>
+<li>在 <code>&lt;script&gt;&lt;/script&gt;</code>标记中</li>
+<li>在<code>&lt;script&gt;</code>的src属性或archive指定的外部文件中</li>
+<li>在某个html标记的事件处理器中</li>
+</ul>
+<h3 id="外部JavaScript文件"><a href="#外部JavaScript文件" class="headerlink" title="外部JavaScript文件"></a>外部JavaScript文件</h3><ul>
+<li><code>&lt;script src = &quot;util.js&quot;&gt;&lt;/script&gt;</code></li>
+<li>一个纯粹的代码文件，没有html标记</li>
+</ul>
+<h3 id="事件处理器"><a href="#事件处理器" class="headerlink" title="事件处理器"></a>事件处理器</h3><ul>
+<li><code>&lt;p onMouseOver=&quot;alert(&#39;hi&#39;);&quot; onMouseOut=&quot;alert(&#39;bye&#39;);&quot;&gt;</code></li>
+</ul>
+<h3 id="body事件"><a href="#body事件" class="headerlink" title="body事件"></a>body事件</h3><ul>
+<li>onLoad</li>
+<li>onUnload</li>
+</ul>
+<h2 id="简单对话框"><a href="#简单对话框" class="headerlink" title="简单对话框"></a>简单对话框</h2><ul>
+<li>alert()</li>
+<li>confirm()</li>
+<li>prompt()</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="title function_">confirm</span>(<span class="string">&quot;go on?&quot;</span>)) &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;continue&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;bye&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="title function_">prompt</span>(<span class="string">&quot;Your name:&quot;</span>);</span><br><span class="line"><span class="title function_">alert</span>(<span class="string">&quot;Hi: &quot;</span> + name);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="状态栏"><a href="#状态栏" class="headerlink" title="状态栏"></a>状态栏</h2><ul>
+<li>status&#x3D;</li>
+<li>defaultStatus&#x3D;</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;p onMouseOver=<span class="string">&quot;status=&#x27;网易云学习&#x27;;&quot;</span></span><br><span class="line">   onMouseOut = <span class="string">&quot;status=&#x27;&#x27;;&quot;</span>&gt;</span><br><span class="line">    网易云学习</span><br><span class="line">&lt;/p&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><ul>
+<li>setInterval()</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;head&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">utf-8</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        count = <span class="number">10</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        <span class="keyword">function</span> <span class="title function_">update</span>(<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            <span class="keyword">if</span> (count &gt; <span class="number">0</span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">                status = count--;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">body</span> <span class="attr">onLoad</span>=<span class="string">&quot;setInterval(&#x27;update()&#x27;, 1000)&quot;</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="window的控制方法"><a href="#window的控制方法" class="headerlink" title="window的控制方法"></a>window的控制方法</h2><ul>
+<li><p>window.open();</p>
+<ul>
+<li><p>var w&#x3D;window.open(“smallwin.html”, “smallwin”,</p>
+<p>“width&#x3D;400, height&#x3D;350, status&#x3D;yes, resizable&#x3D;yes”);</p>
+</li>
+<li><p>w.close();</p>
+</li>
+</ul>
+</li>
+<li><p>window.close();</p>
+</li>
+</ul>
+<h2 id="location对象"><a href="#location对象" class="headerlink" title="location对象"></a>location对象</h2><ul>
+<li>window.location代表当前文档URL<ul>
+<li>alert(location);</li>
+<li>location&#x3D;”<a href="http://study.163.com/">http://study.163.com</a>“;</li>
+</ul>
+</li>
+</ul>
+<h1 id="8-document"><a href="#8-document" class="headerlink" title="8. document"></a>8. document</h1><h2 id="Document-Object-Model"><a href="#Document-Object-Model" class="headerlink" title="Document Object Model"></a>Document Object Model</h2><ul>
+<li>文档对象模型</li>
+<li>document对象的成员提供了HTML文档的信息</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (x <span class="keyword">in</span> <span class="variable language_">document</span>)</span><br><span class="line">    <span class="title function_">println</span>(x);</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementsByName</span>(<span class="string">&quot;xxx&quot;</span>)</span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementsById</span>(<span class="string">&quot;xxx&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="document成员"><a href="#document成员" class="headerlink" title="document成员"></a>document成员</h2><ul>
+<li>anchors[]</li>
+<li>forms[]</li>
+<li>images[]</li>
+<li>cookie</li>
+<li>title</li>
+<li>bgColor</li>
+<li>fgColor</li>
+<li>linkColor</li>
+<li>alinkColor</li>
+<li>vlinkColor</li>
+</ul>
+<h2 id="图像"><a href="#图像" class="headerlink" title="图像"></a>图像</h2><ul>
+<li>image对象的src可以改写以装入一副新的图片</li>
+<li>可以创建Image()对象来提前装载图片</li>
+<li>onLoad事件表明图片装载完成</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;body onLoad=<span class="string">&quot;setInterval(&#x27;show()&#x27;, 200);&quot;</span>&gt;</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">name</span>=<span class="string">&quot;anm&quot;</span> <span class="attr">src</span>=<span class="string">&quot;0.jpg&quot;</span> <span class="attr">width</span>=<span class="string">300</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span></span><br><span class="line">	<span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        <span class="keyword">var</span> images = <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="number">6</span>);</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">		<span class="keyword">var</span> index = <span class="number">1</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">		<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            images[i] = <span class="keyword">new</span> <span class="title class_">Image</span>();</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            images[i].<span class="property">src</span> = i + <span class="string">&quot;.jpg&quot;</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">		<span class="keyword">function</span> <span class="title function_">show</span>(<span class="params"></span>) &#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            <span class="variable language_">document</span>.<span class="property">anm</span>.<span class="property">src</span> = images[index].<span class="property">src</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">            index = (index + <span class="number">1</span>) % <span class="number">6</span>;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">        &#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;/body&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><ul>
+<li><p>onLoad&#x2F;onUnload</p>
+</li>
+<li><p>onMouseOver&#x2F;onMouseOut</p>
+</li>
+<li><p>onClick&#x2F;onDblClick</p>
+</li>
+<li><p>onSubmit</p>
+</li>
+</ul>
+]]></content>
+  </entry>
+</search>
