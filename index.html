@@ -188,6 +188,295 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/16/05Build/cmake%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Melvin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Melvin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/16/05Build/cmake%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">cmake入门</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-06-16 21:03:40 / Modified: 21:04:23" itemprop="dateCreated datePublished" datetime="2024-06-16T21:03:40+08:00">2024-06-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><a target="_blank" rel="noopener" href="https://aiden-dong.github.io/2019/07/20/CMake%E6%95%99%E7%A8%8B%E4%B9%8BCMake%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%BA%94%E7%94%A8/">https://aiden-dong.github.io/2019/07/20/CMake%E6%95%99%E7%A8%8B%E4%B9%8BCMake%E4%BB%8E%E5%85%A5%E9%97%A8%E5%88%B0%E5%BA%94%E7%94%A8/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Melvin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Melvin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">OpenGL学习</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-06-16 15:38:37 / Modified: 21:48:55" itemprop="dateCreated datePublished" datetime="2024-06-16T15:38:37+08:00">2024-06-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li><a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/intro/">https://learnopengl-cn.github.io/intro/</a> opengl教程</li>
+<li><a target="_blank" rel="noopener" href="https://www.glfw.org/">https://www.glfw.org/</a> glfw网站</li>
+<li><a target="_blank" rel="noopener" href="https://glad.dav1d.de/">https://glad.dav1d.de/</a> glad网站</li>
+</ul>
+<h1 id="封装Application"><a href="#封装Application" class="headerlink" title="封装Application"></a>封装Application</h1><p>将窗体相关代码封装并暴露必要接口<br>思路：3D程序都是帧循环驱动，每个对象都应该初始化，之后每一帧更新数据或处理事件，退出前打扫战场</p>
+<h1 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h1><p>图像渲染本质上就是CPU端的C++程序控制GPU行为的过程，控制过程包括<strong>数据传输</strong>和<strong>指令发送</strong></p>
+<h2 id="GPU两大工作"><a href="#GPU两大工作" class="headerlink" title="GPU两大工作"></a>GPU两大工作</h2><ul>
+<li>GPU对三角形数据处理，分为顶点处理与片元处理</li>
+<li>顶点与片元的处理，统一通过着色器程序（Shader）进行，它是我们自己编写的运行在GPU端的程序</li>
+</ul>
+<p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/GPU-works.png" alt="GPU工作"></p>
+<h1 id="标准化设备坐标-NDC"><a href="#标准化设备坐标-NDC" class="headerlink" title="标准化设备坐标 NDC"></a>标准化设备坐标 NDC</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>标准化设备坐标 Normalized Device Coordinate &#x3D; NDC</p>
+<p>用-1到1之间的数字，表示顶点的坐标；本质上就是比例</p>
+<p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/OpenGL%E5%AD%A6%E4%B9%A0%5CNDC-examle.png" alt="NDC-example"></p>
+<h2 id="绘制二维三角形"><a href="#绘制二维三角形" class="headerlink" title="绘制二维三角形"></a>绘制二维三角形</h2><p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/NDC-triangle.png"></p>
+<h1 id="VBO"><a href="#VBO" class="headerlink" title="VBO"></a>VBO</h1><h2 id="介绍-1"><a href="#介绍-1" class="headerlink" title="介绍"></a>介绍</h2><ul>
+<li>什么是VBO？<ul>
+<li>VBO（Vertex Buffer Object）:表示在GPU显存上的一段存储空间对象</li>
+<li>VBO在C++中，表现为一个 <code>unsigned int</code> 类型变量，理解成为GPU端内存对象的一个ID编号</li>
+</ul>
+</li>
+</ul>
+<p>​	<img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/VBO-outline.png"></p>
+<p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/VBO-desc.png"> </p>
+<h2 id="VBO-创建与销毁"><a href="#VBO-创建与销毁" class="headerlink" title="VBO 创建与销毁"></a>VBO 创建与销毁</h2><ul>
+<li><p>VBO创建</p>
+<ul>
+<li><code>void glGenBuffers(GLsizei n, GLuint *buffers)</code></li>
+<li>n: 创建多少个vbo</li>
+<li>buffers：创建出来的vbo编号们（句柄）都放到buffer指向的数组中</li>
+</ul>
+</li>
+<li><p>案例</p>
+<ul>
+<li><pre><code class="c++">GLuint vbo = 0;
+glGenBuffers(1, &amp;vbo);
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- ``` c++</span><br><span class="line">  GLuint vboArr[] = &#123;0, 0, 0&#125;;</span><br><span class="line">  glGenBuffers(3, vboArr);</span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>VBO销毁</p>
+<ul>
+<li><code>void glDeleteBuffers(GLsizei n, GLuint *buffers);</code></li>
+<li>n: 删除多少个vbo</li>
+<li>buffers: 要删除的vbo编号数组</li>
+</ul>
+</li>
+</ul>
+<h2 id="VBO绑定与数据更新"><a href="#VBO绑定与数据更新" class="headerlink" title="VBO绑定与数据更新"></a>VBO绑定与数据更新</h2><ul>
+<li>绑定： 将某个资源与OpenGL状态机中某个状态插槽进行关联</li>
+</ul>
+<p>​	<img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/VBO-bind.png"></p>
+<ul>
+<li>VBO绑定<ul>
+<li><code>void glBindBuffer(GLenum target, GLuint buffer);</code></li>
+<li>target: 把当前的vbo绑定到状态机的哪个状态插槽</li>
+<li>buffer: 绑定的vbo编号，0表示不绑定任何buffer</li>
+</ul>
+</li>
+<li>VBO填入数据 <font color="red" bold>注意：此函数调用的时候，会重新开辟存储空间！谨慎调用</font><ul>
+<li><code>void glBufferData(GLenum target, GLsizeiptr size, const void *data, GLenum usage);</code></li>
+<li>target: 针对状态机的哪个状态插槽的buffer</li>
+<li>size: 装入当前buffer的数据大小</li>
+<li>data: 装有数据的数组指针</li>
+<li><strong>usage: 当前buffer的用法</strong><ul>
+<li><strong>GL_STATIC_DRAW</strong>: vbo 模型数据不会频繁改变</li>
+<li><strong>GL_DYNAMIC_DRAW</strong>: vbo模型数据会频繁改变</li>
+<li>注意：此选项会引导GPU做优化，优化开辟显存的方式与方法</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/03English/IT-English/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Melvin">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Melvin's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/05/04/03English/IT-English/" class="post-title-link" itemprop="url">IT-English</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-05-04 16:26:35 / Modified: 16:29:07" itemprop="dateCreated datePublished" datetime="2024-05-04T16:26:35+08:00">2024-05-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="1-IT符号"><a href="#1-IT符号" class="headerlink" title="1. IT符号"></a>1. IT符号</h1><ul>
+<li>tilde ~</li>
+<li>exclamation mark !</li>
+<li>at @</li>
+<li>number&#x2F;hash #</li>
+<li>dollar sign $</li>
+<li>percent %</li>
+<li>caret ^</li>
+<li>ampersand &amp;</li>
+<li>asterisk *</li>
+<li>brackets&#x2F;parentheses ()</li>
+<li>underscore&#x2F;horizontal bar _</li>
+<li>dash&#x2F;hyphen -</li>
+<li>plus +</li>
+<li>equals &#x3D;</li>
+<li>curly braces {}</li>
+<li>vertical bar |</li>
+<li>square brackets []</li>
+<li>forward slash &#x2F;</li>
+<li>backslash \</li>
+<li>colon :</li>
+<li>semicolon ;</li>
+<li>quote&#x2F;double quote “”</li>
+<li>apostrophe&#x2F;single quote ‘’</li>
+<li>less than &lt;</li>
+<li>more than&#x2F;greater than &gt;</li>
+<li>question mark ?</li>
+<li>comma ,</li>
+<li>dot&#x2F;period .</li>
+</ul>
+<h1 id="2-IT-Slang"><a href="#2-IT-Slang" class="headerlink" title="2. IT Slang"></a>2. IT Slang</h1>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2024/05/04/03English/%E8%AF%8D%E6%B1%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -213,7 +502,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2024-05-04 13:26:03 / Modified: 14:38:39" itemprop="dateCreated datePublished" datetime="2024-05-04T13:26:03+08:00">2024-05-04</time>
+              <time title="Created: 2024-05-04 13:26:03 / Modified: 16:28:45" itemprop="dateCreated datePublished" datetime="2024-05-04T13:26:03+08:00">2024-05-04</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -221,7 +510,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%8D%E6%B1%87/" itemprop="url" rel="index"><span itemprop="name">词汇</span></a>
+                  <a href="/categories/English/" itemprop="url" rel="index"><span itemprop="name">English</span></a>
                 </span>
             </span>
 
@@ -464,10 +753,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2024-05-04 13:20:30 / Modified: 13:22:35" itemprop="dateCreated datePublished" datetime="2024-05-04T13:20:30+08:00">2024-05-04</time>
+              <time title="Created: 2024-05-04 13:20:30" itemprop="dateCreated datePublished" datetime="2024-05-04T13:20:30+08:00">2024-05-04</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-06-16 19:49:23" itemprop="dateModified" datetime="2024-06-16T19:49:23+08:00">2024-06-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -490,6 +785,24 @@
 
       
           <p><a target="_blank" rel="noopener" href="https://cs-cshi.github.io/hexo-blog/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Github%20+%20Hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/">https://cs-cshi.github.io/hexo-blog/%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%20Github%20+%20Hexo%20%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</a></p>
+<h1 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h1><p>hexo new “xxx” -p xxx&#x2F;xxx #新建文章并指定目录</p>
+<p>hexo g # 生成页面</p>
+<p>hexo s # 本地预览</p>
+<p>hexo d # 部署</p>
+<p>hexo g -d # 生成页面并部署</p>
+<p>hexo clean # 清除缓存和已生成的静态文件</p>
+<p>hexo help # 帮助</p>
+<h1 id="Q-A"><a href="#Q-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h2 id="如何插入本地图片？"><a href="#如何插入本地图片？" class="headerlink" title="如何插入本地图片？"></a>如何插入本地图片？</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/koo070/p/16548228.html">https://www.cnblogs.com/koo070/p/16548228.html</a></p>
+<ul>
+<li><p>更改hexo配置文件</p>
+<p><code>vim _config.yml #配置_config.yml里面的post_asset_folder:false 设置为 true</code></p>
+</li>
+<li><p>安装npm插件</p>
+<p><code>npm install https://github.com/CodeFalling/hexo-asset-image --save</code></p>
+</li>
+<li><p>图片放在博客同名的目录下</p>
+</li>
+</ul>
 
       
     </div>
@@ -648,7 +961,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2024-05-04 13:15:51" itemprop="dateModified" datetime="2024-05-04T13:15:51+08:00">2024-05-04</time>
+                <time title="Modified: 2024-05-04 13:24:18" itemprop="dateModified" datetime="2024-05-04T13:24:18+08:00">2024-05-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1302,7 +1615,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1315,7 +1628,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
