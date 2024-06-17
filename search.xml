@@ -302,7 +302,7 @@ glGenBuffers(1, &amp;vbo);
 <li>buffer: 绑定的vbo编号，0表示不绑定任何buffer</li>
 </ul>
 </li>
-<li>VBO填入数据 <font color="red" bold>注意：此函数调用的时候，会重新开辟存储空间！谨慎调用</font><ul>
+<li>VBO填入数据 <font color="red"><b>注意：此函数调用的时候，会重新开辟存储空间！谨慎调用</b></font><ul>
 <li><code>void glBufferData(GLenum target, GLsizeiptr size, const void *data, GLenum usage);</code></li>
 <li>target: 针对状态机的哪个状态插槽的buffer</li>
 <li>size: 装入当前buffer的数据大小</li>
@@ -316,6 +316,82 @@ glGenBuffers(1, &amp;vbo);
 </ul>
 </li>
 </ul>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">prepare</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="type">float</span> vertices[] = &#123;</span><br><span class="line">		   <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">			<span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">			<span class="number">0.0f</span>,  <span class="number">0.5f</span>, <span class="number">0.0f</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//1 生成一个vbo</span></span><br><span class="line">	GLuint vbo = <span class="number">0</span>;</span><br><span class="line">	<span class="built_in">GL_CALL</span>(<span class="built_in">glGenBuffers</span>(<span class="number">1</span>, &amp;vbo));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="comment">//2 绑定当前vbo，到opengl状态机的当前vbo插槽上</span></span><br><span class="line">	<span class="comment">//GL_ARRAY_BUFFER:表示当前vbo这个插槽</span></span><br><span class="line">	<span class="built_in">GL_CALL</span>(<span class="built_in">glBindBuffer</span>(GL_ARRAY_BUFFER, vbo));</span><br><span class="line"></span><br><span class="line">	<span class="comment">//3 向当前vbo传输数据，也是在开辟显存</span></span><br><span class="line">	<span class="built_in">GL_CALL</span>(<span class="built_in">glBufferData</span>(GL_ARRAY_BUFFER, <span class="built_in">sizeof</span>(vertices), vertices, GL_STATIC_DRAW));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="VBO-多属性数据"><a href="#VBO-多属性数据" class="headerlink" title="VBO 多属性数据"></a>VBO 多属性数据</h2><p>多属性数据</p>
+<p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/VBO-multi-feature.png"></p>
+<p>颜色数据在GPU端存储在哪里呢？</p>
+<h3 id="每个属性存储为一个VBO-single-buffer"><a href="#每个属性存储为一个VBO-single-buffer" class="headerlink" title="每个属性存储为一个VBO (single buffer)"></a>每个属性存储为一个VBO (single buffer)</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// ndc坐标 表示顶点位置</span></span><br><span class="line"><span class="type">float</span> vertices[] = &#123;</span><br><span class="line">    <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">    <span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>,</span><br><span class="line">    <span class="number">0.0f</span>, <span class="number">0.5f</span>, <span class="number">0.0f</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// RGB值 表示顶点颜色</span></span><br><span class="line"><span class="type">float</span> colors[] = &#123;</span><br><span class="line">	<span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>,</span><br><span class="line">	<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>,</span><br><span class="line">	<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">GLuint posVbo, colorVbo;</span><br><span class="line"><span class="built_in">glGenBuffers</span>(<span class="number">1</span>, &amp;posVbo);</span><br><span class="line"><span class="built_in">glBindBuffer</span>(GL_ARRAY_BUFFER, posVbo);</span><br><span class="line"><span class="built_in">glBufferData</span>(GL_ARRAY_BUFFER, <span class="built_in">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line"></span><br><span class="line"><span class="built_in">glGenBuffers</span>(<span class="number">1</span>, &amp;colorVbo);</span><br><span class="line"><span class="built_in">glBindBuffer</span>(GL_ARRAY_BUFFER, colorVbo);</span><br><span class="line"><span class="built_in">glBufferData</span>(GL_ARRAY_BUFFER, <span class="built_in">sizeof</span>(colors), colors, GL_STATIC_DRAW);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="所有属性存储为一个vbo-interleaved-buffer"><a href="#所有属性存储为一个vbo-interleaved-buffer" class="headerlink" title="所有属性存储为一个vbo (interleaved buffer)"></a>所有属性存储为一个vbo (interleaved buffer)</h3><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">float</span> vertices[] = &#123;</span><br><span class="line">    <span class="number">-0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>,</span><br><span class="line">    <span class="number">0.5f</span>, <span class="number">-0.5f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>,</span><br><span class="line">    <span class="number">0.0f</span>, <span class="number">0.5f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">GLuint pcVbo;</span><br><span class="line"><span class="built_in">glGenBuffers</span>(<span class="number">1</span>, &amp;pcVbo);</span><br><span class="line"><span class="built_in">glBindBuffer</span>(GL_ARRAY_BUFFER, pcVbo);</span><br><span class="line"><span class="built_in">glBufferData</span>(GL_ARRAY_BUFFER, <span class="built_in">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="VAO"><a href="#VAO" class="headerlink" title="VAO"></a>VAO</h1><p>vbo的数据到达GPU显存之后：</p>
+<ol>
+<li>GPU如何知道这些数据的用处？<strong>位置、颜色、法线、id…</strong></li>
+<li>GPU如何知道每个顶点有几个float? <strong>1个，2个，3个 …</strong></li>
+<li>GPU如何知道这组数据包含几种属性？<strong>位置，位置+颜色，位置+颜色+uv</strong></li>
+</ol>
+<h2 id="什么是VAO"><a href="#什么是VAO" class="headerlink" title="什么是VAO"></a>什么是VAO</h2><p>VAO (Vertex Array Object)：顶点数组对象，用于存储一个Mesh网格所有<strong>顶点属性描述信息</strong></p>
+<p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/VAO-desc1.png"></p>
+<h2 id="VAO完整描述"><a href="#VAO完整描述" class="headerlink" title="VAO完整描述"></a>VAO完整描述</h2><p>对于三角形顶点的某一个属性，需要知道的描述信息为：</p>
+<ul>
+<li>每个顶点几个数字</li>
+<li>每个数字都是什么类型</li>
+<li>每个顶点数据，步长是多少byte</li>
+<li>此属性数据在顶点数据内的偏移量 offset</li>
+<li>此属性存储在几号vbo</li>
+</ul>
+<p>VAO属性</p>
+<ul>
+<li>位置信息描述</li>
+<li>颜色信息描述</li>
+<li>法线信息描述</li>
+<li>uv信息描述</li>
+</ul>
+<h2 id="VAO操作"><a href="#VAO操作" class="headerlink" title="VAO操作"></a>VAO操作</h2><ul>
+<li><p>VAO创建</p>
+<ul>
+<li><p><code>void glGenVertexArrays(GLsizei n, GLuint *arrays)</code></p>
+</li>
+<li><p>n: 创建多少个vao</p>
+</li>
+<li><p>arrays: 创建出来的vao编号们，都放到arrays指向的数组中</p>
+</li>
+</ul>
+</li>
+<li><p>VAO删除</p>
+<ul>
+<li><code>void glDeleteVertexArrays(GLsizei n, GLuint *arrays);</code></li>
+<li>n: 删除多少个vao</li>
+<li>arrays: 要删除的vao存放数组</li>
+</ul>
+</li>
+<li><p>VAO绑定</p>
+<ul>
+<li><code>void glBindVertexArray(GLuint array);</code></li>
+<li>array：要绑定的vao编号</li>
+</ul>
+</li>
+<li><p>VAO加入VBO描述</p>
+<ul>
+<li><code>void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer);</code></li>
+<li>index: 要描述第几个属性</li>
+<li>size: 这个属性包含几个数字</li>
+<li>type: 这个属性每个数字是什么数据类型</li>
+<li>normalized: 是否归一化</li>
+<li>stride: 每个顶点数据的步长</li>
+<li>pointer: 这个属性在每个顶点数据内的偏移量</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/VAO-single.png"></p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">glBindBuffer</span>(GL_ARRAY_BUFFER, colorVbo);</span><br><span class="line"><span class="built_in">glEnableVertexAttribArray</span>(<span class="number">1</span>);</span><br><span class="line"><span class="built_in">glVertexAttribPointer</span>(<span class="number">1</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">3</span> * <span class="built_in">sizeof</span>(<span class="type">float</span>), (<span class="type">void</span> *)<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/06/16/04OpenGL/OpenGL%E5%AD%A6%E4%B9%A0/VAO-interleaved.png"></p>
 ]]></content>
       <tags>
         <tag>OpenGL</tag>
